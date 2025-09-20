@@ -1,0 +1,59 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    /* font-family: "Poppins", sans-serif; */
+    font-family: "Inter", sans-serif;
+}
+
+/* .navbar {
+  backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, 0.05);
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-scrolled {
+  background-color: #15803d;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+} */
+
+/* Tambahkan CSS ini ke file style kamu */
+.swiper-button-next,
+.swiper-button-prev {
+    margin-top: -50px !important;
+    width: 45px !important;
+    height: 45px !important;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.15);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+}
+
+/* Sembunyikan icon bawaan */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    content: "";
+    display: none;
+}
+
+/* Style untuk custom icon */
+.custom-arrow-icon {
+    font-size: 20px;
+    line-height: 1;
+}
