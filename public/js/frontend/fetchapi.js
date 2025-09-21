@@ -117,6 +117,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                     });
                 }
             });
+
+            // filter wisata sesuai desa
+            const wisataDesa = wisataData.filter((w) => w.desa === namaDesa);
+            renderTableWisata(wisataDesa);
         });
     } catch (err) {
         console.error("Gagal memuat data:", err);
@@ -173,89 +177,165 @@ document.addEventListener("click", function (e) {
 
 function renderTableKecamatan(data) {
     const tbody = document.querySelector("#dataTable tbody");
-    const theadNama = document.querySelector(
-        "#dataTable thead th:nth-child(2)"
-    );
+    const tfoot = document.querySelector("#dataTable tfoot");
+    const theadNama = document.querySelector("#dataTable thead th:nth-child(2)");
+
     tbody.innerHTML = "";
     theadNama.textContent = "Kecamatan";
 
     let totalWisata = 0;
 
     data.forEach((item, idx) => {
-        // misal jumlah wisata ada di property `jumlah_wisata`
-        const jumlah = parseInt(item.jumlah_wisata || 0);
-        totalWisata += jumlah;
+        const jmlWisata = wisataData.filter(
+            (w) => w.kecamatan?.toLowerCase() === item.nama.toLowerCase()
+        ).length;
+
+        totalWisata += jmlWisata; // ✅ tambahkan ke total
 
         const tr = document.createElement("tr");
         tr.className = "transition border-b hover:bg-gray-50";
         tr.innerHTML = `
-      <td class="px-4 py-3">
-        <span class="flex items-center justify-center font-bold text-blue-600 bg-blue-100 rounded-full w-7 h-7">
-          ${idx + 1}
-        </span>
-      </td>
-      <td class="px-4 py-3 font-medium">${item.nama}</td>
-      <td class="px-4 py-3 font-semibold text-gray-700">${
-          item.jumlah ?? "-"
-      }</td>
-      <td class="px-4 py-3">
-        <a href="#" 
-                   class="font-medium text-blue-600 hover:underline btn-buka" 
-                   data-type="kecamatan" 
+            <td class="px-4 py-3">
+                <span class="flex items-center justify-center font-bold text-blue-600 bg-blue-100 rounded-full w-7 h-7">
+                    ${idx + 1}
+                </span>
+            </td>
+            <td class="px-4 py-3 font-medium">${item.nama}</td>
+            <td class="px-4 py-3 font-semibold text-gray-700">${jmlWisata}</td>
+            <td class="px-4 py-3">
+                <a href="#"
+                   class="font-medium text-blue-600 hover:underline btn-buka"
+                   data-type="kecamatan"
                    data-nama="${item.nama}">
                    Buka
                 </a>
-      </td>
-    `;
+            </td>
+        `;
         tbody.appendChild(tr);
     });
-    // update total di footer
-    document.getElementById("totalWisata").textContent =
-        totalWisata.toLocaleString("id-ID");
+
+    // ✅ update total di footer
+    if (tfoot) {
+        tfoot.innerHTML = `
+            <tr class="bg-gray-100 font-bold">
+                <td colspan="2" class="px-4 py-3">Total</td>
+                <td class="px-4 py-3">${totalWisata}</td>
+                <td></td>
+            </tr>
+        `;
+    }
 }
 
 function renderTableDesa(data) {
     const tbody = document.querySelector("#dataTable tbody");
-    const theadNama = document.querySelector(
-        "#dataTable thead th:nth-child(2)"
-    );
+    const tfoot = document.querySelector("#dataTable tfoot");
+    const theadNama = document.querySelector("#dataTable thead th:nth-child(2)");
+
     tbody.innerHTML = "";
     theadNama.textContent = "Desa";
 
     let totalWisata = 0;
 
     data.forEach((item, idx) => {
-        // misal jumlah wisata ada di property `jumlah_wisata`
-        const jumlah = parseInt(item.jumlah_wisata || 0);
-        totalWisata += jumlah;
+        const jmlWisata = wisataData.filter(
+            (w) => w.desa?.toLowerCase() === item.nama.toLowerCase()
+        ).length;
+
+        totalWisata += jmlWisata; // ✅ tambahkan ke total
 
         const tr = document.createElement("tr");
         tr.className = "transition border-b hover:bg-gray-50";
         tr.innerHTML = `
-      <td class="px-4 py-3">
-        <span class="flex items-center justify-center font-bold text-blue-600 bg-blue-100 rounded-full w-7 h-7">
-          ${idx + 1}
-        </span>
-      </td>
-      <td class="px-4 py-3 font-medium">${item.nama}</td>
-      <td class="px-4 py-3 font-semibold text-gray-700">${
-          item.jumlah ?? "-"
-      }</td>
-      <td class="px-4 py-3">
-        <a href="#" 
-                   class="font-medium text-blue-600 hover:underline btn-buka" 
-                   data-type="desa" 
+            <td class="px-4 py-3">
+                <span class="flex items-center justify-center font-bold text-blue-600 bg-blue-100 rounded-full w-7 h-7">
+                    ${idx + 1}
+                </span>
+            </td>
+            <td class="px-4 py-3 font-medium">${item.nama}</td>
+            <td class="px-4 py-3 font-semibold text-gray-700">${jmlWisata}</td>
+            <td class="px-4 py-3">
+                <a href="#"
+                   class="font-medium text-blue-600 hover:underline btn-buka"
+                   data-type="desa"
                    data-nama="${item.nama}">
                    Buka
                 </a>
-      </td>
-    `;
+            </td>
+        `;
         tbody.appendChild(tr);
     });
-    // update total di footer
-    document.getElementById("totalWisata").textContent =
-        totalWisata.toLocaleString("id-ID");
+
+    // ✅ update total di footer
+    if (tfoot) {
+        tfoot.innerHTML = `
+            <tr class="bg-gray-100 font-bold">
+                <td colspan="2" class="px-4 py-3">Total</td>
+                <td class="px-4 py-3">${totalWisata}</td>
+                <td></td>
+            </tr>
+        `;
+    }
 }
+
+
+let wisataData = [];
+
+// fetch wisata data sekali di awal
+fetch("http://127.0.0.1:8000/api/tamasyawisata")
+    .then((res) => res.json())
+    .then((data) => {
+        wisataData = data.data;
+    });
+
+// render tabel wisata
+function renderTableWisata(data) {
+    const tbody = document.querySelector("#dataTable tbody");
+    const theadNama = document.querySelector(
+        "#dataTable thead th:nth-child(2)"
+    );
+    const theadJumlah = document.querySelector(
+        "#dataTable thead th:nth-child(3)"
+    );
+    tbody.innerHTML = "";
+
+    theadNama.textContent = "Wisata";
+    theadJumlah.textContent = "Jenis";
+
+    let total = 0;
+
+    data.forEach((item, idx) => {
+        const tr = document.createElement("tr");
+        tr.className = "transition border-b hover:bg-gray-50";
+
+        tr.innerHTML = `
+          <td class="px-4 py-3">
+            <span class="flex items-center justify-center font-bold text-blue-600 bg-blue-100 rounded-full w-7 h-7">
+              ${idx + 1}
+            </span>
+          </td>
+          <td class="px-4 py-3 font-medium">${item.potensi_unggulan}</td>
+          <td class="px-4 py-3 font-semibold text-gray-700">${item.jenis?.join(", ") ?? "-"
+            }</td>
+          <td class="px-4 py-3">
+            <a href="/tamasya-wisata/${item.slug
+            }" target="_blank" rel="noopener"
+               class="font-medium text-blue-600 hover:underline">
+               Detail
+            </a>
+          </td>
+        `;
+
+        tbody.appendChild(tr);
+        total++;
+    });
+
+    // update tfoot
+    const tfootCell = document.querySelector("#dataTable tfoot td");
+    if (tfootCell) {
+        tfootCell.textContent = `Total Wisata: ${total}`;
+    }
+}
+
 // ===============================================================
 // Akhir fungsi untuk render tabel
 // ===============================================================

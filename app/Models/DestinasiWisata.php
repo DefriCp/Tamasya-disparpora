@@ -40,7 +40,7 @@ class DestinasiWisata extends Model
     }
 
     protected $casts = [
-        'jenis' => 'array', 
+        'jenis' => 'array',
     ];
 
     public function desa(): BelongsTo
