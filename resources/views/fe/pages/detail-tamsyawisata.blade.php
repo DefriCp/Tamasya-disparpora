@@ -240,7 +240,9 @@
                 </div>
 
                 <!-- Map Container -->
-                <div id="map" class="z-10 w-full h-64 mt-4 rounded-2xl"></div>
+                <div id="map" class="z-10 w-full h-64 mt-4 rounded-2xl">
+                    
+                </div>
 
                 <!-- Direction Button -->
                 @if ($destinasiwisata->latitude && $destinasiwisata->longitude)
