@@ -52,8 +52,6 @@ const beritaSKPDSwiper = new Swiper(".beritaSKPDSwiper", {
     slidesPerView: 1,
     spaceBetween: 20,
     loop: true,
-    // effect: "cards",
-    // grabCursor: true,
     effect: "fade",
     speed: 800,
     fadeEffect: {
