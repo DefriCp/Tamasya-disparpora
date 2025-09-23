@@ -36,9 +36,9 @@
                 <nav class="flex items-center mb-2 space-x-2 text-green-100 lg:mb-4">
                     <a href="#" class="text-white transition-colors hover:text-green-500">Beranda</a>
                     <i class="text-xs fa-solid fa-chevron-right"></i>
-                    <span class="text-white">Wisata</span>
+                    <span class="text-white">Tamasya Wisata</span>
                 </nav>
-                <h1 class="text-2xl font-bold md:text-4xl">Destinasi Wisata Kabupaten Tasikmalaya</h1>
+                <h1 class="text-2xl font-bold md:text-4xl">Tamasya Wisata Kabupaten Tasikmalaya</h1>
                 <p class="mt-3 text-sm text-center lg:text-left md:text-base">Jelajahi keindahan alam dan budaya Kabupaten
                     Tasikmalaya yang menawan.</p>
             </div>

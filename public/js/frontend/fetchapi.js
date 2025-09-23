@@ -284,36 +284,34 @@ function renderTableWisata(data) {
     let total = 0;
 
     data.forEach((item, idx) => {
+        const jmlWisata = wisataData.filter(
+            (w) => w.desa?.toLowerCase() === item.nama.toLowerCase()
+        ).length;
+
+        totalWisata += jmlWisata;
+
         const tr = document.createElement("tr");
         tr.className = "transition border-b hover:bg-gray-50";
-
         tr.innerHTML = `
-          <td class="px-4 py-3">
-            <span class="flex items-center justify-center font-bold text-blue-600 bg-blue-100 rounded-full w-7 h-7">
-              ${idx + 1}
-            </span>
-          </td>
-          <td class="px-4 py-3 font-medium">${item.potensi_unggulan}</td>
-          <td class="px-4 py-3 font-semibold text-gray-700">${item.jenis?.join(", ") ?? "-"
-            }</td>
-          <td class="px-4 py-3">
-            <a href="/tamasya-wisata/${item.slug
-            }" target="_blank" rel="noopener"
-               class="font-medium text-blue-600 hover:underline">
-               Detail
-            </a>
-          </td>
+            <td class="px-4 py-3">
+                <span class="flex items-center justify-center font-bold text-blue-600 bg-blue-100 rounded-full w-7 h-7">
+                    ${idx + 1}
+                </span>
+            </td>
+            <td class="px-4 py-3 font-medium">${item.nama}</td>
+           
+            <td class="px-4 py-3">
+                <a href="#"
+                   class="font-medium text-blue-600 hover:underline btn-buka"
+                   data-type="desa"
+                   data-nama="${item.nama}">
+                   Buka
+                </a>
+            </td>
         `;
-
         tbody.appendChild(tr);
-        total++;
     });
 
-    // update tfoot
-    const tfootCell = document.querySelector("#dataTable tfoot td");
-    if (tfootCell) {
-        tfootCell.textContent = `Total Wisata: ${total}`;
-    }
 }
 
 // ===============================================================

@@ -49,6 +49,14 @@
         <div class="relative flex items-center px-4 mx-auto mt-32 md:mt-40">
             <div class="flex flex-col items-center justify-center w-full text-white lg:items-center">
                 <h1 class="text-2xl font-bold mt-7 md:text-4xl">{{ $destinasiwisata->nama }}</h1>
+                <div class="flex flex-wrap gap-2 lg:mt-5">
+                    @foreach(collect($destinasiwisata->jenis) as $jenis)
+                        <span class="border-green-200 bg-green-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
+                            {{ $jenis }}
+                        </span>
+                    @endforeach
+                </div>
+
 
             </div>
         </div>
@@ -76,12 +84,6 @@
                     <!-- Pagination -->
                     <div class="swiper-pagination"></div>
                 </div>
-
-                @if ($destinasiwisata->photos->count() > 6)
-                    <button class="px-4 py-2 mt-4 text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700">
-                        Lihat Semua Foto ({{ $destinasiwisata->photos->count() }})
-                    </button>
-                @endif
             </div>
 
             <!-- Informasi Umum -->
@@ -172,24 +174,29 @@
                         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <div class="p-4 border border-gray-200 rounded-xl">
                                 <h4 class="mb-3 font-semibold text-gray-800">Informasi Praktis</h4>
-                                <ul class="space-y-2 text-sm text-gray-700">
-                                    <li class="flex justify-between">
+                                <ul class="text-sm text-gray-700">
+                                    <li class="grid grid-cols-3 gap-2">
                                         <span>Status Pemilik:</span>
-                                        <span class="font-medium">{{ $destinasiwisata->status_pemilik ?? '-' }}</span>
+                                        <span class="col-span-2 font-medium">{{ $destinasiwisata->status_pemilik ?? '-' }}</span>
                                     </li>
-                                    <li class="flex justify-between">
+                                    <li class="grid grid-cols-3 gap-2">
                                         <span>Luas Area:</span>
-                                        <span class="font-medium">{{ $destinasiwisata->luas ?? '-' }}</span>
+                                        <span class="col-span-2 font-medium">{{ $destinasiwisata->luas ?? '-' }}</span>
                                     </li>
-                                    <li class="flex justify-between">
-                                        <span>Jarak Tempuh:</span>
-                                        <span class="font-medium">{{ $destinasiwisata->jarak_tempuh ?? '-' }}</span>
+                                    <li class="grid grid-cols-3 gap-2">
+                                        <span>Jarak Tempuh :</span>
+                                        <span class="col-span-2 font-medium">{{ $destinasiwisata->jarak_tempuh ?? '-' }}</span>
                                     </li>
-                                    <li class="flex justify-between">
-                                        <span>Kondisi Akses:</span>
-                                        <span class="font-medium">{{ $destinasiwisata->kondisi_akses ?? '-' }}</span>
+                                    <li class="grid grid-cols-3 gap-2">
+                                        <span>Kondisi:</span>
+                                        <span class="col-span-2 font-medium">{{ $destinasiwisata->kondisi_akses ?? '-' }}</span>
+                                    </li>
+                                    <li class="grid grid-cols-3 gap-2">
+                                        <span>Akses:</span>
+                                        <span class="col-span-2 font-medium">{{ $destinasiwisata->akses ?? '-' }}</span>
                                     </li>
                                 </ul>
+
                             </div>
                             <div class="p-4 border border-gray-200 rounded-xl">
                                 <h4 class="mb-3 font-semibold text-gray-800">Informasi Pengelola</h4>

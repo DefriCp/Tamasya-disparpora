@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                         ${item.daya_tarik_wisata ?? ''}
                                     </p>
                                     
-                                    <div class="flex flex-wrap gap-2 items-center">
+                                    <div class="flex flex-wrap gap-2 items-center justify-center">
                                         ${Array.isArray(item.jenis) ? 
                                             item.jenis.map(jenis => 
                                                 `<span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">${jenis}</span>`

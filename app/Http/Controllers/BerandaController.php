@@ -281,7 +281,10 @@ class BerandaController extends Controller
     {
         $header = Header::with('photos')->first();
         $destinasiwisata = DestinasiWisata::with('desa', 'kecamatan', 'utilitas', 'photos')->where('slug', $slug)->first();
-        $destinasiwisatalain = DestinasiWisata::with('desa', 'kecamatan', 'photos')->take(2)->get();
+        $destinasiwisatalain = DestinasiWisata::where('id', '!=', $destinasiwisata->id)
+        ->latest()
+        ->take(2)
+        ->get();
 
         return view('fe.pages.detail-tamsyawisata', compact('header', 'destinasiwisata', 'destinasiwisatalain' ));
     }

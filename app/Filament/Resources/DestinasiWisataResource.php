@@ -149,7 +149,6 @@ class DestinasiWisataResource extends Resource implements HasShieldPermissions
                                     ->required(),
 
                                 Forms\Components\TextInput::make('nomor_hp')
-                                    ->numeric()
                                     ->prefix('+62')
                                     ->required(),
                             ]),
@@ -186,7 +185,7 @@ class DestinasiWisataResource extends Resource implements HasShieldPermissions
                         Repeater::make('photos')
                             ->relationship('photos')
                             ->label('Photo')
-                            ->maxItems(3)
+                            ->maxItems(7)
                             ->grid(2)
                             ->schema([
                                 FileUpload::make('photo')
@@ -202,6 +201,8 @@ class DestinasiWisataResource extends Resource implements HasShieldPermissions
                                         }
                                     })
                                     ->image()
+                                    ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
+    
                             ])
                     ]),
             ]);

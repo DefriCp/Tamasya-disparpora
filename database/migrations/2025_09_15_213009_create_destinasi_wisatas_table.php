@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('kondisi_akses');
             $table->string('jarak_tempuh');
             $table->string('nama_pengelola');
-            $table->bigInteger('nomor_hp');
+            $table->string('nomor_hp');
             $table->timestamps();
         });
     }
