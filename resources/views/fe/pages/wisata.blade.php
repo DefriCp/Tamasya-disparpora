@@ -126,6 +126,62 @@
                 </div>
             </div>
         </div>
+         <!-- Link Terkait -->
+        <section>
+            <div class="container px-4 mx-auto">
+                <div class="mt-12 md:mt-28">
+                    <div class="max-w-2xl mx-auto text-center">
+                        <h2 class="text-3xl font-medium md:text-4xl text-slate-800">Link Terkait</h2>
+                        <p class="mt-3">Simak cerita menarik dari mereka yang telah membuktikan bahwa teknologi dapat
+                            mengubah
+                            cara
+                            kerja,
+                            meningkatkan efisiensi, dan mendapatkan hasil yang lebih baik.</p>
+                    </div>
+                    <!-- Video/Link YouTube Section with Swiper -->
+                    <div class="my-10">
+                        <div class="my-10 swiper linkSwiper">
+                            <div class="justify-center mb-16 swiper-wrapper">
+                                @forelse ($youtubeTamasya as $link)
+                                    <div class="swiper-slide">
+                                        <div
+                                            class="overflow-hidden transition-shadow bg-white shadow-md cursor-pointer rounded-3xl hover:shadow-lg group">
+                                            <a href="{{ $link->link }}" target="_blank" class="relative block">
+                                                <img src="{{ getYouTubeThumbnail($link->link) }}" alt="YouTube Thumbnail"
+                                                    class="object-cover w-full transition-transform duration-300 aspect-video transform-gpu group-hover:scale-110">
+                                                <div
+                                                    class="absolute inset-0 flex items-center justify-center transition-all bg-black bg-opacity-40 hover:bg-opacity-50">
+                                                    <div class="text-center text-white">
+                                                        <i class="mb-2 text-3xl text-red-500 fab fa-youtube"></i>
+                                                        <p class="text-sm font-medium line-clamp-1">{{ $link->nama }}</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                @empty
+                                    <div class="w-full px-3 py-8 text-center bg-white border rounded-3xl md:w-1/3 lg:w-1/4 xl:w-1/5"
+                                        style="border-color: rgb(229 231 235);">
+                                        <p class="text-gray-500">Tidak ada link youtube yang tersedia saat ini.</p>
+                                    </div>
+                                @endforelse
+                            </div>
+
+                            <!-- pagination -->
+                            <div class="mt-6 swiper-pagination"></div>
+
+
+                            <div class="swiper-button-next">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+                            <div class="swiper-button-prev">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 @endsection
 

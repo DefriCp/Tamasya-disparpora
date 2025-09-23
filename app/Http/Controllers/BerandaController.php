@@ -19,6 +19,7 @@ use Illuminate\Support\Carbon;
 use App\Models\StrukturOrganisasi;
 use App\Models\Visitor;
 use App\Models\Wisata;
+use App\Models\YoutubeTamasya;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 
@@ -261,7 +262,9 @@ class BerandaController extends Controller
         // Pastikan hasil pencarian membawa query sebelumnya
         $wisata->appends(['search' => $search]);
 
-        return view('fe.pages.wisata', compact('header', 'wisata', 'search'));
+        $youtubeTamasya = YoutubeTamasya::get();
+
+        return view('fe.pages.wisata', compact('header', 'wisata', 'search', 'youtubeTamasya'));
     }
 
     public function detailWisata($slug = null)
@@ -278,10 +281,12 @@ class BerandaController extends Controller
     {
         $header = Header::with('photos')->first();
         $destinasiwisata = DestinasiWisata::with('desa', 'kecamatan', 'utilitas', 'photos')->where('slug', $slug)->first();
-        $destinasiwisatalain = DestinasiWisata::with('desa', 'kecamatan', 'photos')->take(5)->get();
+        $destinasiwisatalain = DestinasiWisata::with('desa', 'kecamatan', 'photos')->take(2)->get();
 
         return view('fe.pages.detail-tamsyawisata', compact('header', 'destinasiwisata', 'destinasiwisatalain' ));
     }
+
+    
 
     // --------------------------------------------------
     // Halaman galeri

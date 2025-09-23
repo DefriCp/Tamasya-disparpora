@@ -48,12 +48,8 @@
         <!-- Content -->
         <div class="relative flex items-center px-4 mx-auto mt-32 md:mt-40">
             <div class="flex flex-col items-center justify-center w-full text-white lg:items-center">
-                <nav class="flex items-center mb-2 space-x-2 text-green-100 lg:mb-4">
-                    <a href="#" class="text-white transition-colors hover:text-green-500">Beranda</a>
-                    <i class="text-xs fa-solid fa-chevron-right"></i>
-                    <span class="text-white">Wisata</span>
-                </nav>
-                <h1 class="text-2xl font-bold md:text-4xl">{{ $destinasiwisata->nama }}</h1>
+                <h1 class="text-2xl font-bold mt-7 md:text-4xl">{{ $destinasiwisata->nama }}</h1>
+
             </div>
         </div>
     </section>
@@ -93,14 +89,11 @@
                 <!-- Navs -->
                 <div class="border-b border-gray-200">
                     <nav class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500">
-                        <button class="inline-block p-4 text-green-600 border-b-2 border-green-600 rounded-t-lg tab-btn"
-                            data-tab="tentang">
-                            Tentang
-                        </button>
+                        
                         <button
-                            class="inline-block p-4 border-b-2 rounded-t-lg tab-btn hover:text-gray-600 hover:border-gray-300"
+                            class="inline-block p-4 text-green-600 border-b-2 border-green-600 rounded-t-lg tab-btn"
                             data-tab="daya">
-                            Daya Tarik
+                            Detail Wisata
                         </button>
                         <button
                             class="inline-block p-4 border-b-2 rounded-t-lg tab-btn hover:text-gray-600 hover:border-gray-300"
@@ -122,22 +115,9 @@
 
                 <!-- Content -->
                 <div class="p-6">
-                    <!-- Tentang -->
-                    <div class="tab-content" id="tentang">
-                        <h2 class="mb-4 text-2xl font-bold text-gray-800">Tentang {{ $destinasiwisata->nama }}</h2>
-                        <p class="leading-relaxed text-gray-700">
-                            {{ $destinasiwisata->potensi_unggulan ?? 'Deskripsi wisata akan ditampilkan di sini.' }}
-                        </p>
-                        @if ($destinasiwisata->produk_unggulan)
-                            <div class="mt-4">
-                                <h4 class="font-semibold text-gray-800">Produk Unggulan:</h4>
-                                <p class="text-gray-700">{{ $destinasiwisata->produk_unggulan }}</p>
-                            </div>
-                        @endif
-                    </div>
 
-                    <!-- Daya Tarik -->
-                    <div class="hidden tab-content" id="daya">
+                    <!-- Detail Destinasi -->
+                    <div class="tab-content" id="daya">
                         @if ($destinasiwisata->daya_tarik_wisata)
                             <h3 class="mb-3 text-xl font-semibold text-gray-800">Daya Tarik Wisata</h3>
                             <div class="p-4 border border-green-200 bg-green-50 rounded-xl">
@@ -146,7 +126,34 @@
                         @else
                             <p class="text-gray-500">Belum ada data daya tarik wisata.</p>
                         @endif
+
+                        @if ($destinasiwisata->potensi_unggulan)
+                            <h3 class="mb-3 text-xl font-semibold text-gray-800 mt-6">Potensi Unggulan</h3>
+                            <div class="p-4 border border-green-200 bg-green-50 rounded-xl">
+                                <p class="text-gray-700">{{ $destinasiwisata->potensi_unggulan }}</p>
+                            </div>
+                        @else
+                            <p class="text-gray-500">Belum ada data potensi unggulan.</p>
+                        @endif
+                        @if ($destinasiwisata->produk_unggulan)
+                            <h3 class="mb-3 text-xl font-semibold text-gray-800 mt-6">Produk Unggulan</h3>
+                            <div class="p-4 border border-green-200 bg-green-50 rounded-xl">
+                                <p class="text-gray-700">{{ $destinasiwisata->produk_unggulan }}</p>
+                            </div>
+                        @else
+                            <p class="text-gray-500">Belum ada data produk unggulan.</p>
+                        @endif
+                        @if ($destinasiwisata->aktivitas)
+                            <h3 class="mb-3 text-xl font-semibold text-gray-800 mt-6">Aktivitas</h3>
+                            <div class="p-4 border border-green-200 bg-green-50 rounded-xl">
+                                <p class="text-gray-700">{{ $destinasiwisata->aktivitas }}</p>
+                            </div>
+                        @else
+                            <p class="text-gray-500">Belum ada data aktivitas.</p>
+                        @endif
                     </div>
+
+                    
 
                     <!-- Amenitas -->
                     <div class="hidden tab-content" id="amenitas">
@@ -167,7 +174,7 @@
                                 <h4 class="mb-3 font-semibold text-gray-800">Informasi Praktis</h4>
                                 <ul class="space-y-2 text-sm text-gray-700">
                                     <li class="flex justify-between">
-                                        <span>Status:</span>
+                                        <span>Status Pemilik:</span>
                                         <span class="font-medium">{{ $destinasiwisata->status_pemilik ?? '-' }}</span>
                                     </li>
                                     <li class="flex justify-between">
@@ -177,6 +184,10 @@
                                     <li class="flex justify-between">
                                         <span>Jarak Tempuh:</span>
                                         <span class="font-medium">{{ $destinasiwisata->jarak_tempuh ?? '-' }}</span>
+                                    </li>
+                                    <li class="flex justify-between">
+                                        <span>Kondisi Akses:</span>
+                                        <span class="font-medium">{{ $destinasiwisata->kondisi_akses ?? '-' }}</span>
                                     </li>
                                 </ul>
                             </div>
