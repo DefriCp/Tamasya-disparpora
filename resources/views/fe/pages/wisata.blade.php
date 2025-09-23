@@ -27,8 +27,6 @@
             @endif
         </div>
 
-
-
         <!-- Overlay -->
         <div class="absolute inset-0 bg-gray-900 bg-opacity-80"></div>
 
