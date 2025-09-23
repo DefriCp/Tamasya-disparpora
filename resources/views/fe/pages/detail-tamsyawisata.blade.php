@@ -61,7 +61,7 @@
             <!-- Photo Gallery -->
             <div class="mb-8">
                 <div class="swiper fotoSwiper">
-                    <div class="swiper-wrapper">
+                    <div class="swiper-wrapper rounded-2xl">
                         @foreach ($destinasiwisata->photos->take(6) as $index => $photo)
                             <div class="swiper-slide">
                                 <div class="relative overflow-hidden rounded-2xl">
@@ -334,7 +334,15 @@
                 const lng = {{ $destinasiwisata->longitude ?? 'null' }};
 
                 if (lat && lng) {
-                    const map = L.map("mapDetail").setView([lat, lng], 15);
+                    const map = L.map("mapDetail", {
+                        center: [lat, lng],
+                        zoom: 15,
+                        attributionControl: false,
+                        zoomControl: false,
+                        maxZoom: 20,
+                        minZoom: 9
+                    });
+
 
                     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
                         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',

@@ -25,7 +25,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('tmp-disparpora')
+            ->path('gapura-disparpora')
             ->login()
             ->favicon(asset('favicon.png'))
             ->sidebarCollapsibleOnDesktop()

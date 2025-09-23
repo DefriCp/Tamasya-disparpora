@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\DestinasiWisataResource\Pages;
 use App\Filament\Resources\DestinasiWisataResource\RelationManagers;
 use App\Models\DestinasiWisata;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Storage;
 
-class DestinasiWisataResource extends Resource
+class DestinasiWisataResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = DestinasiWisata::class;
 
@@ -229,6 +230,16 @@ class DestinasiWisataResource extends Resource
                     ->label('Kecamatan')
                     ->searchable()
                     ->limit(25)
+                    ->wrap(),
+                TextColumn::make('latitude')
+                    ->label('Latitude')
+                    ->searchable()
+                    ->limit(25)
+                    ->wrap(),
+                TextColumn::make('longitude')
+                    ->label('Longitude')
+                    ->searchable()
+                    ->limit(25)
                     ->wrap()
 
             ])
@@ -263,6 +274,19 @@ class DestinasiWisataResource extends Resource
             'index' => Pages\ListDestinasiWisatas::route('/'),
             'create' => Pages\CreateDestinasiWisata::route('/create'),
             'edit' => Pages\EditDestinasiWisata::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'publish'
         ];
     }
 }

@@ -33,7 +33,7 @@ class TamasyaWisataResource extends JsonResource
             'kondisi_akses' =>$this->kondisi_akses,
             'jarak_tempuh' =>$this->jarak_tempuh,
             'nama_pengelola' =>$this->nama_pengelola,
-            'nomor_hp' =>$this->nomor_hp,
+            'nomor_hp' => '+62' . ltrim($this->nomor_hp, '0'),
             'utilitas' => UtilitasResource::collection($this->whenLoaded('utilitas')),
             'photo' => PhotoTamasyaResource::collection($this->whenLoaded('photos'))
         ];

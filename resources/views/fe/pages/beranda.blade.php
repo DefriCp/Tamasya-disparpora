@@ -346,9 +346,9 @@
                         <div class="space-y-3">
                             <div class="flex items-center justify-center p-4 space-y-1 rounded-2xl">
                                 <blockquote class="instagram-media"
-                                    data-instgrm-permalink="https://www.instagram.com/p/DL6xKFqxTWx/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
+                                    data-instgrm-permalink="https://www.instagram.com/reel/CxrWxu6pVHV/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
                                     data-instgrm-version="14" style="background:#FFF; border:0; border-radius:1rem;">
-                                    <a href="https://www.instagram.com/p/DL6xKFqxTWx/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
+                                    <a href="https://www.instagram.com/reel/CxrWxu6pVHV/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
                                         target="_blank">...</a>
                                 </blockquote>
                                 <script async src="//www.instagram.com/embed.js"></script>

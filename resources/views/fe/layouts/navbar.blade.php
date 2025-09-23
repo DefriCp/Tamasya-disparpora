@@ -53,7 +53,7 @@
 
                 <a href="{{ route('fe.berita') }}" class="transition-colors">Berita</a>
                 <a href="{{ route('fe.galeri') }}" class="transition-colors">Galeri</a>
-                <a href="{{ route('fe.wisata') }}" class="transition-colors">Wisata</a>
+                <a href="{{ route('fe.wisata') }}" class="transition-colors">Tamasyawisata</a>
                 <a href="{{ route('fe.layanan') }}" class="transition-colors">Layanan</a>
                 <a href="{{ route('fe.dokumen') }}" class="transition-colors">Dokumen</a>
             </nav>
@@ -95,7 +95,7 @@
 
                 <a href="{{ route('fe.berita') }}" class="py-2 transition-colors">Berita</a>
                 <a href="{{ route('fe.galeri') }}" class="py-2 transition-colors">Galeri</a>
-                <a href="{{ route('fe.wisata') }}" class="py-2 transition-colors">Wisata</a>
+                <a href="{{ route('fe.wisata') }}" class="py-2 transition-colors">Tamasyawisata</a>
                 <a href="{{ route('fe.layanan') }}" class="py-2 transition-colors">Layanan</a>
                 <a href="{{ route('fe.dokumen') }}" class="py-2 transition-colors">Dokumen</a>
             </nav>

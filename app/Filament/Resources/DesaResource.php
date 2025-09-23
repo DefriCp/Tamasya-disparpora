@@ -6,6 +6,7 @@ use App\Filament\Resources\DesaResource\Pages;
 use App\Filament\Resources\DesaResource\RelationManagers;
 use App\Models\Desa;
 use App\Models\Kecamatan;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,7 +15,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class DesaResource extends Resource
+class DesaResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Desa::class;
 
@@ -106,6 +107,19 @@ class DesaResource extends Resource
             'index' => Pages\ListDesas::route('/'),
             'create' => Pages\CreateDesa::route('/create'),
             'edit' => Pages\EditDesa::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'publish'
         ];
     }
 }

@@ -201,7 +201,6 @@ function renderTableKecamatan(data) {
                 </span>
             </td>
             <td class="px-4 py-3 font-medium">${item.nama}</td>
-            <td class="px-4 py-3 font-semibold text-gray-700">${jmlWisata}</td>
             <td class="px-4 py-3">
                 <a href="#"
                    class="font-medium text-blue-600 hover:underline btn-buka"
@@ -214,16 +213,7 @@ function renderTableKecamatan(data) {
         tbody.appendChild(tr);
     });
 
-    // ✅ update total di footer
-    if (tfoot) {
-        tfoot.innerHTML = `
-            <tr class="bg-gray-100 font-bold">
-                <td colspan="2" class="px-4 py-3">Total</td>
-                <td class="px-4 py-3">${totalWisata}</td>
-                <td></td>
-            </tr>
-        `;
-    }
+    
 }
 
 function renderTableDesa(data) {
@@ -252,7 +242,7 @@ function renderTableDesa(data) {
                 </span>
             </td>
             <td class="px-4 py-3 font-medium">${item.nama}</td>
-            <td class="px-4 py-3 font-semibold text-gray-700">${jmlWisata}</td>
+           
             <td class="px-4 py-3">
                 <a href="#"
                    class="font-medium text-blue-600 hover:underline btn-buka"
@@ -265,16 +255,6 @@ function renderTableDesa(data) {
         tbody.appendChild(tr);
     });
 
-    // ✅ update total di footer
-    if (tfoot) {
-        tfoot.innerHTML = `
-            <tr class="bg-gray-100 font-bold">
-                <td colspan="2" class="px-4 py-3">Total</td>
-                <td class="px-4 py-3">${totalWisata}</td>
-                <td></td>
-            </tr>
-        `;
-    }
 }
 
 

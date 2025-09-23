@@ -4,45 +4,70 @@ namespace App\Filament\Widgets;
 
 use App\Models\Agenda;
 use App\Models\Berita;
+use App\Models\DestinasiWisata;
 use App\Models\Dokumen;
 use App\Models\Layanan;
+use App\Models\YoutubeTamasya;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Support\Facades\Auth;
 
 class StatsOverview extends BaseWidget
-{
-    protected function getStats(): array
     {
-        return [
 
-            Stat::make(
-                label: 'Berita',
-                value: Berita::count()
-            )
-                ->description('Jumlah Berita')
-                ->color('gray')
-                ->chart([7, 3, 4, 5, 6, 3, 5]),
-            Stat::make(
-                label: 'Agenda',
-                value: Agenda::count()
-            )
-                ->description('Jumlah Agenda')
-                ->color('success')
-                ->chart([7, 3, 4, 5, 6, 3, 5]),
-            Stat::make(
-                label: 'Dokumen',
-                value: Dokumen::count()
-            )
-                ->description('Jumlah Dokumen')
-                ->color('danger')
-                ->chart([7, 3, 4, 5, 6, 3, 5]),
-            Stat::make(
-                label: 'Layanan',
-                value: Layanan::count()
-            )
-                ->description('Jumlah Layanan')
-                ->color('primary')
-                ->chart([7, 3, 4, 5, 6, 3, 5]),
-        ];
+    public function getStats(): array
+    {
+        $user = Auth::user();
+
+        if ($user->hasRole(['super_admin', 'admin_skpd'])) {
+            return [
+                Stat::make('Berita', Berita::count())
+                    ->description('Jumlah Berita')
+                    ->color('gray')
+                    ->chart([7, 3, 4, 5, 6, 3, 5]),
+
+                Stat::make('Agenda', Agenda::count())
+                    ->description('Jumlah Agenda')
+                    ->color('success')
+                    ->chart([7, 3, 4, 5, 6, 3, 5]),
+
+                Stat::make('Dokumen', Dokumen::count())
+                    ->description('Jumlah Dokumen')
+                    ->color('danger')
+                    ->chart([7, 3, 4, 5, 6, 3, 5]),
+
+                Stat::make('Layanan', Layanan::count())
+                    ->description('Jumlah Layanan')
+                    ->color('primary')
+                    ->chart([7, 3, 4, 5, 6, 3, 5]),
+
+                Stat::make('Tamasya Wisata', DestinasiWisata::count())
+                    ->description('Jumlah Tamasya Wisata')
+                    ->color('success')
+                    ->chart([7, 3, 4, 5, 6, 3, 5]),
+
+                Stat::make('Youtube Tamasya', YoutubeTamasya::count())
+                    ->description('Jumlah Tamasya Wisata')
+                    ->color('danger')
+                    ->chart([7, 3, 4, 5, 6, 3, 5]),
+            ];
+        }
+
+        if ($user->hasRole('user_tamasya')) {
+            return [
+                Stat::make('Tamasya Wisata', DestinasiWisata::count())
+                    ->description('Jumlah Tamasya Wisata')
+                    ->color('success')
+                    ->chart([7, 3, 4, 5, 6, 3, 5]),
+
+                Stat::make('Youtube Tamasya', YoutubeTamasya::count())
+                    ->description('Jumlah Tamasya Wisata')
+                    ->color('danger')
+                    ->chart([7, 3, 4, 5, 6, 3, 5]),
+            ];
+        }
+
+        return [];
     }
+
 }

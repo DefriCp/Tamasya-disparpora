@@ -80,17 +80,6 @@
             </div>
         </div>
 
-
-        {{-- <div class="flex gap-3">
-      <button class="px-4 py-2 text-white transition duration-300 bg-blue-500 shadow-md hover:bg-blue-600 rounded-xl">
-        Infografis
-      </button>
-      <button class="px-4 py-2 text-white transition duration-300 shadow-md bg-cyan-500 hover:bg-cyan-600 rounded-xl">
-        Pencarian Data
-      </button>
-    </div> --}}
-        </div>
-
         <!-- Layout Tabel + Peta -->
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
 
@@ -105,19 +94,12 @@
                             <tr class="text-left text-gray-700">
                                 <th class="px-4 py-3">No</th>
                                 <th class="px-4 py-3">Kecamatan</th>
-                                <th class="px-4 py-3">Jumlah</th>
                                 <th class="px-4 py-3">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                         </tbody>
-                        <tfoot class="sticky bottom-0 bg-blue-50">
-                            <tr class="font-bold">
-                                <td class="px-4 py-3" colspan="2">TOTAL</td>
-                                <td class="px-4 py-3 text-gray-800" id="totalWisata"></td>
-                                <td class="px-4 py-3">-</td>
-                            </tr>
-                        </tfoot>
+                        
                     </table>
                 </div>
             </div>
@@ -131,12 +113,7 @@
             <div class="container px-4 mx-auto">
                 <div class="mt-12 md:mt-28">
                     <div class="max-w-2xl mx-auto text-center">
-                        <h2 class="text-3xl font-medium md:text-4xl text-slate-800">Link Terkait</h2>
-                        <p class="mt-3">Simak cerita menarik dari mereka yang telah membuktikan bahwa teknologi dapat
-                            mengubah
-                            cara
-                            kerja,
-                            meningkatkan efisiensi, dan mendapatkan hasil yang lebih baik.</p>
+                        <h2 class="text-3xl font-medium md:text-4xl text-slate-800">Link Youtube</h2>
                     </div>
                     <!-- Video/Link YouTube Section with Swiper -->
                     <div class="my-10">

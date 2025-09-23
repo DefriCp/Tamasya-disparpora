@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\KecamatanResource\Pages;
 use App\Filament\Resources\KecamatanResource\RelationManagers;
 use App\Models\Kecamatan;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,8 +14,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class KecamatanResource extends Resource
-{
+class KecamatanResource extends Resource implements HasShieldPermissions
+{ 
     protected static ?string $model = Kecamatan::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
@@ -94,6 +95,19 @@ class KecamatanResource extends Resource
             'index' => Pages\ListKecamatans::route('/'),
             'create' => Pages\CreateKecamatan::route('/create'),
             'edit' => Pages\EditKecamatan::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'publish'
         ];
     }
 }
