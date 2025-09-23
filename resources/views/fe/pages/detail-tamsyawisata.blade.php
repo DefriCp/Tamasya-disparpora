@@ -50,8 +50,9 @@
             <div class="flex flex-col items-center justify-center w-full text-white lg:items-center">
                 <h1 class="text-2xl font-bold mt-7 md:text-4xl">{{ $destinasiwisata->nama }}</h1>
                 <div class="flex flex-wrap gap-2 lg:mt-5">
-                    @foreach(collect($destinasiwisata->jenis) as $jenis)
-                        <span class="border-green-200 bg-green-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
+                    @foreach (collect($destinasiwisata->jenis) as $jenis)
+                        <span
+                            class="px-3 py-1 text-xs font-medium text-gray-700 bg-green-100 border-green-200 rounded-full">
                             {{ $jenis }}
                         </span>
                     @endforeach
@@ -91,9 +92,8 @@
                 <!-- Navs -->
                 <div class="border-b border-gray-200">
                     <nav class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500">
-                        
-                        <button
-                            class="inline-block p-4 text-green-600 border-b-2 border-green-600 rounded-t-lg tab-btn"
+
+                        <button class="inline-block p-4 text-green-600 border-b-2 border-green-600 rounded-t-lg tab-btn"
                             data-tab="daya">
                             Detail Wisata
                         </button>
@@ -130,7 +130,7 @@
                         @endif
 
                         @if ($destinasiwisata->potensi_unggulan)
-                            <h3 class="mb-3 text-xl font-semibold text-gray-800 mt-6">Potensi Unggulan</h3>
+                            <h3 class="mt-6 mb-3 text-xl font-semibold text-gray-800">Potensi Unggulan</h3>
                             <div class="p-4 border border-green-200 bg-green-50 rounded-xl">
                                 <p class="text-gray-700">{{ $destinasiwisata->potensi_unggulan }}</p>
                             </div>
@@ -138,7 +138,7 @@
                             <p class="text-gray-500">Belum ada data potensi unggulan.</p>
                         @endif
                         @if ($destinasiwisata->produk_unggulan)
-                            <h3 class="mb-3 text-xl font-semibold text-gray-800 mt-6">Produk Unggulan</h3>
+                            <h3 class="mt-6 mb-3 text-xl font-semibold text-gray-800">Produk Unggulan</h3>
                             <div class="p-4 border border-green-200 bg-green-50 rounded-xl">
                                 <p class="text-gray-700">{{ $destinasiwisata->produk_unggulan }}</p>
                             </div>
@@ -146,7 +146,7 @@
                             <p class="text-gray-500">Belum ada data produk unggulan.</p>
                         @endif
                         @if ($destinasiwisata->aktivitas)
-                            <h3 class="mb-3 text-xl font-semibold text-gray-800 mt-6">Aktivitas</h3>
+                            <h3 class="mt-6 mb-3 text-xl font-semibold text-gray-800">Aktivitas</h3>
                             <div class="p-4 border border-green-200 bg-green-50 rounded-xl">
                                 <p class="text-gray-700">{{ $destinasiwisata->aktivitas }}</p>
                             </div>
@@ -155,7 +155,7 @@
                         @endif
                     </div>
 
-                    
+
 
                     <!-- Amenitas -->
                     <div class="hidden tab-content" id="amenitas">
@@ -177,7 +177,8 @@
                                 <ul class="text-sm text-gray-700">
                                     <li class="grid grid-cols-3 gap-2">
                                         <span>Status Pemilik:</span>
-                                        <span class="col-span-2 font-medium">{{ $destinasiwisata->status_pemilik ?? '-' }}</span>
+                                        <span
+                                            class="col-span-2 font-medium">{{ $destinasiwisata->status_pemilik ?? '-' }}</span>
                                     </li>
                                     <li class="grid grid-cols-3 gap-2">
                                         <span>Luas Area:</span>
@@ -185,11 +186,13 @@
                                     </li>
                                     <li class="grid grid-cols-3 gap-2">
                                         <span>Jarak Tempuh :</span>
-                                        <span class="col-span-2 font-medium">{{ $destinasiwisata->jarak_tempuh ?? '-' }}</span>
+                                        <span
+                                            class="col-span-2 font-medium">{{ $destinasiwisata->jarak_tempuh ?? '-' }}</span>
                                     </li>
                                     <li class="grid grid-cols-3 gap-2">
                                         <span>Kondisi:</span>
-                                        <span class="col-span-2 font-medium">{{ $destinasiwisata->kondisi_akses ?? '-' }}</span>
+                                        <span
+                                            class="col-span-2 font-medium">{{ $destinasiwisata->kondisi_akses ?? '-' }}</span>
                                     </li>
                                     <li class="grid grid-cols-3 gap-2">
                                         <span>Akses:</span>
@@ -332,6 +335,8 @@
 @endsection
 
 @push('js')
+    <script src="{{ asset('assets/js/leaflet.ajax.js') }}"></script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const mapContainer = document.getElementById("mapDetail");

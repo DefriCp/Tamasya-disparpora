@@ -7,7 +7,7 @@ window.kecamatanLayer = null;
 window.desaLayer = null;
 
 document.addEventListener("DOMContentLoaded", function () {
-    
+
     // 1. Cek apakah variabel 'map' sudah berisi instance Leaflet
     // Jika iya, hapus peta tersebut dari kontainer.
     if (map != undefined) {
@@ -35,14 +35,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Buat daftar 39 warna (bisa di-generate atau ditentukan manual)
     var warnaList = [
-        "#e6194b","#3cb44b","#ffe119","#4363d8","#f58231",
-        "#911eb4","#46f0f0","#f032e6","#bcf60c","#fabebe",
-        "#008080","#e6beff","#9a6324","#fffac8","#800000",
-        "#aaffc3","#808000","#ffd8b1","#000075","#808080",
-        "#ffffff","#000000","#ff7f0e","#1f77b4","#2ca02c",
-        "#d62728","#9467bd","#8c564b","#e377c2","#7f7f7f",
-        "#bcbd22","#17becf","#a6cee3","#b2df8a","#fb9a99",
-        "#fdbf6f","#cab2d6","#6a3d9a","#ffff99"
+        "#e6194b", "#3cb44b", "#ffe119", "#4363d8", "#f58231",
+        "#911eb4", "#46f0f0", "#f032e6", "#bcf60c", "#fabebe",
+        "#008080", "#e6beff", "#9a6324", "#fffac8", "#800000",
+        "#aaffc3", "#808000", "#ffd8b1", "#000075", "#808080",
+        "#ffffff", "#000000", "#ff7f0e", "#1f77b4", "#2ca02c",
+        "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f",
+        "#bcbd22", "#17becf", "#a6cee3", "#b2df8a", "#fb9a99",
+        "#fdbf6f", "#cab2d6", "#6a3d9a", "#ffff99"
     ];
 
     // Fungsi styling
@@ -95,10 +95,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                 </div>
 
                                 <!-- Gambar utama -->
-                                ${item.photo && item.photo.length > 0 ? 
-                                    `<img src="${item.photo[0].photo}" alt="${item.nama}" class="w-full h-48 object-cover">` 
-                                    : '<div class="w-full h-48 bg-gray-100 flex items-center justify-center"><span class="text-gray-400 text-sm">Tidak ada foto</span></div>'
-                                }
+                                ${item.photo && item.photo.length > 0 ?
+                                `<img src="${item.photo[0].photo}" alt="${item.nama}" class="w-full h-48 object-cover">`
+                                : '<div class="w-full h-48 bg-gray-100 flex items-center justify-center"><span class="text-gray-400 text-sm">Tidak ada foto</span></div>'
+                            }
 
                                 <!-- Konten bawah -->
                                 <div class="p-4">
@@ -107,13 +107,13 @@ document.addEventListener("DOMContentLoaded", function () {
                                     </p>
                                     
                                     <div class="flex flex-wrap gap-2 items-center justify-center">
-                                        ${Array.isArray(item.jenis) ? 
-                                            item.jenis.map(jenis => 
-                                                `<span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">${jenis}</span>`
-                                            ).join('') 
-                                            : 
-                                            `<span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">${item.jenis || 'Umum'}</span>`
-                                        }
+                                        ${Array.isArray(item.jenis) ?
+                                item.jenis.map(jenis =>
+                                    `<span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">${jenis}</span>`
+                                ).join('')
+                                :
+                                `<span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">${item.jenis || 'Umum'}</span>`
+                            }
                                     </div>
                                 </div>
                                 <a href="/tamasya-wisata/${item.slug}" 
@@ -133,14 +133,14 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Gagal ambil data wisata:", error);
         });
 
-    
+
 
     var kecamatan = new L.GeoJSON.AJAX("/assets/geojson/kecamatan.geojson", {
         style: styleKecamatan,
     }).addTo(map);
 
-    
-    
+
+
 
     var openstreetMap = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

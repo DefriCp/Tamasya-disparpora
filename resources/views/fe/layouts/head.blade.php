@@ -12,25 +12,18 @@
 
 <link href="{{ asset('css/frontend/swiper-bundle.min.css') }}" rel="stylesheet">
 
-
 <!-- Leaflet AWAL -->
 <!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
 <!-- Leaflet JavaScript -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script> 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
 
 <!-- Leaflet.TextPath plugin -->
 <script src="https://cdn.jsdelivr.net/npm/leaflet-textpath@1.2.0/leaflet.textpath.min.js"></script>
-
-
-<!-- Plugin Leaflet AJAX -->
-<script src="{{ asset('assets/js/leaflet.ajax.js') }}"></script>
-
-<!-- File dashboard.js kamu -->
-<script src="{{ asset('assets/js/dashboard.js') }}"></script>
-
 <!-- Leaflet AKHIR-->
 
 @stack('custom-css')
@@ -142,14 +135,14 @@
         color: {{ $header->warna_text_header ?? '#fff' }} !important;
     }
 
-    .main{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 15px;
-}
+    .main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+    }
 
-    .map{
+    .map {
         height: 100%;
         width: 100%;
         background-color: rgb(239, 236, 236);
@@ -157,7 +150,7 @@
         border-radius: 3px;
         border-color: rgb(170, 170, 170);
         border: none;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2) ;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         position: fixed;
     }
 </style>

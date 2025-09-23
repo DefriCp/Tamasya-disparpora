@@ -46,12 +46,6 @@
     </section>
 
     <!-- Main Content -->
-
-    {{-- <main class="container px-4 py-8 mx-auto xl:gap-12 lg:pt-12 lg:pb-20">
-        <div id="map"class="w-full h-[700px] z-[10] relative bg-gradient-to-br from-blue-100 to-emerald-100 rounded-lg shadow-lg overflow-hidden">
-        </div>
-    </main> --}}
-
     <main class="container px-4 py-8 mx-auto">
         <!-- Filter Panel -->
         <div
@@ -94,12 +88,19 @@
                             <tr class="text-left text-gray-700">
                                 <th class="px-4 py-3">No</th>
                                 <th class="px-4 py-3">Kecamatan</th>
+                                <th class="px-4 py-3">Jumlah</th>
                                 <th class="px-4 py-3">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                         </tbody>
-                        
+                        <tfoot class="font-semibold text-gray-700 bg-gray-100">
+                            <tr>
+                                <td colspan="2" class="px-4 py-3 text-left">Total</td>
+                                <td id="totalWisata" class="px-4 py-3">0</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -108,7 +109,7 @@
                 </div>
             </div>
         </div>
-         <!-- Link Terkait -->
+        <!-- Link Terkait -->
         <section>
             <div class="container px-4 mx-auto">
                 <div class="mt-12 md:mt-28">
@@ -163,4 +164,10 @@
 @endsection
 
 @push('js')
+    <script src="{{ asset('js/frontend/fetchapi.js') }}"></script>
+    <script src="{{ asset('assets/js/leaflet.ajax.js') }}"></script>
+    <script>
+        window.wisataDetailUrl = "{{ url('/tamasya-wisata') }}";
+    </script>
+    <script src="{{ asset('assets/js/dashboard.js') }}"></script>
 @endpush

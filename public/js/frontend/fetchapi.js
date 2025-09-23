@@ -201,6 +201,7 @@ function renderTableKecamatan(data) {
                 </span>
             </td>
             <td class="px-4 py-3 font-medium">${item.nama}</td>
+            <td class="px-4 py-3 font-semibold text-gray-700">${jmlWisata}</td>
             <td class="px-4 py-3">
                 <a href="#"
                    class="font-medium text-blue-600 hover:underline btn-buka"
@@ -213,7 +214,16 @@ function renderTableKecamatan(data) {
         tbody.appendChild(tr);
     });
 
-    
+    // ✅ update total di footer
+    if (tfoot) {
+        tfoot.innerHTML = `
+            <tr class="bg-gray-100 font-bold">
+                <td colspan="2" class="px-4 py-3 text-right">Total</td>
+                <td class="px-4 py-3">${totalWisata}</td>
+                <td></td>
+            </tr>
+        `;
+    }
 }
 
 function renderTableDesa(data) {
@@ -242,7 +252,7 @@ function renderTableDesa(data) {
                 </span>
             </td>
             <td class="px-4 py-3 font-medium">${item.nama}</td>
-           
+            <td class="px-4 py-3 font-semibold text-gray-700">${jmlWisata}</td>
             <td class="px-4 py-3">
                 <a href="#"
                    class="font-medium text-blue-600 hover:underline btn-buka"
@@ -255,8 +265,17 @@ function renderTableDesa(data) {
         tbody.appendChild(tr);
     });
 
+    // ✅ update total di footer
+    if (tfoot) {
+        tfoot.innerHTML = `
+            <tr class="bg-gray-100 font-bold">
+                <td colspan="2" class="px-4 py-3">Total</td>
+                <td class="px-4 py-3">${totalWisata}</td>
+                <td></td>
+            </tr>
+        `;
+    }
 }
-
 
 let wisataData = [];
 
@@ -281,7 +300,7 @@ function renderTableWisata(data) {
     theadNama.textContent = "Wisata";
     theadJumlah.textContent = "Jenis";
 
-    let total = 0;
+    let totalWisata = 0;
 
     data.forEach((item, idx) => {
         const jmlWisata = wisataData.filter(
@@ -299,19 +318,21 @@ function renderTableWisata(data) {
                 </span>
             </td>
             <td class="px-4 py-3 font-medium">${item.nama}</td>
-           
+            <td class="px-4 py-3 font-semibold text-gray-700">${item.jenis?.join(", ") ?? "-"}</td>
             <td class="px-4 py-3">
-                <a href="#"
-                   class="font-medium text-blue-600 hover:underline btn-buka"
-                   data-type="desa"
-                   data-nama="${item.nama}">
-                   Buka
+               <a href="/tamasya-wisata/${item.slug}" target="_blank" class="font-medium text-blue-600 hover:underline">
+                Detail
                 </a>
             </td>
         `;
         tbody.appendChild(tr);
+        totalWisata++;
     });
-
+    // update tfoot
+    const tfootCell = document.querySelector("#dataTable tfoot td");
+    if (tfootCell) {
+        tfootCell.textContent = `Total Wisata: ${total}`;
+    }
 }
 
 // ===============================================================

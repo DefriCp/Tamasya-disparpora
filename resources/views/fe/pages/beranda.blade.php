@@ -33,8 +33,7 @@
                 @else
                     <!-- Default Slider jika tidak ada data header/photo -->
                     <div class="swiper-slide">
-                        <img src="{{ asset('images/placeholder-hero.jpg') }}" alt="Default Slide"
-                            class="object-cover w-full h-full" />
+                        <img src="https://placehold.co/600x400" alt="Default Slide" class="object-cover w-full h-full" />
                     </div>
                 @endif
             </div>
