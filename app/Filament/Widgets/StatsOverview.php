@@ -47,7 +47,7 @@ class StatsOverview extends BaseWidget
                     ->chart([7, 3, 4, 5, 6, 3, 5]),
 
                 Stat::make('Youtube Tamasya', YoutubeTamasya::count())
-                    ->description('Jumlah Tamasya Wisata')
+                    ->description('Jumlah Youtube')
                     ->color('danger')
                     ->chart([7, 3, 4, 5, 6, 3, 5]),
             ];
@@ -61,7 +61,7 @@ class StatsOverview extends BaseWidget
                     ->chart([7, 3, 4, 5, 6, 3, 5]),
 
                 Stat::make('Youtube Tamasya', YoutubeTamasya::count())
-                    ->description('Jumlah Tamasya Wisata')
+                    ->description('Jumlah Youtube')
                     ->color('danger')
                     ->chart([7, 3, 4, 5, 6, 3, 5]),
             ];
