@@ -107,7 +107,7 @@
         </div>
 
         <div class="mt-8 text-center">
-            <span class="text-base">&copy; 2025 Dishubkominfo Kabupaten Tasikmalaya. Semua hak dilindungi.
+            <span class="text-base">&copy; 2025 Dishubkominfo - Disparpora Kabupaten Tasikmalaya. Semua hak dilindungi.
             </span>
         </div>
     </div>

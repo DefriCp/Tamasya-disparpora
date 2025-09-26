@@ -295,7 +295,7 @@
                 <div class="p-6 mb-8 text-white bg-white border shadow-sm border-slate-200 rounded-3xl">
                     <h3 class="mb-3 text-xl font-bold text-slate-700">Butuh Informasi Lebih?</h3>
                     <p class="mb-4 text-slate-700">Hubungi pengelola untuk informasi detail dan reservasi</p>
-                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $destinasiwisata->nomor_hp) }}"
+                    <a href="https://wa.me/62{{ preg_replace('/[^0-9]/', '', $destinasiwisata->nomor_hp) }}"
                         target="_blank"
                         class="flex items-center justify-center w-full px-4 py-3 text-white transition-colors bg-green-600 rounded-lg backdrop-blur hover:bg-green-700">
                         <i class="mr-2 fab fa-whatsapp"></i>
