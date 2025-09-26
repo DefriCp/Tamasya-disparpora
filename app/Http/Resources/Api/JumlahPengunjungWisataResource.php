@@ -5,7 +5,7 @@ namespace App\Http\Resources\Api;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PhotoTamasyaResource extends JsonResource
+class JumlahPengunjungWisataResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,9 @@ class PhotoTamasyaResource extends JsonResource
     {
         return [
             'id' =>$this->id,
-            'photo' => $this->photo ? asset('storage/' . $this->photo) : null,
+            'jumlah' =>$this->jumlah,
+            'bulan' =>$this->bulan,
+            'tahun' =>$this->tahun,
         ];
     }
 }

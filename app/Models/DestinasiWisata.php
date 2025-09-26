@@ -62,4 +62,9 @@ class DestinasiWisata extends Model
     {
         return $this->hasMany(PhotoDestinasiWisata::class);
     }
+
+    public function jumlahkunjunganwisatas(): HasMany
+    {
+        return $this->hasMany(JumlahKunjunganWisata::class);
+    }
 }
