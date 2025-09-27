@@ -35,7 +35,8 @@ class TamasyaWisataResource extends JsonResource
             'nama_pengelola' =>$this->nama_pengelola,
             'nomor_hp' => $this->nomor_hp,
             'utilitas' => UtilitasResource::collection($this->whenLoaded('utilitas')),
-            'photo' => PhotoTamasyaResource::collection($this->whenLoaded('photos'))
+            'photo' => PhotoTamasyaResource::collection($this->whenLoaded('photos')),
+            'jumlahpengunjung' => JumlahPengunjungWisataResource::collection($this->whenLoaded('jumlahkunjunganwisatas'))
         ];
     }
 }

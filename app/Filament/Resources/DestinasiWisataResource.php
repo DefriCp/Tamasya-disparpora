@@ -6,10 +6,13 @@ use App\Filament\Resources\DestinasiWisataResource\Pages;
 use App\Filament\Resources\DestinasiWisataResource\RelationManagers;
 use App\Models\DestinasiWisata;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -190,6 +193,7 @@ class DestinasiWisataResource extends Resource implements HasShieldPermissions
                             ->schema([
                                 FileUpload::make('photo')
                                     ->label('Photo')
+                                    ->required()
                                     ->directory('tamasya')
                                     ->disk('public')
                                     ->deleteUploadedFileUsing(function ($file, $record) {
@@ -202,6 +206,38 @@ class DestinasiWisataResource extends Resource implements HasShieldPermissions
                                     })
                                     ->image()
                                     ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
+    
+                            ])
+                    ]),
+                Section::make('Jumlah Pengunjung Wisata')
+                    ->schema([
+                        Repeater::make('jumlahkunjunganwisatas')
+                            ->relationship('jumlahkunjunganwisatas')
+                            ->label('')
+                            ->maxItems(7)
+                            ->grid(2)
+                            ->schema([
+                                 TextInput::make('jumlah')
+                                    ->label('Jumlah')
+                                    ->numeric()
+                                    ->required(),
+
+                                Select::make('bulan')
+                                    ->label('Bulan')
+                                    ->searchable()
+                                    ->options(
+                                        collect(range(1, 12))
+                                            ->mapWithKeys(fn($month) => [$month => Carbon::create()->month($month)->translatedFormat('F')])
+                                            ->mapWithKeys(fn($name) => [$name => $name]) // key = value = nama bulan
+                                            ->toArray()
+                                    )
+                                    ->required(),
+
+                                Select::make('tahun')
+                                    ->label('Tahun')
+                                    ->searchable()
+                                    ->options(collect(range(date('Y'), 2021))->mapWithKeys(fn($year) => [$year => $year])->toArray())
+                                    ->required(),
     
                             ])
                     ]),

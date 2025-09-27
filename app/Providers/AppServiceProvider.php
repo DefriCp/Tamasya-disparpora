@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\header;
-use App\Models\sosmed;
-use App\Models\visitor;
-use App\Models\tentangKami;
+use App\Models\Header;
+use App\Models\Sosmed;
+use App\Models\Visitor;
+use App\Models\TentangKami;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
