@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // desaLayer.addTo(map);
 
     try {
-        const res = await fetch("http://127.0.0.1:8000/api/kecamatan");
+        const res = await fetch("http://172.16.2.111/api/kecamatan");
         const result = await res.json();
         kecamatanData = Array.isArray(result) ? result : result.data || [];
 
@@ -280,7 +280,7 @@ function renderTableDesa(data) {
 let wisataData = [];
 
 // fetch wisata data sekali di awal
-fetch("http://127.0.0.1:8000/api/tamasyawisata")
+fetch("http://172.16.2.111/api/tamasyawisata")
     .then((res) => res.json())
     .then((data) => {
         wisataData = data.data;
