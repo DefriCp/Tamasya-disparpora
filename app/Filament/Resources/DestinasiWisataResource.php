@@ -214,7 +214,7 @@ class DestinasiWisataResource extends Resource implements HasShieldPermissions
                         Repeater::make('jumlahkunjunganwisatas')
                             ->relationship('jumlahkunjunganwisatas')
                             ->label('')
-                            ->maxItems(7)
+                            ->maxItems(12)
                             ->grid(2)
                             ->schema([
                                  TextInput::make('jumlah')
