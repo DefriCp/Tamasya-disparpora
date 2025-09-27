@@ -48,36 +48,32 @@
     <!-- Main Content -->
     <main class="container px-4 py-8 mx-auto">
         <!-- Filter Panel -->
-        <div
-            class="flex flex-col gap-4 p-4 mb-6 bg-white shadow-md rounded-2xl md:flex-row md:items-center md:justify-between">
-            <div class="flex flex-col items-center gap-4 sm:flex-row">
-                <!-- Dropdown Wilayah -->
-                <div class="flex flex-col">
-                    <label class="mb-1 text-sm font-medium text-gray-600">Kecamatan</label>
-                    <div class="relative">
-                        <select id="kecamatanSelect"
-                            class="w-56 px-4 py-2 pr-10 transition bg-white border border-gray-300 shadow-sm appearance-none rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-500">
-                            <option value="">Pilih Kecamatan</option>
-                        </select>
-                    </div>
+        <div class="flex flex-col items-center gap-4 sm:flex-row">
+            <!-- Dropdown Wilayah -->
+            <div class="flex flex-col">
+                <label class="mb-1 text-sm font-medium text-gray-600">Kecamatan</label>
+                <div class="relative">
+                    <select id="kecamatanSelect"
+                        class="w-56 px-4 py-2 pr-10 transition bg-white border border-gray-300 shadow-sm appearance-none rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-500">
+                        <option value="">Pilih Kecamatan</option>
+                    </select>
                 </div>
+            </div>
 
-                <div class="flex flex-col">
-                    <label class="mb-1 text-sm font-medium text-gray-600">Desa</label>
-                    <div class="relative">
-                        <select id="desaSelect"
-                            class="w-56 px-4 py-2 pr-10 transition bg-white border border-gray-300 shadow-sm appearance-none rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-500">
-                            <option value="">Pilih Desa</option>
-                        </select>
-                    </div>
+            <div class="flex flex-col">
+                <label class="mb-1 text-sm font-medium text-gray-600">Desa</label>
+                <div class="relative">
+                    <select id="desaSelect"
+                        class="w-56 px-4 py-2 pr-10 transition bg-white border border-gray-300 shadow-sm appearance-none rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-500">
+                        <option value="">Pilih Desa</option>
+                    </select>
                 </div>
             </div>
         </div>
 
         <!-- Layout Tabel + Peta -->
-        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-
-            <div class="bg-white rounded-2xl shadow-lg flex flex-col h-[700px]">
+        <div class="grid grid-cols-1 gap-6 mt-8 lg:grid-cols-2">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-xs flex flex-col h-[700px]">
                 <div class="px-6 py-4 border-b rounded-t-2xl bg-gradient-to-r from-[#009B4C] to-[#166FBE]">
                     <h2 class="text-lg font-semibold text-white">Data Kecamatan</h2>
                 </div>
@@ -109,57 +105,80 @@
                 </div>
             </div>
         </div>
+
+        <!-- Statistik Wisata -->
+        <div class="grid grid-cols-1 gap-6 mt-8 lg:grid-cols-2">
+            <div class="mt-12 md:mt-20">
+                <h2 class="text-xl font-medium text-slate-800">Jumlah Kunjungan Wisata Perbulan</h2>
+                <div class="">
+                    <canvas id="kunjunganChart"></canvas>
+                </div>
+            </div>
+            <div class="mt-12 md:mt-20">
+                <h2 class="text-xl font-medium text-slate-800">Top 5 Wisata dengan Pengunjung Terbanyak</h2>
+                <div class="">
+                    <canvas id="chartTop5"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full mt-12 md:mt-20">
+            <h2 class="text-xl font-medium text-slate-800">Pilih Wisata</h2>
+            <select id="wisataFilter"
+                class="w-full p-2 mb-4 border rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none">
+            </select>
+            <p class="mb-4 text-sm text-gray-500">Tekan <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> untuk pilih lebih dari satu.</p>
+            <div class="">
+                <canvas id="chartDropdown"></canvas>
+            </div>
+        </div>
         <!-- Link Terkait -->
-        <section>
-            <div class="container px-4 mx-auto">
-                <div class="mt-12 md:mt-28">
-                    <div class="max-w-2xl mx-auto text-center">
-                        <h2 class="text-3xl font-medium md:text-4xl text-slate-800">Link Youtube</h2>
-                    </div>
-                    <!-- Video/Link YouTube Section with Swiper -->
-                    <div class="my-10">
-                        <div class="my-10 swiper linkSwiper">
-                            <div class="justify-center mb-16 swiper-wrapper">
-                                @forelse ($youtubeTamasya as $link)
-                                    <div class="swiper-slide">
+        <div class="mt-12 md:mt-28">
+            <div class="max-w-2xl mx-auto">
+                <h2 class="text-xl font-medium text-slate-800">Link Youtube</h2>
+            </div>
+            <!-- Video/Link YouTube Section with Swiper -->
+            <div class="my-10">
+                <div class="my-10 swiper linkSwiper">
+                    <div class="justify-center mb-16 swiper-wrapper">
+                        @forelse ($youtubeTamasya as $link)
+                            <div class="swiper-slide">
+                                <div
+                                    class="overflow-hidden transition-shadow bg-white shadow-md cursor-pointer rounded-3xl hover:shadow-lg group">
+                                    <a href="{{ $link->link }}" target="_blank" class="relative block">
+                                        <img src="{{ getYouTubeThumbnail($link->link) }}" alt="YouTube Thumbnail"
+                                            class="object-cover w-full transition-transform duration-300 aspect-video transform-gpu group-hover:scale-110">
                                         <div
-                                            class="overflow-hidden transition-shadow bg-white shadow-md cursor-pointer rounded-3xl hover:shadow-lg group">
-                                            <a href="{{ $link->link }}" target="_blank" class="relative block">
-                                                <img src="{{ getYouTubeThumbnail($link->link) }}" alt="YouTube Thumbnail"
-                                                    class="object-cover w-full transition-transform duration-300 aspect-video transform-gpu group-hover:scale-110">
-                                                <div
-                                                    class="absolute inset-0 flex items-center justify-center transition-all bg-black bg-opacity-40 hover:bg-opacity-50">
-                                                    <div class="text-center text-white">
-                                                        <i class="mb-2 text-3xl text-red-500 fab fa-youtube"></i>
-                                                        <p class="text-sm font-medium line-clamp-1">{{ $link->nama }}</p>
-                                                    </div>
-                                                </div>
-                                            </a>
+                                            class="absolute inset-0 flex items-center justify-center transition-all bg-black bg-opacity-40 hover:bg-opacity-50">
+                                            <div class="text-center text-white">
+                                                <i class="mb-2 text-3xl text-red-500 fab fa-youtube"></i>
+                                                <p class="text-sm font-medium line-clamp-1">{{ $link->nama }}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                @empty
-                                    <div class="w-full px-3 py-8 text-center bg-white border rounded-3xl md:w-1/3 lg:w-1/4 xl:w-1/5"
-                                        style="border-color: rgb(229 231 235);">
-                                        <p class="text-gray-500">Tidak ada link youtube yang tersedia saat ini.</p>
-                                    </div>
-                                @endforelse
+                                    </a>
+                                </div>
                             </div>
-
-                            <!-- pagination -->
-                            <div class="mt-6 swiper-pagination"></div>
-
-
-                            <div class="swiper-button-next">
-                                <i class="fa-solid fa-arrow-right"></i>
+                        @empty
+                            <div class="w-full px-3 py-8 text-center bg-white border rounded-3xl md:w-1/3 lg:w-1/4 xl:w-1/5"
+                                style="border-color: rgb(229 231 235);">
+                                <p class="text-gray-500">Tidak ada link youtube yang tersedia saat ini.</p>
                             </div>
-                            <div class="swiper-button-prev">
-                                <i class="fa-solid fa-arrow-left"></i>
-                            </div>
-                        </div>
+                        @endforelse
+                    </div>
+
+                    <!-- pagination -->
+                    <div class="mt-6 swiper-pagination"></div>
+
+
+                    <div class="swiper-button-next">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    <div class="swiper-button-prev">
+                        <i class="fa-solid fa-arrow-left"></i>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     </main>
 @endsection
 
@@ -170,4 +189,97 @@
         window.wisataDetailUrl = "{{ url('/tamasya-wisata') }}";
     </script>
     <script src="{{ asset('assets/js/dashboard.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ asset('js/frontend/getdata-pengunjung.js') }}"></script>
+    <script src="{{ asset('js/frontend/jquery-3.6.0.min.js') }}"></script>
+    {{-- <script>
+        const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+
+        // Data dummy per wisata
+        const wisataData = {
+            "Kampung Naga": [1200, 1500, 1800, 1400, 2000, 2300, 2200, 2500, 2400, 2600, 2700, 3000],
+            "Galunggung": [1000, 1200, 1600, 1300, 1700, 2000, 2100, 2200, 2000, 2100, 2300, 2500],
+            "Pantai Cipatujah": [800, 1000, 1200, 1100, 1500, 1800, 1900, 2000, 1800, 1900, 2000, 2100],
+            "Situ Gede": [600, 700, 900, 800, 1200, 1500, 1600, 1700, 1500, 1600, 1700, 1800],
+            "Rajapolah": [500, 600, 800, 700, 1000, 1200, 1300, 1400, 1300, 1400, 1500, 1600],
+            "Karang Tawulan": [400, 500, 700, 600, 900, 1100, 1200, 1300, 1200, 1300, 1400, 1500]
+        };
+
+        const colors = [
+            'rgba(34,197,94,0.7)', // green
+            'rgba(59,130,246,0.7)', // blue
+            'rgba(234,88,12,0.7)', // orange
+            'rgba(139,92,246,0.7)', // purple
+            'rgba(244,63,94,0.7)', // red
+            'rgba(16,185,129,0.7)' // teal
+        ];
+
+        // Grafik 1: Total Pengunjung Per Bulan
+        const totalPerBulan = labels.map((_, i) => {
+            return Object.values(wisataData).reduce((sum, arr) => sum + arr[i], 0);
+        });
+
+        new Chart(document.getElementById('kunjunganChart'), {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Total Pengunjung',
+                    data: totalPerBulan,
+                    borderColor: 'rgba(34,197,94,1)',
+                    backgroundColor: 'rgba(34,197,94,0.3)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            }
+        });
+
+        // Grafik 2: Top 5 Wisata
+        const totalPerWisata = Object.entries(wisataData).map(([wisata, arr]) => ({
+            wisata,
+            total: arr.reduce((a, b) => a + b, 0)
+        }));
+        const top5 = totalPerWisata.sort((a, b) => b.total - a.total).slice(0, 5);
+
+        new Chart(document.getElementById('chartTop5'), {
+            type: 'bar',
+            data: {
+                labels: top5.map(x => x.wisata),
+                datasets: [{
+                    label: 'Total Pengunjung',
+                    data: top5.map(x => x.total),
+                    backgroundColor: colors
+                }]
+            },
+            options: {
+                indexAxis: 'y', // jadi horizontal bar
+            }
+        });
+
+        // Grafik 3: Dropdown Filter
+        const ctxDropdown = document.getElementById('chartDropdown').getContext('2d');
+        let chartDropdown = new Chart(ctxDropdown, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: []
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        document.getElementById('wisataFilter').addEventListener('change', function() {
+            const selected = Array.from(this.selectedOptions).map(o => o.value);
+
+            const datasets = selected.map((wisata, index) => ({
+                label: wisata,
+                data: wisataData[wisata],
+                backgroundColor: colors[index % colors.length]
+            }));
+
+            chartDropdown.data.datasets = datasets;
+            chartDropdown.update();
+        });
+    </script> --}}
 @endpush
