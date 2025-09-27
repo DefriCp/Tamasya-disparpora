@@ -54,7 +54,7 @@
                 <label class="mb-1 text-sm font-medium text-gray-600">Kecamatan</label>
                 <div class="relative">
                     <select id="kecamatanSelect"
-                        class="w-56 px-4 py-2 pr-10 transition bg-white border border-gray-300 shadow-sm appearance-none rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-500">
+                        class="w-56 px-4 py-2 pr-10 transition bg-white border border-gray-300 shadow-sm rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-500">
                         <option value="">Pilih Kecamatan</option>
                     </select>
                 </div>
@@ -64,7 +64,7 @@
                 <label class="mb-1 text-sm font-medium text-gray-600">Desa</label>
                 <div class="relative">
                     <select id="desaSelect"
-                        class="w-56 px-4 py-2 pr-10 transition bg-white border border-gray-300 shadow-sm appearance-none rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-500">
+                        class="w-56 px-4 py-2 pr-10 transition bg-white border border-gray-300 shadow-sm rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-500">
                         <option value="">Pilih Desa</option>
                     </select>
                 </div>
@@ -110,28 +110,30 @@
         <div class="grid grid-cols-1 gap-6 mt-8 lg:grid-cols-2">
             <div class="mt-12 md:mt-20">
                 <h2 class="text-xl font-medium text-slate-800">Jumlah Kunjungan Wisata Perbulan</h2>
-                <div class="">
+                <div class="mt-4">
                     <canvas id="kunjunganChart"></canvas>
                 </div>
             </div>
             <div class="mt-12 md:mt-20">
                 <h2 class="text-xl font-medium text-slate-800">Top 5 Wisata dengan Pengunjung Terbanyak</h2>
-                <div class="">
+                <div class="mt-4">
                     <canvas id="chartTop5"></canvas>
                 </div>
             </div>
         </div>
 
         <div class="w-full mt-12 md:mt-20">
-            <h2 class="text-xl font-medium text-slate-800">Pilih Wisata</h2>
-            <select id="wisataFilter"
-                class="w-full p-2 mb-4 border rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none">
-            </select>
-            <p class="mb-4 text-sm text-gray-500">Tekan <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> untuk pilih lebih dari satu.</p>
-            <div class="">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <h2 class="mb-4 text-xl font-medium text-slate-800">Jumlah Pengunjung per Wisata</h2>
+                <select id="wisataFilter"
+                    class="inline-flex w-56 p-2 mb-4 transition-all border rounded-lg shadow-sm border-slate-300 focus:ring-2 focus:ring-green-600 focus:outline-none">
+                </select>
+            </div>
+            <div class="mt-4">
                 <canvas id="chartDropdown"></canvas>
             </div>
         </div>
+
         <!-- Link Terkait -->
         <div class="mt-12 md:mt-28">
             <div class="max-w-2xl mx-auto">

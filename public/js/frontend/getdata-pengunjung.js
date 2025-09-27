@@ -1,126 +1,168 @@
 let chartTotalPerBulan, chartTop5, chartDropdown;
 
-function loadDataPengunjung() {
-    // === Dummy Data ===
-    const dummyData = [
-        { wisata: "Kampung Naga", bulan: "Jan", jumlah: 1200 },
-        { wisata: "Kampung Naga", bulan: "Feb", jumlah: 1500 },
-        { wisata: "Kampung Naga", bulan: "Mar", jumlah: 1800 },
-        { wisata: "Kampung Naga", bulan: "Apr", jumlah: 1400 },
-        { wisata: "Galunggung", bulan: "Jan", jumlah: 1000 },
-        { wisata: "Galunggung", bulan: "Feb", jumlah: 1200 },
-        { wisata: "Galunggung", bulan: "Mar", jumlah: 1600 },
-        { wisata: "Pantai Cipatujah", bulan: "Jan", jumlah: 800 },
-        { wisata: "Pantai Cipatujah", bulan: "Feb", jumlah: 1000 },
-        { wisata: "Pantai Cipatujah", bulan: "Mar", jumlah: 1200 },
-        { wisata: "Situ Gede", bulan: "Jan", jumlah: 600 },
-        { wisata: "Situ Gede", bulan: "Feb", jumlah: 700 },
-        { wisata: "Situ Gede", bulan: "Mar", jumlah: 900 },
-        { wisata: "Rajapolah", bulan: "Jan", jumlah: 500 },
-        { wisata: "Rajapolah", bulan: "Feb", jumlah: 600 },
-        { wisata: "Rajapolah", bulan: "Mar", jumlah: 800 },
-        { wisata: "Karang Tawulan", bulan: "Jan", jumlah: 400 },
-        { wisata: "Karang Tawulan", bulan: "Feb", jumlah: 500 },
-        { wisata: "Karang Tawulan", bulan: "Mar", jumlah: 700 }
-    ];
+const API_URL = "http://127.0.0.1:8000/api/tamasyawisata"; // ganti sesuai endpoint
+const labels = [
+    "January", "February", "March", "April", "Mei", "Juni",
+    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+];
 
-    const labels = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+// sinonim bulan (bahasa & singkatan)
+const monthSynonyms = [
+    ["jan", "january", "januari"],
+    ["feb", "february", "februari"],
+    ["mar", "march", "maret"],
+    ["apr", "april"],
+    ["may", "mei", "may"],
+    ["jun", "june", "juni"],
+    ["jul", "july", "juli"],
+    ["aug", "august", "agustus"],
+    ["sep", "sept", "september"],
+    ["oct", "oct", "okt", "oktober", "october"],
+    ["nov", "november"],
+    ["dec", "december", "desember"]
+];
 
-    // Kelompokkan data per wisata
+function monthToIndex(bulan) {
+    if (!bulan) return -1;
+    const b = bulan.toString().trim().toLowerCase();
+    // coba kecocokan lengkap dulu, lalu prefix (3 huruf)
+    for (let i = 0; i < monthSynonyms.length; i++) {
+        for (const syn of monthSynonyms[i]) {
+            if (b === syn) return i;
+        }
+    }
+    const b3 = b.slice(0, 3);
+    for (let i = 0; i < monthSynonyms.length; i++) {
+        for (const syn of monthSynonyms[i]) {
+            if (syn.startsWith(b3) || b.startsWith(syn)) return i;
+        }
+    }
+    return -1;
+}
+
+async function fetchWisataData() {
+    const res = await fetch(API_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+}
+
+function transformData(items) {
+    // items must be an array of wisata objects
     const wisataData = {};
-    dummyData.forEach(item => {
-        if (!wisataData[item.wisata]) wisataData[item.wisata] = Array(12).fill(0);
-        const bulanIndex = labels.indexOf(item.bulan);
-        if (bulanIndex >= 0) {
-            wisataData[item.wisata][bulanIndex] = item.jumlah;
+    (items || []).forEach(w => {
+        const name = w.nama || w.name || "Unknown";
+        wisataData[name] = Array(12).fill(0);
+
+        if (Array.isArray(w.jumlahpengunjung)) {
+            w.jumlahpengunjung.forEach(jp => {
+                const idx = monthToIndex(jp.bulan || jp.month || "");
+                const val = Number(jp.jumlah) || 0;
+                if (idx >= 0) wisataData[name][idx] = val;
+            });
         }
     });
+    return wisataData;
+}
 
-    // === Grafik 1: Total Pengunjung Per Bulan ===
-    const totalPerBulan = labels.map((_, i) => {
-        return Object.values(wisataData).reduce((sum, arr) => sum + arr[i], 0);
-    });
+function destroyChartsIfExist() {
+    if (chartTotalPerBulan) { try { chartTotalPerBulan.destroy(); } catch (e) { } chartTotalPerBulan = null; }
+    if (chartTop5) { try { chartTop5.destroy(); } catch (e) { } chartTop5 = null; }
+    if (chartDropdown) { try { chartDropdown.destroy(); } catch (e) { } chartDropdown = null; }
+}
 
-    chartTotalPerBulan = new Chart(document.getElementById("kunjunganChart"), {
+function renderTotalPerBulan(wisataData) {
+    const totalPerBulan = labels.map((_, i) =>
+        Object.values(wisataData).reduce((s, arr) => s + (arr[i] || 0), 0)
+    );
+
+    return new Chart(document.getElementById("kunjunganChart"), {
         type: "line",
-        data: {
-            labels,
-            datasets: [{
-                label: "Total Pengunjung",
-                data: totalPerBulan,
-                borderColor: "rgba(34,197,94,1)",
-                backgroundColor: "rgba(34,197,94,0.3)",
-                fill: true,
-                tension: 0.3
-            }]
-        }
+        data: { labels, datasets: [{ label: "Total Pengunjung", data: totalPerBulan, borderColor: "rgba(34,197,94,1)", backgroundColor: "rgba(34,197,94,0.2)", fill: true, tension: 0.3 }] }
     });
+}
 
-    // === Grafik 2: Top 5 Wisata ===
-    const totalPerWisata = Object.entries(wisataData).map(([wisata, arr]) => ({
-        wisata,
-        total: arr.reduce((a, b) => a + b, 0)
-    }));
-    const top5 = totalPerWisata.sort((a, b) => b.total - a.total).slice(0, 5);
+function renderTop5(wisataData) {
+    const totals = Object.entries(wisataData).map(([w, arr]) => ({ w, total: arr.reduce((a, b) => a + (b || 0), 0) }));
+    const top5 = totals.sort((a, b) => b.total - a.total).slice(0, 5);
 
-    chartTop5 = new Chart(document.getElementById("chartTop5"), {
+    return new Chart(document.getElementById("chartTop5"), {
         type: "bar",
         data: {
-            labels: top5.map(x => x.wisata),
-            datasets: [{
+            labels: top5.map(x => x.w), datasets: [{
                 label: "Total Pengunjung",
                 data: top5.map(x => x.total),
-                backgroundColor: "rgba(59,130,246,0.7)"
+                backgroundColor: "rgba(34,197,94,0.7)",
+                borderRadius: 8,
             }]
         },
         options: { indexAxis: "y" }
     });
+}
 
-    // === Isi Dropdown ===
-    const filter = $("#wisataFilter");
-    filter.empty();
-    Object.keys(wisataData).forEach(wisata => {
-        filter.append(`<option value="${wisata}">${wisata}</option>`);
-    });
+function setupDropdown(wisataData) {
+    const $filter = $("#wisataFilter").empty();
+    Object.keys(wisataData).forEach(w => $filter.append(`<option value="${w}">${w}</option>`));
 
-    // === Grafik 3: Dropdown Filter ===
-    const ctxDropdown = document.getElementById("chartDropdown").getContext("2d");
-    chartDropdown = new Chart(ctxDropdown, {
-        type: "bar",
-        data: { labels, datasets: [] },
-        options: { responsive: true }
-    });
+    const ctx = document.getElementById("chartDropdown").getContext("2d");
+    chartDropdown = new Chart(ctx, { type: "bar", data: { labels, datasets: [] }, options: { responsive: true } });
 
-    // Tentukan default wisata (ambil yang total terbanyak)
-    const defaultWisata = totalPerWisata.sort((a, b) => b.total - a.total)[0].wisata;
-    filter.val([defaultWisata]); // set dropdown selected
+    const totals = Object.entries(wisataData).map(([w, arr]) => ({ w, total: arr.reduce((a, b) => a + (b || 0), 0) }));
+    const defaultWisata = totals.sort((a, b) => b.total - a.total)[0]?.w || null;
+    if (defaultWisata) $filter.val([defaultWisata]);
 
-    // Render grafik pertama kali
-    updateDropdownChart([defaultWisata], wisataData);
+    updateDropdownChart(defaultWisata ? [defaultWisata] : [], wisataData);
 
-    // Event ketika dropdown berubah
-    filter.on("change", function () {
+    $filter.on("change", function () {
         const selected = $(this).val() || [];
         updateDropdownChart(selected, wisataData);
     });
-
 }
 
 function updateDropdownChart(selected, wisataData) {
-    const colors = [
-        "rgba(34,197,94,0.7)", "rgba(59,130,246,0.7)", "rgba(234,88,12,0.7)",
-        "rgba(139,92,246,0.7)", "rgba(244,63,94,0.7)", "rgba(16,185,129,0.7)"
-    ];
-
-    const datasets = selected.map((wisata, index) => ({
-        label: wisata,
-        data: wisataData[wisata],
-        backgroundColor: colors[index % colors.length]
+    const colors = ["rgba(34,197,94,0.7)", "rgba(59,130,246,0.7)", "rgba(234,88,12,0.7)", "rgba(139,92,246,0.7)", "rgba(244,63,94,0.7)", "rgba(16,185,129,0.7)"];
+    const validSelected = (Array.isArray(selected) ? selected : [selected]).filter(s => wisataData[s]);
+    const datasets = validSelected.map((w, i) => ({
+        // label: w, 
+        label: "Jumlah Pengunjung Wisata",
+        data: wisataData[w],
+        backgroundColor: colors[i % colors.length],
+        borderRadius: 8,
     }));
-
     chartDropdown.data.datasets = datasets;
     chartDropdown.update();
 }
 
+// MAIN
+async function loadDataPengunjung() {
+    try {
+        const raw = await fetchWisataData();
+        // console.log("API raw response:", raw); // bantu debug kalau masih ada masalah
+        // support bentuk: [] atau { data: [...] }
+        const items = Array.isArray(raw) ? raw : (raw && Array.isArray(raw.data) ? raw.data : []);
+        const wisataData = transformData(items);
+
+        destroyChartsIfExist();
+
+        // kalau tidak ada data, bikin charts kosong (supaya UI tetap konsisten)
+        if (Object.keys(wisataData).length === 0) {
+            console.warn("Tidak ada data wisata (kosong).");
+            // buat dataset kosong dengan nol
+            const empty = {};
+            empty["Tidak ada data"] = Array(12).fill(0);
+            chartTotalPerBulan = renderTotalPerBulan(empty);
+            chartTop5 = renderTop5(empty);
+            setupDropdown(empty);
+            return;
+        }
+
+        chartTotalPerBulan = renderTotalPerBulan(wisataData);
+        chartTop5 = renderTop5(wisataData);
+        setupDropdown(wisataData);
+
+    } catch (err) {
+        console.error("Gagal load data pengunjung:", err);
+        alert("Gagal memuat data pengunjung. Cek console untuk detail.");
+    }
+}
 
 loadDataPengunjung();
