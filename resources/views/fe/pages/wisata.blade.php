@@ -73,7 +73,7 @@
 
         <!-- Layout Tabel + Peta -->
         <div class="grid grid-cols-1 gap-6 mt-8 lg:grid-cols-2">
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-xs flex flex-col h-[700px]">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow flex flex-col h-[700px]">
                 <div class="px-6 py-4 border-b rounded-t-2xl bg-gradient-to-r from-[#009B4C] to-[#166FBE]">
                     <h2 class="text-lg font-semibold text-white">Data Kecamatan</h2>
                 </div>
@@ -100,7 +100,7 @@
                     </table>
                 </div>
             </div>
-            <div class="overflow-hidden shadow-md rounded-2xl">
+            <div class="overflow-hidden shadow rounded-2xl">
                 <div id="map" class="w-full h-[700px] z-[10] relative bg-white">
                 </div>
             </div>
@@ -108,21 +108,52 @@
 
         <!-- Statistik Wisata -->
         <div class="grid grid-cols-1 gap-6 mt-8 lg:grid-cols-2">
-            <div class="mt-12 md:mt-20">
-                <h2 class="text-xl font-medium text-slate-800">Jumlah Kunjungan Wisata Perbulan</h2>
-                <div class="mt-4">
+
+            <!-- Card Kunjungan Perbulan -->
+            <div class="p-6 bg-white border shadow border-slate-200 rounded-3xl">
+                <h2 class="mb-2 text-xl text-slate-800">Jumlah Kunjungan Wisata Per Bulan</h2>
+                <!-- Info ringkas -->
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-sm text-gray-400">Jan - Des 2025</span>
+                </div>
+                <!-- Chart -->
+                <div class="relative h-80">
                     <canvas id="kunjunganChart"></canvas>
                 </div>
             </div>
-            <div class="mt-12 md:mt-20">
-                <h2 class="text-xl font-medium text-slate-800">Top 5 Wisata dengan Pengunjung Terbanyak</h2>
-                <div class="mt-4">
+
+            <!-- Card Top 3 Wisata -->
+            <div class="p-6 bg-white border shadow border-slate-200 rounded-3xl">
+                <h2 class="mb-2 text-xl text-slate-800">Top 3 Wisata dengan Pengunjung Terbanyak</h2>
+                <!-- Info ringkas -->
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-sm text-gray-400">Jan - Des 2025</span>
+                </div>
+                <!-- Chart -->
+                <div class="relative h-80">
                     <canvas id="chartTop5"></canvas>
                 </div>
             </div>
+
         </div>
 
-        <div class="w-full mt-12 md:mt-20">
+        <!-- Dropdown Filter Wisata -->
+        <div class="p-6 mt-8 bg-white border shadow border-slate-200 rounded-3xl">
+            <div class="flex flex-col justify-between gap-3 md:flex-row">
+                <h2 class="mb-2 text-xl text-slate-800">Jumlah Pengunjung per Wisata</h2>
+                <select id="wisataFilter"
+                    class="w-56 p-3 border rounded-lg focus:ring-2 focus:ring-green-600 focus:outline-none">
+                    <!-- Option akan diisi lewat JS -->
+                </select>
+            </div>
+            <div class="relativemt-4 h-80">
+                <canvas id="chartDropdown" class="w-full "></canvas>
+            </div>
+        </div>
+
+
+
+        {{-- <div class="w-full mt-12 md:mt-20">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                 <h2 class="mb-4 text-xl font-medium text-slate-800">Jumlah Pengunjung per Wisata</h2>
                 <select id="wisataFilter"
@@ -132,7 +163,7 @@
             <div class="mt-4">
                 <canvas id="chartDropdown"></canvas>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Link Terkait -->
         <div class="mt-12 md:mt-28">

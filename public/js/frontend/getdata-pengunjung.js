@@ -71,33 +71,172 @@ function destroyChartsIfExist() {
 }
 
 function renderTotalPerBulan(wisataData) {
+    const ctx = document.getElementById("kunjunganChart").getContext("2d");
+
     const totalPerBulan = labels.map((_, i) =>
         Object.values(wisataData).reduce((s, arr) => s + (arr[i] || 0), 0)
     );
 
-    return new Chart(document.getElementById("kunjunganChart"), {
+    // gradient fill hijau
+    const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+    gradient.addColorStop(0, "rgba(34,197,94,0.5)");
+    gradient.addColorStop(1, "rgba(34,197,94,0.1)");
+
+    return new Chart(ctx, {
         type: "line",
-        data: { labels, datasets: [{ label: "Total Pengunjung", data: totalPerBulan, borderColor: "rgba(34,197,94,1)", backgroundColor: "rgba(34,197,94,0.2)", fill: true, tension: 0.3 }] }
-    });
-}
-
-function renderTop5(wisataData) {
-    const totals = Object.entries(wisataData).map(([w, arr]) => ({ w, total: arr.reduce((a, b) => a + (b || 0), 0) }));
-    const top5 = totals.sort((a, b) => b.total - a.total).slice(0, 5);
-
-    return new Chart(document.getElementById("chartTop5"), {
-        type: "bar",
         data: {
-            labels: top5.map(x => x.w), datasets: [{
+            labels,
+            datasets: [{
                 label: "Total Pengunjung",
-                data: top5.map(x => x.total),
-                backgroundColor: "rgba(34,197,94,0.7)",
-                borderRadius: 8,
+                data: totalPerBulan,
+                borderColor: "rgba(34,197,94,1)",
+                backgroundColor: gradient,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 6,
+                pointHoverRadius: 8,
+                pointBackgroundColor: "rgba(34,197,94,1)",
+                pointHoverBackgroundColor: "rgba(16,185,129,1)",
+                pointBorderWidth: 2,
+                pointHoverBorderWidth: 2,
+                segment: {
+                    borderColor: ctx => {
+                        // garis lebih hidup, bisa kasih shadow efek ringan
+                        return "rgba(34,197,94,1)";
+                    }
+                }
             }]
         },
-        options: { indexAxis: "y" }
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    labels: { font: { size: 13 } }
+                },
+                tooltip: {
+                    backgroundColor: "rgba(30,41,59,0.9)",
+                    titleFont: { size: 14, weight: "bold" },
+                    bodyFont: { size: 13 },
+                    padding: 10,
+                    cornerRadius: 6
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { font: { size: 12 } }
+                },
+                y: {
+                    grid: { color: "rgba(0,0,0,0.05)" },
+                    ticks: { font: { size: 12 } }
+                }
+            },
+            animation: {
+                duration: 1200,
+                easing: "easeOutQuart"
+            }
+        }
     });
 }
+
+
+function renderTop5(wisataData) {
+    const ctx = document.getElementById("chartTop5").getContext("2d");
+
+    // hitung total per wisata
+    const totals = Object.entries(wisataData).map(([w, arr]) => ({
+        w,
+        total: arr.reduce((a, b) => a + (b || 0), 0)
+    }));
+    const top5 = totals.sort((a, b) => b.total - a.total).slice(0, 3);
+
+    // gradient generator
+    function getGradient(ctx, color1, color2) {
+        const gradient = ctx.createLinearGradient(0, 0, 300, 0);
+        gradient.addColorStop(0, color1);
+        gradient.addColorStop(1, color2);
+        return gradient;
+    }
+
+    // shadow plugin
+    const shadowPlugin = {
+        id: "shadow",
+        beforeDatasetsDraw(chart) {
+            const ctx = chart.ctx;
+            chart.data.datasets.forEach((dataset, i) => {
+                const meta = chart.getDatasetMeta(i);
+                meta.data.forEach((bar) => {
+                    ctx.save();
+                    ctx.shadowColor = "rgba(0,0,0,0.15)";
+                    ctx.shadowBlur = 8;
+                    ctx.shadowOffsetX = 2;
+                    ctx.shadowOffsetY = 4;
+                    bar.draw(ctx);
+                    ctx.restore();
+                });
+            });
+        }
+    };
+
+    // hapus chart lama biar gak duplikat
+    if (chartTop5) {
+        chartTop5.destroy();
+    }
+
+    chartTop5 = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: top5.map(x => x.w),
+            datasets: [{
+                label: "Total Pengunjung",
+                data: top5.map(x => x.total),
+                backgroundColor: (ctx) =>
+                    getGradient(
+                        ctx.chart.ctx,
+                        "rgba(34,197,94,0.9)", // hijau tua
+                        "rgba(34,197,94,0.2)"  // hijau muda transparan
+                    ),
+                borderRadius: 12,
+                barThickness: 26
+            }]
+        },
+        options: {
+            indexAxis: "y",
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: "rgba(30,41,59,0.9)",
+                    titleFont: { size: 14, weight: "bold" },
+                    bodyFont: { size: 13 },
+                    padding: 10,
+                    cornerRadius: 6
+                }
+            },
+            scales: {
+                x: {
+                    grid: { color: "rgba(0,0,0,0.05)" },
+                    ticks: { font: { size: 12 } }
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: { font: { size: 13, weight: "bold" } }
+                }
+            },
+            animation: {
+                duration: 1200,
+                easing: "easeOutQuart"
+            }
+        },
+        plugins: [shadowPlugin]
+    });
+
+
+    return chartTop5;
+}
+
 
 function setupDropdown(wisataData) {
     const $filter = $("#wisataFilter").empty();
@@ -114,23 +253,114 @@ function setupDropdown(wisataData) {
 
     $filter.on("change", function () {
         const selected = $(this).val() || [];
-        updateDropdownChart(selected, wisataData);
+        updateDropdownChart([selected], wisataData);
     });
 }
 
 function updateDropdownChart(selected, wisataData) {
-    const colors = ["rgba(34,197,94,0.7)", "rgba(59,130,246,0.7)", "rgba(234,88,12,0.7)", "rgba(139,92,246,0.7)", "rgba(244,63,94,0.7)", "rgba(16,185,129,0.7)"];
-    const validSelected = (Array.isArray(selected) ? selected : [selected]).filter(s => wisataData[s]);
-    const datasets = validSelected.map((w, i) => ({
-        // label: w, 
-        label: "Jumlah Pengunjung Wisata",
-        data: wisataData[w],
-        backgroundColor: colors[i % colors.length],
-        borderRadius: 8,
+    const ctxDropdown = document.getElementById("chartDropdown").getContext("2d");
+
+    // Hapus chart lama biar gak error "canvas already in use"
+    if (chartDropdown) {
+        chartDropdown.destroy();
+    }
+
+    // Fungsi bikin gradient
+    function getGradient(ctx, color1, color2) {
+        const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+        gradient.addColorStop(0, color1);
+        gradient.addColorStop(1, color2);
+        return gradient;
+    }
+
+    // Warna untuk tiap dataset
+    const colorPairs = [
+        ["rgba(34,197,94,0.9)", "rgba(34,197,94,0.2)"],   // hijau
+        ["rgba(59,130,246,0.9)", "rgba(59,130,246,0.2)"], // biru
+        ["rgba(234,88,12,0.9)", "rgba(234,88,12,0.2)"],   // oranye
+        ["rgba(139,92,246,0.9)", "rgba(139,92,246,0.2)"], // ungu
+        ["rgba(244,63,94,0.9)", "rgba(244,63,94,0.2)"]    // merah
+    ];
+
+    const datasets = selected.map((wisata, i) => ({
+        label: "Jumlah Pengunjung",
+        data: wisataData[wisata],
+        backgroundColor: (ctx) =>
+            getGradient(ctx.chart.ctx, colorPairs[i % colorPairs.length][0], colorPairs[i % colorPairs.length][1]),
+        borderRadius: 12,
+        barThickness: 30
     }));
-    chartDropdown.data.datasets = datasets;
-    chartDropdown.update();
+
+    // Plugin untuk shadow
+    const shadowPlugin = {
+        id: "shadow",
+        beforeDatasetsDraw(chart) {
+            const ctx = chart.ctx;
+            chart.data.datasets.forEach((dataset, i) => {
+                const meta = chart.getDatasetMeta(i);
+                meta.data.forEach((bar) => {
+                    ctx.save();
+                    ctx.shadowColor = "rgba(0,0,0,0.15)";
+                    ctx.shadowBlur = 8;
+                    ctx.shadowOffsetX = 2;
+                    ctx.shadowOffsetY = 4;
+                    bar.draw(ctx);
+                    ctx.restore();
+                });
+            });
+        }
+    };
+
+    // Buat chart baru
+    chartDropdown = new Chart(ctxDropdown, {
+        type: "bar",
+        data: {
+            labels: [
+                "Jan", "Feb", "Mar", "Apr", "Mei", "Jun",
+                "Jul", "Agu", "Sep", "Okt", "Nov", "Des"
+            ],
+            datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: "bottom",
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: "circle",
+                        padding: 20,
+                        font: { size: 13 }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: "rgba(30,41,59,0.9)",
+                    titleFont: { size: 14, weight: "bold" },
+                    bodyFont: { size: 13 },
+                    padding: 10,
+                    cornerRadius: 6
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { font: { size: 18 } }
+                },
+                y: {
+                    grid: { color: "rgba(0,0,0,0.05)" },
+                    ticks: { font: { size: 12 } }
+                }
+            },
+            animation: {
+                duration: 1200,
+                easing: "easeOutBounce"
+            }
+        },
+        plugins: [shadowPlugin]
+    });
 }
+
 
 // MAIN
 async function loadDataPengunjung() {
