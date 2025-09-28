@@ -9,7 +9,7 @@ use App\Models\Galeri;
 use App\Models\Dokumen;
 use App\Models\Header;
 use App\Models\Layanan;
-use App\Models\linkTerkait;
+use App\Models\LinkTerkait;
 use App\Models\Youtube;
 use App\Models\Pengumum;
 use App\Models\Pimpinan;
@@ -253,7 +253,7 @@ class BerandaController extends Controller
         $search = $request->input('search');
 
         $wisataQuery = Wisata::with('photowisatas');
-        $sponsor = linkTerkait::all();
+        $sponsor = LinkTerkait::all();
 
         if ($search) {
             $wisataQuery->where('nama', 'like', '%' . $search . '%');
