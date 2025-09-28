@@ -9,6 +9,7 @@ use App\Models\Galeri;
 use App\Models\Dokumen;
 use App\Models\Header;
 use App\Models\Layanan;
+use App\Models\linkTerkait;
 use App\Models\Youtube;
 use App\Models\Pengumum;
 use App\Models\Pimpinan;
@@ -252,6 +253,7 @@ class BerandaController extends Controller
         $search = $request->input('search');
 
         $wisataQuery = Wisata::with('photowisatas');
+        $sponsor = linkTerkait::all();
 
         if ($search) {
             $wisataQuery->where('nama', 'like', '%' . $search . '%');
@@ -263,8 +265,7 @@ class BerandaController extends Controller
         $wisata->appends(['search' => $search]);
 
         $youtubeTamasya = YoutubeTamasya::get();
-
-        return view('fe.pages.wisata', compact('header', 'wisata', 'search', 'youtubeTamasya'));
+        return view('fe.pages.wisata', compact('header', 'wisata', 'search', 'sponsor', 'youtubeTamasya'));
     }
 
     public function detailWisata($slug = null)
@@ -276,20 +277,20 @@ class BerandaController extends Controller
 
         return view('fe.pages.detail-wisata', compact('header', 'wisata', 'wisatalain'));
     }
-    
+
     public function detailTamsyaWisata($slug = null)
     {
         $header = Header::with('photos')->first();
         $destinasiwisata = DestinasiWisata::with('desa', 'kecamatan', 'utilitas', 'photos')->where('slug', $slug)->first();
         $destinasiwisatalain = DestinasiWisata::where('id', '!=', $destinasiwisata->id)
-        ->latest()
-        ->take(2)
-        ->get();
+            ->latest()
+            ->take(2)
+            ->get();
 
-        return view('fe.pages.detail-tamsyawisata', compact('header', 'destinasiwisata', 'destinasiwisatalain' ));
+        return view('fe.pages.detail-tamsyawisata', compact('header', 'destinasiwisata', 'destinasiwisatalain'));
     }
 
-    
+
 
     // --------------------------------------------------
     // Halaman galeri

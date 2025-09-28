@@ -151,19 +151,26 @@
             </div>
         </div>
 
-
-
-        {{-- <div class="w-full mt-12 md:mt-20">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                <h2 class="mb-4 text-xl font-medium text-slate-800">Jumlah Pengunjung per Wisata</h2>
-                <select id="wisataFilter"
-                    class="inline-flex w-56 p-2 mb-4 transition-all border rounded-lg shadow-sm border-slate-300 focus:ring-2 focus:ring-green-600 focus:outline-none">
-                </select>
+        <!-- Section Sponsor -->
+        <div class="py-10 mt-12 bg-white shadow rounded-2xl">
+            <div class="max-w-6xl mx-auto">
+                <div
+                    class="flex items-center gap-6 px-4 py-4 overflow-x-auto md:justify-center whitespace-nowrap scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+                    @forelse ($sponsor as $item)
+                        <div class="flex justify-center flex-shrink-0">
+                            <img src="{{ asset('storage/' . $item->logo) }}" alt="{{ $item->nama_instansi ?? 'Sponsor' }}"
+                                class="object-contain h-24 mix-blend-multiply" />
+                        </div>
+                    @empty
+                        <div class="flex justify-center w-full">
+                            <p class="text-gray-500">Tidak ada data sponsor yang tersedia saat ini.</p>
+                        </div>
+                    @endforelse
+                </div>
             </div>
-            <div class="mt-4">
-                <canvas id="chartDropdown"></canvas>
-            </div>
-        </div> --}}
+
+        </div>
+
 
         <!-- Link Terkait -->
         <div class="mt-12 md:mt-28">
@@ -216,7 +223,7 @@
 @endsection
 
 @push('js')
-    <script src="{{ asset('js/frontend/fetchapi.js') }}"></script>
+    {{-- <script src="{{ asset('js/frontend/fetchapi.js') }}"></script>
     <script src="{{ asset('assets/js/leaflet.ajax.js') }}"></script>
     <script>
         window.wisataDetailUrl = "{{ url('/tamasya-wisata') }}";
@@ -224,7 +231,7 @@
     <script src="{{ asset('assets/js/dashboard.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ asset('js/frontend/getdata-pengunjung.js') }}"></script>
-    <script src="{{ asset('js/frontend/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ asset('js/frontend/jquery-3.6.0.min.js') }}"></script> --}}
     {{-- <script>
         const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
 
