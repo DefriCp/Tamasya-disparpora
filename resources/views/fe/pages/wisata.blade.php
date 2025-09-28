@@ -223,7 +223,7 @@
 @endsection
 
 @push('js')
-    {{-- <script src="{{ asset('js/frontend/fetchapi.js') }}"></script>
+    <script src="{{ asset('js/frontend/fetchapi.js') }}"></script>
     <script src="{{ asset('assets/js/leaflet.ajax.js') }}"></script>
     <script>
         window.wisataDetailUrl = "{{ url('/tamasya-wisata') }}";
@@ -231,7 +231,7 @@
     <script src="{{ asset('assets/js/dashboard.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ asset('js/frontend/getdata-pengunjung.js') }}"></script>
-    <script src="{{ asset('js/frontend/jquery-3.6.0.min.js') }}"></script> --}}
+    <script src="{{ asset('js/frontend/jquery-3.6.0.min.js') }}"></script>
     {{-- <script>
         const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
 
