@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\LinkTerkaitResource\Pages;
 use App\Filament\Resources\LinkTerkaitResource\RelationManagers;
 use App\Models\LinkTerkait;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
@@ -17,7 +18,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class LinkTerkaitResource extends Resource
+class LinkTerkaitResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = LinkTerkait::class;
 
@@ -119,6 +120,19 @@ class LinkTerkaitResource extends Resource
             'index' => Pages\ListLinkTerkaits::route('/'),
             'create' => Pages\CreateLinkTerkait::route('/create'),
             'edit' => Pages\EditLinkTerkait::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'publish'
         ];
     }
 }

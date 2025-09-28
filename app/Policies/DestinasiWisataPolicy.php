@@ -63,7 +63,7 @@ class DestinasiWisataPolicy
      */
     public function forceDelete(User $user, DestinasiWisata $destinasiWisata): bool
     {
-        return $user->can('force_delete_destinasi::wisata');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class DestinasiWisataPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_destinasi::wisata');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class DestinasiWisataPolicy
      */
     public function restore(User $user, DestinasiWisata $destinasiWisata): bool
     {
-        return $user->can('restore_destinasi::wisata');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class DestinasiWisataPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_destinasi::wisata');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class DestinasiWisataPolicy
      */
     public function replicate(User $user, DestinasiWisata $destinasiWisata): bool
     {
-        return $user->can('replicate_destinasi::wisata');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class DestinasiWisataPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_destinasi::wisata');
+        return $user->can('{{ Reorder }}');
     }
 }

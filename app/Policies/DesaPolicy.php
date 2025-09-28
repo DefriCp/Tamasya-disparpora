@@ -63,7 +63,7 @@ class DesaPolicy
      */
     public function forceDelete(User $user, Desa $desa): bool
     {
-        return $user->can('force_delete_desa');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class DesaPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_desa');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class DesaPolicy
      */
     public function restore(User $user, Desa $desa): bool
     {
-        return $user->can('restore_desa');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class DesaPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_desa');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class DesaPolicy
      */
     public function replicate(User $user, Desa $desa): bool
     {
-        return $user->can('replicate_desa');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class DesaPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_desa');
+        return $user->can('{{ Reorder }}');
     }
 }
