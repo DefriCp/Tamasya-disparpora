@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Kecamatan;
+use App\Models\YoutubeTamasya;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class KecamatanPolicy
+class YoutubeTamasyaPolicy
 {
     use HandlesAuthorization;
 
@@ -15,15 +15,15 @@ class KecamatanPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_kecamatan');
+        return $user->can('view_any_youtube::tamasya');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Kecamatan $kecamatan): bool
+    public function view(User $user, YoutubeTamasya $youtubeTamasya): bool
     {
-        return $user->can('view_kecamatan');
+        return $user->can('view_youtube::tamasya');
     }
 
     /**
@@ -31,23 +31,23 @@ class KecamatanPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_kecamatan');
+        return $user->can('create_youtube::tamasya');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Kecamatan $kecamatan): bool
+    public function update(User $user, YoutubeTamasya $youtubeTamasya): bool
     {
-        return $user->can('update_kecamatan');
+        return $user->can('update_youtube::tamasya');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Kecamatan $kecamatan): bool
+    public function delete(User $user, YoutubeTamasya $youtubeTamasya): bool
     {
-        return $user->can('delete_kecamatan');
+        return $user->can('delete_youtube::tamasya');
     }
 
     /**
@@ -55,13 +55,13 @@ class KecamatanPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_kecamatan');
+        return $user->can('delete_any_youtube::tamasya');
     }
 
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, Kecamatan $kecamatan): bool
+    public function forceDelete(User $user, YoutubeTamasya $youtubeTamasya): bool
     {
         return $user->can('{{ ForceDelete }}');
     }
@@ -77,7 +77,7 @@ class KecamatanPolicy
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, Kecamatan $kecamatan): bool
+    public function restore(User $user, YoutubeTamasya $youtubeTamasya): bool
     {
         return $user->can('{{ Restore }}');
     }
@@ -93,7 +93,7 @@ class KecamatanPolicy
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, Kecamatan $kecamatan): bool
+    public function replicate(User $user, YoutubeTamasya $youtubeTamasya): bool
     {
         return $user->can('{{ Replicate }}');
     }

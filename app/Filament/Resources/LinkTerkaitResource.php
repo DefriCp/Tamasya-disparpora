@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\LinkTerkaitResource\Pages;
 use App\Filament\Resources\LinkTerkaitResource\RelationManagers;
 use App\Models\LinkTerkait;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
@@ -13,11 +14,12 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class LinkTerkaitResource extends Resource
+class LinkTerkaitResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = LinkTerkait::class;
 
@@ -64,6 +66,7 @@ class LinkTerkaitResource extends Resource
                         FileUpload::make('logo')
                             ->label('Logo')
                             ->required()
+                            ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                             ->placeholder('Upload Logo Disini')
                             ->columnSpanFull(),
                     ])
@@ -76,13 +79,27 @@ class LinkTerkaitResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('nama_instansi')
+                    ->label('Nama Instansi')
+                    ->wrap()
+                    ->limit(15)
+                    ->searchable(),
+
+                TextColumn::make('link_web')
+                    ->label('Link Web')
+                    ->openUrlInNewTab()
+                    ->color('primary'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->label(''),
+                Tables\Actions\EditAction::make()
+                    ->label(''),
+                Tables\Actions\DeleteAction::make()
+                    ->label(''),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -104,6 +121,19 @@ class LinkTerkaitResource extends Resource
             'index' => Pages\ListLinkTerkaits::route('/'),
             'create' => Pages\CreateLinkTerkait::route('/create'),
             'edit' => Pages\EditLinkTerkait::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'publish'
         ];
     }
 }

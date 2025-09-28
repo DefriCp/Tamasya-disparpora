@@ -151,31 +151,11 @@
             </div>
         </div>
 
-        <!-- Section Sponsor -->
-        <div class="py-10 mt-12 bg-white shadow rounded-2xl">
-            <div class="max-w-6xl mx-auto">
-                <div
-                    class="flex items-center gap-6 px-4 py-4 overflow-x-auto md:justify-center whitespace-nowrap scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-                    @forelse ($sponsor as $item)
-                        <div class="flex justify-center flex-shrink-0">
-                            <img src="{{ asset('storage/' . $item->logo) }}" alt="{{ $item->nama_instansi ?? 'Sponsor' }}"
-                                class="object-contain h-24 mix-blend-multiply" />
-                        </div>
-                    @empty
-                        <div class="flex justify-center w-full">
-                            <p class="text-gray-500">Tidak ada data sponsor yang tersedia saat ini.</p>
-                        </div>
-                    @endforelse
-                </div>
-            </div>
-
-        </div>
-
 
         <!-- Link Terkait -->
         <div class="mt-12 md:mt-28">
             <div class="max-w-2xl mx-auto">
-                <h2 class="text-xl font-medium text-slate-800">Link Youtube</h2>
+                <h2 class="text-xl text-center font-medium text-slate-800">Link Youtube</h2>
             </div>
             <!-- Video/Link YouTube Section with Swiper -->
             <div class="my-10">
@@ -218,6 +198,27 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Section Sponsor -->
+        <div class="py-10 mt-12 bg-white shadow rounded-2xl">
+            <div class="max-w-6xl mx-auto">
+                <div
+                    class="flex items-center gap-6 px-4 py-4 overflow-x-auto md:justify-center whitespace-nowrap scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+                    @forelse ($sponsor as $item)
+                        <div class="flex justify-center flex-shrink-0">
+                            <a href="{{ $item->link_web ?? '#' }}" target="_blank">
+                                <img src="{{ asset('storage/' . $item->logo) }}" alt="{{ $item->nama_instansi ?? 'Sponsor' }}" class="object-contain h-24 mix-blend-multiply" />
+                            </a>
+                        </div>
+                    @empty
+                        <div class="flex justify-center w-full">
+                            <p class="text-gray-500">Tidak ada data sponsor yang tersedia saat ini.</p>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+
         </div>
     </main>
 @endsection
