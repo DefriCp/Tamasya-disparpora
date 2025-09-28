@@ -208,7 +208,10 @@
                     @forelse ($sponsor as $item)
                         <div class="flex justify-center flex-shrink-0">
                             <a href="{{ $item->link_web ?? '#' }}" target="_blank">
-                                <img src="{{ asset('storage/' . $item->logo) }}" alt="{{ $item->nama_instansi ?? 'Sponsor' }}" class="object-contain h-24 mix-blend-multiply" />
+                                <img src="{{ asset('storage/' . $item->logo) }}"
+                                    alt="{{ $item->nama_instansi ?? 'Sponsor' }}"
+                                    class="object-contain h-24 w-auto max-w-[200px] mix-blend-multiply" />
+
                             </a>
                         </div>
                     @empty
