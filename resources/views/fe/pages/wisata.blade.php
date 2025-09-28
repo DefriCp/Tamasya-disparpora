@@ -203,8 +203,7 @@
         <!-- Section Sponsor -->
         <div class="py-10 mt-12 bg-white shadow rounded-2xl">
             <div class="max-w-6xl mx-auto">
-                <div
-                    class="flex items-center gap-6 px-4 py-4 overflow-x-auto md:justify-center whitespace-nowrap scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+                <div class="flex items-center justify-center gap-6 px-4 py-4 overflow-x-auto whitespace-nowrap scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
                     @forelse ($sponsor as $item)
                         <div class="flex justify-center flex-shrink-0">
                             <a href="{{ $item->link_web ?? '#' }}" target="_blank">
