@@ -205,11 +205,12 @@
             <div class="max-w-6xl mx-auto">
                 <div class="flex items-center justify-center gap-6 px-4 py-4 overflow-x-auto whitespace-nowrap scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
                     @forelse ($sponsor as $item)
-                        <div class="flex justify-center flex-shrink-0">
+                       <div class="flex items-center justify-center w-48 h-20 bg-white">
                             <a href="{{ $item->link_web ?? '#' }}" target="_blank">
                                 <img src="{{ asset('storage/' . $item->logo) }}"
                                     alt="{{ $item->nama_instansi ?? 'Sponsor' }}"
-                                    class="object-contain h-24 w-auto max-w-[200px] mix-blend-multiply" />
+                                    class="object-contain max-h-20 max-w-[200px] w-auto mix-blend-multiply" />
+
 
                             </a>
                         </div>
