@@ -64,6 +64,7 @@ class LinkTerkaitResource extends Resource
                         FileUpload::make('logo')
                             ->label('Logo')
                             ->required()
+                            ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                             ->placeholder('Upload Logo Disini')
                             ->columnSpanFull(),
                     ])
@@ -76,13 +77,27 @@ class LinkTerkaitResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('nama_instansi')
+                    ->label('Nama Instansi')
+                    ->wrap()
+                    ->limit(15)
+                    ->searchable(),
+
+                TextColumn::make('link_web')
+                    ->label('Link Web')
+                    ->openUrlInNewTab()
+                    ->color('primary'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->label(''),
+                Tables\Actions\EditAction::make()
+                    ->label(''),
+                Tables\Actions\DeleteAction::make()
+                    ->label(''),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
