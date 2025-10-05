@@ -433,32 +433,55 @@
 
     <script>
         let chartDropdown;
-        const API_URL = "http://172.16.2.111/api/jumlahkunjunganwisata";
-
+        const API_URL = "http://172.16.2.111/api/tamasyawisata"; // ganti sesuai endpoint
         document.addEventListener("DOMContentLoaded", async function() {
             const ctx = document.getElementById("chartPengunjung").getContext("2d");
 
-            // Label bulan (sesuai urutan)
             const labels = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun",
                 "Jul", "Agu", "Sep", "Okt", "Nov", "Des"
             ];
 
             try {
-                // Ambil data dari API
                 const res = await fetch(API_URL);
                 const json = await res.json();
 
-                // Ambil destinasi pertama saja (misalnya Cipanas Galunggung)
-                const data = json.data[0];
+                // Pastikan json.data ada dan array
+                const dataApi = Array.isArray(json.data) ? json.data : [];
 
-                // Ubah data bulan jadi array angka
+                // Nama destinasi dari backend Laravel
+                const NAMA_DESTINASI = @json($destinasiwisata->nama);
+
+                // Cari data sesuai destinasi_wisata
+                let data = dataApi.find(d =>
+                    d?.destinasi_wisata?.toLowerCase() === NAMA_DESTINASI.toLowerCase()
+                );
+
+                // Kalau tidak ketemu, isi data kosong
+                if (!data) {
+                    console.warn("Destinasi tidak ditemukan di API:", NAMA_DESTINASI);
+                    data = {
+                        januari: 0,
+                        februari: 0,
+                        maret: 0,
+                        april: 0,
+                        mei: 0,
+                        juni: 0,
+                        juli: 0,
+                        agustus: 0,
+                        september: 0,
+                        oktober: 0,
+                        november: 0,
+                        desember: 0
+                    };
+                }
+
+                // Konversi data ke array angka
                 const dataset = [
                     data.januari, data.februari, data.maret, data.april,
                     data.mei, data.juni, data.juli, data.agustus,
                     data.september, data.oktober, data.november, data.desember
-                ].map(v => (isNaN(v) ? 0 : Number(v))); // kalau string → 0
+                ].map(v => (isNaN(v) ? 0 : Number(v)));
 
-                // Gradient
                 function getGradient(ctx, color1, color2) {
                     const gradient = ctx.createLinearGradient(0, 0, 0, 300);
                     gradient.addColorStop(0, color1);
@@ -466,7 +489,6 @@
                     return gradient;
                 }
 
-                // Shadow plugin
                 const shadowPlugin = {
                     id: "shadow",
                     beforeDatasetsDraw(chart) {
@@ -486,7 +508,6 @@
                     }
                 };
 
-                // Buat chart
                 new Chart(ctx, {
                     type: "bar",
                     data: {
