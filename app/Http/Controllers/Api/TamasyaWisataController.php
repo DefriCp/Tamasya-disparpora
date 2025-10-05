@@ -11,7 +11,7 @@ class TamasyaWisataController extends Controller
 {
     public function index()
     {
-        $destinasiwisata = DestinasiWisata::with(['desa', 'kecamatan', 'utilitas', 'photos', 'jumlahkunjunganwisatas'])->get();
+        $destinasiwisata = DestinasiWisata::with(['desa', 'kecamatan', 'utilitas', 'photos'])->get();
         return TamasyaWisataResource::collection($destinasiwisata);
     }
     

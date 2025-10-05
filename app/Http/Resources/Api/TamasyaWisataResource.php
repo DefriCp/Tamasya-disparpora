@@ -36,7 +36,6 @@ class TamasyaWisataResource extends JsonResource
             'nomor_hp' => $this->nomor_hp,
             'utilitas' => UtilitasResource::collection($this->whenLoaded('utilitas')),
             'photo' => PhotoTamasyaResource::collection($this->whenLoaded('photos')),
-            'jumlahpengunjung' => JumlahPengunjungWisataResource::collection($this->whenLoaded('jumlahkunjunganwisatas'))
         ];
     }
 }

@@ -12,13 +12,24 @@ class JumlahKunjunganWisata extends Model
     use HasFactory;
 
     protected $fillable = [
-        'jumlah',
-        'bulan',
-        'tahun'
+        'januari',
+        'februari',
+        'maret',
+        'april',
+        'mei',
+        'juni',
+        'juli',
+        'agustus',
+        'september',
+        'oktober',
+        'november',
+        'desember',
+        'tahun',
+        'destinasi_wisata_id'
     ];
 
     public function destinasiwisata(): BelongsTo
     {
-        return $this->belongsTo(BelongsTo::class);
+        return $this->belongsTo(DestinasiWisata::class, 'destinasi_wisata_id');
     }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AgendaController;
 use App\Http\Controllers\Api\BeritaController;
 use App\Http\Controllers\Api\DesaController;
 use App\Http\Controllers\Api\DokumenController;
+use App\Http\Controllers\Api\JumlahKunjunganWisataController;
 use App\Http\Controllers\Api\KecamatanController;
 use App\Http\Controllers\Api\LayananController;
 use App\Http\Controllers\Api\PengumumanController;
@@ -37,3 +38,5 @@ Route::apiResource('/tamasyawisata', TamasyaWisataController::class);
 Route::apiResource('/desa', DesaController::class);
 
 Route::apiResource('/kecamatan', KecamatanController::class);
+
+Route::apiResource('/jumlahkunjunganwisata', JumlahKunjunganWisataController::class);
