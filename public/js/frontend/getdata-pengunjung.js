@@ -1,6 +1,6 @@
 let chartTotalPerBulan, chartTop5, chartDropdown;
 
-const API_URL = "http://172.16.2.111/api/tamasyawisata"; // ganti sesuai endpoint
+const API_URL = "http://172.16.2.111/api/jumlahkunjunganwisata"; // ganti sesuai endpoint
 const labels = [
     "January", "February", "March", "April", "Mei", "Juni",
     "Juli", "Agustus", "September", "Oktober", "November", "Desember"
@@ -46,21 +46,43 @@ async function fetchWisataData() {
     return res.json();
 }
 
+// function transformData(items) {
+//     // items must be an array of wisata objects
+//     const wisataData = {};
+//     (items || []).forEach(w => {
+//         const name = w.nama || w.name || "Unknown";
+//         wisataData[name] = Array(12).fill(0);
+
+//         if (Array.isArray(w.jumlahpengunjung)) {
+//             w.jumlahpengunjung.forEach(jp => {
+//                 const idx = monthToIndex(jp.bulan || jp.month || "");
+//                 const val = Number(jp.jumlah) || 0;
+//                 if (idx >= 0) wisataData[name][idx] = val;
+//             });
+//         }
+//     });
+//     return wisataData;
+// }
+
 function transformData(items) {
-    // items must be an array of wisata objects
     const wisataData = {};
+
     (items || []).forEach(w => {
-        const name = w.nama || w.name || "Unknown";
+        const name = w.destinasi_wisata || "Unknown";
         wisataData[name] = Array(12).fill(0);
 
-        if (Array.isArray(w.jumlahpengunjung)) {
-            w.jumlahpengunjung.forEach(jp => {
-                const idx = monthToIndex(jp.bulan || jp.month || "");
-                const val = Number(jp.jumlah) || 0;
-                if (idx >= 0) wisataData[name][idx] = val;
-            });
-        }
+        const bulanKeys = [
+            "januari", "februari", "maret", "april", "mei", "juni",
+            "juli", "agustus", "september", "oktober", "november", "desember"
+        ];
+
+        bulanKeys.forEach((bulan, i) => {
+            const val = w[bulan];
+            // kalau string "Data Belum Ada" → 0, kalau angka → parseInt
+            wisataData[name][i] = isNaN(val) ? 0 : Number(val);
+        });
     });
+
     return wisataData;
 }
 
@@ -363,22 +385,49 @@ function updateDropdownChart(selected, wisataData) {
 
 
 // MAIN
+// async function loadDataPengunjung() {
+//     try {
+//         const raw = await fetchWisataData();
+//         // console.log("API raw response:", raw); // bantu debug kalau masih ada masalah
+//         // support bentuk: [] atau { data: [...] }
+//         const items = Array.isArray(raw) ? raw : (raw && Array.isArray(raw.data) ? raw.data : []);
+//         const wisataData = transformData(items);
+
+//         destroyChartsIfExist();
+
+//         // kalau tidak ada data, bikin charts kosong (supaya UI tetap konsisten)
+//         if (Object.keys(wisataData).length === 0) {
+//             console.warn("Tidak ada data wisata (kosong).");
+//             // buat dataset kosong dengan nol
+//             const empty = {};
+//             empty["Tidak ada data"] = Array(12).fill(0);
+//             chartTotalPerBulan = renderTotalPerBulan(empty);
+//             chartTop5 = renderTop5(empty);
+//             setupDropdown(empty);
+//             return;
+//         }
+
+//         chartTotalPerBulan = renderTotalPerBulan(wisataData);
+//         chartTop5 = renderTop5(wisataData);
+//         setupDropdown(wisataData);
+
+//     } catch (err) {
+//         console.error("Gagal load data pengunjung:", err);
+//         alert("Gagal memuat data pengunjung. Cek console untuk detail.");
+//     }
+// }
+
 async function loadDataPengunjung() {
     try {
         const raw = await fetchWisataData();
-        // console.log("API raw response:", raw); // bantu debug kalau masih ada masalah
-        // support bentuk: [] atau { data: [...] }
         const items = Array.isArray(raw) ? raw : (raw && Array.isArray(raw.data) ? raw.data : []);
         const wisataData = transformData(items);
 
         destroyChartsIfExist();
 
-        // kalau tidak ada data, bikin charts kosong (supaya UI tetap konsisten)
         if (Object.keys(wisataData).length === 0) {
             console.warn("Tidak ada data wisata (kosong).");
-            // buat dataset kosong dengan nol
-            const empty = {};
-            empty["Tidak ada data"] = Array(12).fill(0);
+            const empty = { "Tidak ada data": Array(12).fill(0) };
             chartTotalPerBulan = renderTotalPerBulan(empty);
             chartTop5 = renderTop5(empty);
             setupDropdown(empty);
@@ -394,5 +443,7 @@ async function loadDataPengunjung() {
         alert("Gagal memuat data pengunjung. Cek console untuk detail.");
     }
 }
+
+
 
 loadDataPengunjung();
