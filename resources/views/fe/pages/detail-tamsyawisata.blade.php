@@ -433,35 +433,107 @@
 
     <script>
         let chartDropdown;
-        const API_URL = "http://172.16.2.111/api/tamasyawisata"; // ganti sesuai endpoint
+        const API_URL = "http://172.16.2.111/api/jumlahkunjunganwisata";
+
+        // di blade ganti string literal ini dengan: 
+        const NAMA_DESTINASI = @json($destinasiwisata->nama);
+        // const NAMA_DESTINASI = "Cipanas Galunggung";
+
         document.addEventListener("DOMContentLoaded", async function() {
             const ctx = document.getElementById("chartPengunjung").getContext("2d");
+            const labels = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
 
-            const labels = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun",
-                "Jul", "Agu", "Sep", "Okt", "Nov", "Des"
-            ];
+            // helper: normalisasi nama (hapus diakritik, punctuation, multiple spaces, lowercase)
+            function normalizeName(s) {
+                return (s || "")
+                    .toString()
+                    .normalize('NFD') // decompose diacritics
+                    .replace(/[\u0300-\u036f]/g, '') // remove diacritics
+                    .replace(/[^\w\s]/g, ' ') // remove punctuation (keep letters/numbers/space)
+                    .trim()
+                    .toLowerCase()
+                    .replace(/\s+/g, ' ');
+            }
+
+            // helper: Levenshtein distance (untuk fuzzy match)
+            function levenshtein(a, b) {
+                if (!a) return b.length;
+                if (!b) return a.length;
+                const m = a.length,
+                    n = b.length;
+                const dp = Array.from({
+                    length: m + 1
+                }, (_, i) => new Array(n + 1));
+                for (let i = 0; i <= m; i++) dp[i][0] = i;
+                for (let j = 0; j <= n; j++) dp[0][j] = j;
+                for (let i = 1; i <= m; i++) {
+                    for (let j = 1; j <= n; j++) {
+                        const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+                        dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
+                    }
+                }
+                return dp[m][n];
+            }
 
             try {
                 const res = await fetch(API_URL);
                 const json = await res.json();
 
-                // Pastikan json.data ada dan array
                 const dataApi = Array.isArray(json.data) ? json.data : [];
 
-                // Nama destinasi dari backend Laravel
-                const NAMA_DESTINASI = @json($destinasiwisata->nama);
+                // Debug: tampilkan daftar nama yang tersedia (bisa di-cek di console)
+                console.log("Jumlah record statistik:", dataApi.length);
+                console.table(dataApi.map(d => ({
+                    id: d.id,
+                    name: d.destinasi_wisata
+                })));
 
-                // Cari data sesuai destinasi_wisata
-                let data = dataApi.find(d =>
-                    d?.destinasi_wisata?.toLowerCase() === NAMA_DESTINASI.toLowerCase()
-                );
+                const normTarget = normalizeName(NAMA_DESTINASI);
 
-                // Kalau tidak ketemu, isi data kosong
-                if (!data) {
+                // 1) exact normalized match
+                let dataObj = dataApi.find(d => normalizeName(d?.destinasi_wisata) === normTarget);
+
+                // 2) partial (contains) match
+                if (!dataObj) {
+                    dataObj = dataApi.find(d => {
+                        const n = normalizeName(d?.destinasi_wisata);
+                        return n.includes(normTarget) || normTarget.includes(n);
+                    });
+                    if (dataObj) console.warn("Matched by partial include:", dataObj.destinasi_wisata);
+                }
+
+                // 3) fuzzy match (levenshtein) - pilih best candidate jika cukup dekat
+                if (!dataObj && dataApi.length > 0) {
+                    let best = {
+                        idx: -1,
+                        dist: Infinity
+                    };
+                    dataApi.forEach((d, i) => {
+                        const n = normalizeName(d?.destinasi_wisata);
+                        const dist = levenshtein(n, normTarget);
+                        if (dist < best.dist) best = {
+                            idx: i,
+                            dist,
+                            name: n
+                        };
+                    });
+
+                    // threshold: terima jika jarak relatif kecil (mis. <= length/3 atau minimal 3)
+                    const threshold = Math.max(3, Math.floor(normTarget.length / 3));
+                    if (best.idx >= 0 && best.dist <= threshold) {
+                        dataObj = dataApi[best.idx];
+                        console.warn(`Fuzzy matched to "${dataObj.destinasi_wisata}" (distance ${best.dist})`);
+                    } else {
+                        console.warn("No close fuzzy match found (closest):", best);
+                    }
+                }
+
+                // 4) kalau tetap ga ada, gunakan object kosong (semua bulan 0)
+                if (!dataObj) {
                     console.warn("Destinasi tidak ditemukan di API:", NAMA_DESTINASI);
-                    data = {
+                    dataObj = {
                         januari: 0,
-                        februari: 0,
+                        february: 0,
                         maret: 0,
                         april: 0,
                         mei: 0,
@@ -473,15 +545,25 @@
                         november: 0,
                         desember: 0
                     };
+                    // note: keys di API adalah bahasa indonesia (januari..desember), pastikan mapping di bawah mengikuti itu
                 }
 
-                // Konversi data ke array angka
-                const dataset = [
-                    data.januari, data.februari, data.maret, data.april,
-                    data.mei, data.juni, data.juli, data.agustus,
-                    data.september, data.oktober, data.november, data.desember
-                ].map(v => (isNaN(v) ? 0 : Number(v)));
+                // ambil nilai bulan (pastikan pakai key yang tepat dari API)
+                const raw = [
+                    dataObj.januari, dataObj.februari || dataObj.february, dataObj.maret, dataObj.april,
+                    dataObj.mei, dataObj.juni, dataObj.juli, dataObj.agustus,
+                    dataObj.september, dataObj.oktober, dataObj.november, dataObj.desember
+                ];
 
+                const datasetValues = raw.map(v => {
+                    // beberapa nilai mungkin "Data Belum Ada" (string) atau null -> ubah ke 0
+                    if (v === null || v === undefined) return 0;
+                    if (typeof v === "number") return v;
+                    const n = Number(String(v).replace(/[^0-9\-\.]/g, '')); // ambil angka jika ada
+                    return Number.isFinite(n) ? n : 0;
+                });
+
+                // helper gradient
                 function getGradient(ctx, color1, color2) {
                     const gradient = ctx.createLinearGradient(0, 0, 0, 300);
                     gradient.addColorStop(0, color1);
@@ -489,6 +571,7 @@
                     return gradient;
                 }
 
+                // shadow plugin (sama style seperti mas)
                 const shadowPlugin = {
                     id: "shadow",
                     beforeDatasetsDraw(chart) {
@@ -508,17 +591,39 @@
                     }
                 };
 
-                new Chart(ctx, {
+                // center text plugin: tampilkan "Data belum tersedia" bila semua 0
+                const centerTextPlugin = {
+                    id: 'centerText',
+                    afterDraw(chart) {
+                        const allZero = chart.data.datasets[0].data.every(v => v === 0);
+                        if (!allZero) return;
+                        const ctx = chart.ctx;
+                        const {
+                            width,
+                            height
+                        } = chart;
+                        ctx.save();
+                        ctx.font = '16px Inter, sans-serif';
+                        ctx.fillStyle = 'rgba(100,100,100,0.6)';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText('Data belum tersedia', width / 2, height / 2);
+                        ctx.restore();
+                    }
+                };
+
+                // destroy existing chart if any
+                if (chartDropdown) chartDropdown.destroy();
+
+                chartDropdown = new Chart(ctx, {
                     type: "bar",
                     data: {
-                        labels: labels,
+                        labels,
                         datasets: [{
                             label: "Jumlah Pengunjung",
-                            data: dataset,
-                            backgroundColor: (ctx) =>
-                                getGradient(ctx.chart.ctx,
-                                    "rgba(34,197,94,0.9)",
-                                    "rgba(34,197,94,0.2)"),
+                            data: datasetValues,
+                            backgroundColor: (ctx) => getGradient(ctx.chart.ctx,
+                                "rgba(34,197,94,0.9)", "rgba(34,197,94,0.2)"),
                             borderRadius: 12,
                             barThickness: 30
                         }]
@@ -578,8 +683,9 @@
                             easing: "easeOutBounce"
                         }
                     },
-                    plugins: [shadowPlugin]
+                    plugins: [shadowPlugin, centerTextPlugin]
                 });
+
             } catch (error) {
                 console.error("Gagal ambil data API:", error);
             }
