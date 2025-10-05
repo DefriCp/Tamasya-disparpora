@@ -433,121 +433,135 @@
 
     <script>
         let chartDropdown;
-        const API_URL = "http://172.16.2.111/api/tamasyawisata"; // ganti sesuai endpoint
-        document.addEventListener("DOMContentLoaded", function() {
+        const API_URL = "http://172.16.2.111/api/jumlahkunjunganwisata";
+
+        document.addEventListener("DOMContentLoaded", async function() {
             const ctx = document.getElementById("chartPengunjung").getContext("2d");
 
-            // Data dari Laravel
-            const pengunjung = @json($destinasiwisata->jumlahKunjunganWisatas);
+            // Label bulan (sesuai urutan)
+            const labels = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun",
+                "Jul", "Agu", "Sep", "Okt", "Nov", "Des"
+            ];
 
-            const labels = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
-            const dataset = new Array(12).fill(0);
+            try {
+                // Ambil data dari API
+                const res = await fetch(API_URL);
+                const json = await res.json();
 
-            pengunjung.forEach(item => {
-                const bulan = item.bulan.toLowerCase();
-                const idx = labels.findIndex(l => l.toLowerCase().startsWith(bulan.substring(0, 3)));
-                if (idx >= 0) dataset[idx] = item.jumlah;
-            });
+                // Ambil destinasi pertama saja (misalnya Cipanas Galunggung)
+                const data = json.data[0];
 
-            // Gradient
-            function getGradient(ctx, color1, color2) {
-                const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-                gradient.addColorStop(0, color1);
-                gradient.addColorStop(1, color2);
-                return gradient;
-            }
+                // Ubah data bulan jadi array angka
+                const dataset = [
+                    data.januari, data.februari, data.maret, data.april,
+                    data.mei, data.juni, data.juli, data.agustus,
+                    data.september, data.oktober, data.november, data.desember
+                ].map(v => (isNaN(v) ? 0 : Number(v))); // kalau string → 0
 
-            // Shadow plugin
-            const shadowPlugin = {
-                id: "shadow",
-                beforeDatasetsDraw(chart) {
-                    const ctx = chart.ctx;
-                    chart.data.datasets.forEach((dataset, i) => {
-                        const meta = chart.getDatasetMeta(i);
-                        meta.data.forEach((bar) => {
-                            ctx.save();
-                            ctx.shadowColor = "rgba(0,0,0,0.15)";
-                            ctx.shadowBlur = 8;
-                            ctx.shadowOffsetX = 2;
-                            ctx.shadowOffsetY = 4;
-                            bar.draw(ctx);
-                            ctx.restore();
-                        });
-                    });
+                // Gradient
+                function getGradient(ctx, color1, color2) {
+                    const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+                    gradient.addColorStop(0, color1);
+                    gradient.addColorStop(1, color2);
+                    return gradient;
                 }
-            };
 
-            new Chart(ctx, {
-                type: "bar",
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: "Jumlah Pengunjung",
-                        data: dataset,
-                        backgroundColor: (ctx) =>
-                            getGradient(ctx.chart.ctx, "rgba(34,197,94,0.9)",
-                                "rgba(34,197,94,0.2)"),
-                        borderRadius: 12,
-                        barThickness: 30
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: "bottom",
-                            labels: {
-                                usePointStyle: true,
-                                pointStyle: "circle",
-                                padding: 20,
-                                font: {
-                                    size: 13
-                                }
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: "rgba(30,41,59,0.9)",
-                            titleFont: {
-                                size: 14,
-                                weight: "bold"
-                            },
-                            bodyFont: {
-                                size: 13
-                            },
-                            padding: 10,
-                            cornerRadius: 6
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                font: {
-                                    size: 14
-                                }
-                            }
-                        },
-                        y: {
-                            grid: {
-                                color: "rgba(0,0,0,0.05)"
-                            },
-                            ticks: {
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        }
-                    },
-                    animation: {
-                        duration: 1200,
-                        easing: "easeOutBounce"
+                // Shadow plugin
+                const shadowPlugin = {
+                    id: "shadow",
+                    beforeDatasetsDraw(chart) {
+                        const ctx = chart.ctx;
+                        chart.data.datasets.forEach((dataset, i) => {
+                            const meta = chart.getDatasetMeta(i);
+                            meta.data.forEach((bar) => {
+                                ctx.save();
+                                ctx.shadowColor = "rgba(0,0,0,0.15)";
+                                ctx.shadowBlur = 8;
+                                ctx.shadowOffsetX = 2;
+                                ctx.shadowOffsetY = 4;
+                                bar.draw(ctx);
+                                ctx.restore();
+                            });
+                        });
                     }
-                },
-                plugins: [shadowPlugin]
-            });
+                };
+
+                // Buat chart
+                new Chart(ctx, {
+                    type: "bar",
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: "Jumlah Pengunjung",
+                            data: dataset,
+                            backgroundColor: (ctx) =>
+                                getGradient(ctx.chart.ctx,
+                                    "rgba(34,197,94,0.9)",
+                                    "rgba(34,197,94,0.2)"),
+                            borderRadius: 12,
+                            barThickness: 30
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: "bottom",
+                                labels: {
+                                    usePointStyle: true,
+                                    pointStyle: "circle",
+                                    padding: 20,
+                                    font: {
+                                        size: 13
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: "rgba(30,41,59,0.9)",
+                                titleFont: {
+                                    size: 14,
+                                    weight: "bold"
+                                },
+                                bodyFont: {
+                                    size: 13
+                                },
+                                padding: 10,
+                                cornerRadius: 6
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 14
+                                    }
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    color: "rgba(0,0,0,0.05)"
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            }
+                        },
+                        animation: {
+                            duration: 1200,
+                            easing: "easeOutBounce"
+                        }
+                    },
+                    plugins: [shadowPlugin]
+                });
+            } catch (error) {
+                console.error("Gagal ambil data API:", error);
+            }
         });
     </script>
 @endpush
