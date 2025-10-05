@@ -249,6 +249,15 @@
                     </div>
                 </div>
             </div>
+
+            <div class="p-6 mt-8 bg-white border shadow border-slate-200 rounded-3xl">
+                <div class="flex flex-col justify-between gap-3 md:flex-row">
+                    <h2 class="mb-2 text-lg text-slate-800">Jumlah Pengunjung {{ $destinasiwisata->nama }}</h2>
+                </div>
+                <div class="relativemt-4 h-80">
+                    <canvas id="chartPengunjung" class="w-full "></canvas>
+                </div>
+            </div>
         </div>
 
         <!-- Sidebar -->
@@ -336,6 +345,8 @@
 
 @push('js')
     <script src="{{ asset('assets/js/leaflet.ajax.js') }}"></script>
+    <script src="{{ asset('js/frontend/chart.js') }}"></script>
+    <script src="{{ asset('js/frontend/jquery-3.6.0.min.js') }}"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -416,6 +427,126 @@
                     content.classList.add("hidden");
                 });
                 document.getElementById(tab).classList.remove("hidden");
+            });
+        });
+    </script>
+
+    <script>
+        let chartDropdown;
+        const API_URL = "http://172.16.2.111/api/tamasyawisata"; // ganti sesuai endpoint
+        document.addEventListener("DOMContentLoaded", function() {
+            const ctx = document.getElementById("chartPengunjung").getContext("2d");
+
+            // Data dari Laravel
+            const pengunjung = @json($destinasiwisata->jumlahKunjunganWisatas);
+
+            const labels = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+            const dataset = new Array(12).fill(0);
+
+            pengunjung.forEach(item => {
+                const bulan = item.bulan.toLowerCase();
+                const idx = labels.findIndex(l => l.toLowerCase().startsWith(bulan.substring(0, 3)));
+                if (idx >= 0) dataset[idx] = item.jumlah;
+            });
+
+            // Gradient
+            function getGradient(ctx, color1, color2) {
+                const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+                gradient.addColorStop(0, color1);
+                gradient.addColorStop(1, color2);
+                return gradient;
+            }
+
+            // Shadow plugin
+            const shadowPlugin = {
+                id: "shadow",
+                beforeDatasetsDraw(chart) {
+                    const ctx = chart.ctx;
+                    chart.data.datasets.forEach((dataset, i) => {
+                        const meta = chart.getDatasetMeta(i);
+                        meta.data.forEach((bar) => {
+                            ctx.save();
+                            ctx.shadowColor = "rgba(0,0,0,0.15)";
+                            ctx.shadowBlur = 8;
+                            ctx.shadowOffsetX = 2;
+                            ctx.shadowOffsetY = 4;
+                            bar.draw(ctx);
+                            ctx.restore();
+                        });
+                    });
+                }
+            };
+
+            new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Jumlah Pengunjung",
+                        data: dataset,
+                        backgroundColor: (ctx) =>
+                            getGradient(ctx.chart.ctx, "rgba(34,197,94,0.9)",
+                                "rgba(34,197,94,0.2)"),
+                        borderRadius: 12,
+                        barThickness: 30
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: {
+                                usePointStyle: true,
+                                pointStyle: "circle",
+                                padding: 20,
+                                font: {
+                                    size: 13
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: "rgba(30,41,59,0.9)",
+                            titleFont: {
+                                size: 14,
+                                weight: "bold"
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            padding: 10,
+                            cornerRadius: 6
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: "rgba(0,0,0,0.05)"
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1200,
+                        easing: "easeOutBounce"
+                    }
+                },
+                plugins: [shadowPlugin]
             });
         });
     </script>

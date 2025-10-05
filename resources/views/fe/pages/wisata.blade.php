@@ -151,11 +151,10 @@
             </div>
         </div>
 
-
         <!-- Link Terkait -->
         <div class="mt-12 md:mt-28">
             <div class="max-w-2xl mx-auto">
-                <h2 class="text-xl text-center font-medium text-slate-800">Link Youtube</h2>
+                <h2 class="text-xl font-medium text-center text-slate-800">Link Youtube</h2>
             </div>
             <!-- Video/Link YouTube Section with Swiper -->
             <div class="my-10">
@@ -203,9 +202,10 @@
         <!-- Section Sponsor -->
         <div class="py-10 mt-12 bg-white shadow rounded-2xl">
             <div class="max-w-6xl mx-auto">
-                <div class="flex items-center justify-center gap-6 px-4 py-4 overflow-x-auto whitespace-nowrap scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+                <div
+                    class="flex items-center justify-center gap-6 px-4 py-4 overflow-x-auto whitespace-nowrap scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
                     @forelse ($sponsor as $item)
-                       <div class="flex items-center justify-center w-48 h-20 bg-white">
+                        <div class="flex items-center justify-center w-48 h-20 bg-white">
                             <a href="{{ $item->link_web ?? '#' }}" target="_blank">
                                 <img src="{{ asset('storage/' . $item->logo) }}"
                                     alt="{{ $item->nama_instansi ?? 'Sponsor' }}"
@@ -233,9 +233,9 @@
         window.wisataDetailUrl = "{{ url('/tamasya-wisata') }}";
     </script>
     <script src="{{ asset('assets/js/dashboard.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{{ asset('js/frontend/getdata-pengunjung.js') }}"></script>
+    <script src="{{ asset('js/frontend/chart.js') }}"></script>
     <script src="{{ asset('js/frontend/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ asset('js/frontend/getdata-pengunjung.js') }}"></script>
     {{-- <script>
         const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
 

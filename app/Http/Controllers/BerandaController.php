@@ -281,12 +281,12 @@ class BerandaController extends Controller
     public function detailTamsyaWisata($slug = null)
     {
         $header = Header::with('photos')->first();
-        $destinasiwisata = DestinasiWisata::with('desa', 'kecamatan', 'utilitas', 'photos')->where('slug', $slug)->first();
+        $destinasiwisata = DestinasiWisata::with('desa', 'kecamatan', 'utilitas', 'photos', 'jumlahKunjunganWisatas')->where('slug', $slug)->first();
         $destinasiwisatalain = DestinasiWisata::where('id', '!=', $destinasiwisata->id)
             ->latest()
             ->take(2)
             ->get();
-
+        // dd($destinasiwisata);
         return view('fe.pages.detail-tamsyawisata', compact('header', 'destinasiwisata', 'destinasiwisatalain'));
     }
 
