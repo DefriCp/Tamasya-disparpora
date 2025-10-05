@@ -42,7 +42,7 @@
             <div class="absolute inset-0 z-10 bg-gradient-to-r from-black/60 to-black/30"></div>
             <div class="absolute inset-0 z-20 flex flex-col items-center justify-center px-4 text-center text-white">
                 <h1 class="mb-4 text-3xl font-bold md:text-5xl">{{ $header->skpd ?? 'Template SKPD' }}</h1>
-                <p class="mb-6 text-xl md:text-2xl">Kabupaten Tasikmalaya</p>
+                <p class="mb-6 text-xl md:text-2xl">TAMASYA</p>
             </div>
 
             <!-- Pagination -->
