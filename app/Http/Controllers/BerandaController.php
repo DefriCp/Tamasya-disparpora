@@ -285,7 +285,7 @@ class BerandaController extends Controller
         $destinasiwisata = DestinasiWisata::with('desa', 'kecamatan', 'utilitas', 'photos')->where('slug', $slug)->first();
         $destinasiwisatalain = DestinasiWisata::where('id', '!=', $destinasiwisata->id)
             ->latest()
-            ->take(2)
+            ->take(5)
             ->get();
         // dd($destinasiwisata);
         return view('fe.pages.detail-tamsyawisata', compact('header', 'destinasiwisata', 'destinasiwisatalain'));
