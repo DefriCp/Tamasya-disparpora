@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Fungsi ambil data API
-    fetch("http://172.16.2.111/api/tamasyawisata")
+    fetch("https://tamasya.tasikmalayakab.go.id/api/tamasyawisata")
         .then(response => response.json())
         .then(result => {
             if (result.data && result.data.length > 0) {

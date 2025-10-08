@@ -433,7 +433,7 @@
 
     <script>
         let chartDropdown;
-        const API_URL = "http://172.16.2.111/api/jumlahkunjunganwisata";
+        const API_URL = "https://tamasya.tasikmalayakab.go.id/api/jumlahkunjunganwisata";
 
         // di blade ganti string literal ini dengan: 
         const NAMA_DESTINASI = @json($destinasiwisata->nama);

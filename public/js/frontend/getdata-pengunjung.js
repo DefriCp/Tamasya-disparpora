@@ -1,6 +1,6 @@
 let chartTotalPerBulan, chartTop5, chartDropdown;
 
-const API_URL = "http://172.16.2.111/api/jumlahkunjunganwisata"; // ganti sesuai endpoint
+const API_URL = "http://tamasya.tasikmalayakab.go.id/api/jumlahkunjunganwisata"; // ganti sesuai endpoint
 const labels = [
     "January", "February", "March", "April", "Mei", "Juni",
     "Juli", "Agustus", "September", "Oktober", "November", "Desember"
