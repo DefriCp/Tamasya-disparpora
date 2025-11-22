@@ -91,24 +91,56 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         // === Event pilih desa ===
+        // desaSelect.addEventListener("change", () => {
+        //     if (!map.hasLayer(desaLayer)) {
+        //         desaLayer.addTo(map);
+        //     }
+        //     resetHighlight(desaLayer);
+
+        //     // const namaDesa =
+        //     //     desaSelect.options[desaSelect.selectedIndex].textContent.trim();
+        //     const selectedIndex = desaSelect.selectedIndex;
+        //     if (selectedIndex === -1) return; // kalau belum ada pilihan, stop
+
+        //     const namaDesa = desaSelect.options[selectedIndex].textContent;
+
+        //     desaLayer.eachLayer((layer) => {
+        //         if (
+        //             layer.feature.properties.WADMKD.trim().toLowerCase() ===
+        //             namaDesa.toLowerCase()
+        //         ) {
+        //             map.fitBounds(layer.getBounds());
+        //             layer.setStyle({
+        //                 color: "orange",
+        //                 weight: 2,
+        //                 fillOpacity: 0.6,
+        //             });
+        //         }
+        //     });
+
+        //     // filter wisata sesuai desa
+        //     const wisataDesa = wisataData.filter((w) => w.desa === namaDesa);
+        //     renderTableWisata(wisataDesa);
+        // });
+
         desaSelect.addEventListener("change", () => {
             if (!map.hasLayer(desaLayer)) {
                 desaLayer.addTo(map);
             }
             resetHighlight(desaLayer);
 
-            // const namaDesa =
-            //     desaSelect.options[desaSelect.selectedIndex].textContent.trim();
             const selectedIndex = desaSelect.selectedIndex;
-            if (selectedIndex === -1) return; // kalau belum ada pilihan, stop
+            if (selectedIndex === -1) return;
 
-            const namaDesa = desaSelect.options[selectedIndex].textContent;
+            const namaDesa = desaSelect.options[selectedIndex].textContent.trim().toLowerCase();
+            const namaKec = kecSelect.value.trim().toLowerCase();
 
             desaLayer.eachLayer((layer) => {
-                if (
-                    layer.feature.properties.WADMKD.trim().toLowerCase() ===
-                    namaDesa.toLowerCase()
-                ) {
+                const desaGeo = layer.feature.properties.WADMKD.trim().toLowerCase();
+                const kecGeo = layer.feature.properties.WADMKC.trim().toLowerCase();
+
+                // ➜ MATCH 2 KONDISI: kecamatan + desa
+                if (desaGeo === namaDesa && kecGeo === namaKec) {
                     map.fitBounds(layer.getBounds());
                     layer.setStyle({
                         color: "orange",
@@ -118,10 +150,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
             });
 
-            // filter wisata sesuai desa
-            const wisataDesa = wisataData.filter((w) => w.desa === namaDesa);
+            // filter wisata berdasarkan desa & kecamatan
+            const wisataDesa = wisataData.filter(
+                (w) =>
+                    w.desa?.toLowerCase() === namaDesa &&
+                    w.kecamatan?.toLowerCase() === namaKec
+            );
+
             renderTableWisata(wisataDesa);
         });
+
     } catch (err) {
         console.error("Gagal memuat data:", err);
     }
@@ -236,12 +274,18 @@ function renderTableDesa(data) {
 
     let totalWisata = 0;
 
+    // Ambil kecamatan yang sedang dipilih
+    const namaKec = document.getElementById("kecamatanSelect").value.toLowerCase();
+
     data.forEach((item, idx) => {
+        // ⬇️ Filter harus berdasarkan desa + kecamatan
         const jmlWisata = wisataData.filter(
-            (w) => w.desa?.toLowerCase() === item.nama.toLowerCase()
+            (w) =>
+                w.desa?.toLowerCase() === item.nama.toLowerCase() &&
+                w.kecamatan?.toLowerCase() === namaKec
         ).length;
 
-        totalWisata += jmlWisata; // ✅ tambahkan ke total
+        totalWisata += jmlWisata;
 
         const tr = document.createElement("tr");
         tr.className = "transition border-b hover:bg-gray-50";
@@ -254,18 +298,16 @@ function renderTableDesa(data) {
             <td class="px-4 py-3 font-medium">${item.nama}</td>
             <td class="px-4 py-3 font-semibold text-gray-700">${jmlWisata}</td>
             <td class="px-4 py-3">
-                <a href="#"
-                   class="font-medium text-blue-600 hover:underline btn-buka"
-                   data-type="desa"
-                   data-nama="${item.nama}">
-                   Buka
+                <a href="#" class="font-medium text-blue-600 hover:underline btn-buka"
+                    data-type="desa"
+                    data-nama="${item.nama}">
+                    Buka
                 </a>
             </td>
         `;
         tbody.appendChild(tr);
     });
 
-    // ✅ update total di footer
     if (tfoot) {
         tfoot.innerHTML = `
             <tr class="bg-gray-100 font-bold">
@@ -276,6 +318,57 @@ function renderTableDesa(data) {
         `;
     }
 }
+
+// function renderTableDesa(data) {
+//     const tbody = document.querySelector("#dataTable tbody");
+//     const tfoot = document.querySelector("#dataTable tfoot");
+//     const theadNama = document.querySelector("#dataTable thead th:nth-child(2)");
+
+//     tbody.innerHTML = "";
+//     theadNama.textContent = "Desa";
+
+//     let totalWisata = 0;
+
+//     data.forEach((item, idx) => {
+//         const jmlWisata = wisataData.filter(
+//             (w) => w.desa?.toLowerCase() === item.nama.toLowerCase()
+//         ).length;
+
+//         totalWisata += jmlWisata; // ✅ tambahkan ke total
+
+//         const tr = document.createElement("tr");
+//         tr.className = "transition border-b hover:bg-gray-50";
+//         tr.innerHTML = `
+//             <td class="px-4 py-3">
+//                 <span class="flex items-center justify-center font-bold text-blue-600 bg-blue-100 rounded-full w-7 h-7">
+//                     ${idx + 1}
+//                 </span>
+//             </td>
+//             <td class="px-4 py-3 font-medium">${item.nama}</td>
+//             <td class="px-4 py-3 font-semibold text-gray-700">${jmlWisata}</td>
+//             <td class="px-4 py-3">
+//                 <a href="#"
+//                    class="font-medium text-blue-600 hover:underline btn-buka"
+//                    data-type="desa"
+//                    data-nama="${item.nama}">
+//                    Buka
+//                 </a>
+//             </td>
+//         `;
+//         tbody.appendChild(tr);
+//     });
+
+//     // ✅ update total di footer
+//     if (tfoot) {
+//         tfoot.innerHTML = `
+//             <tr class="bg-gray-100 font-bold">
+//                 <td colspan="2" class="px-4 py-3">Total</td>
+//                 <td class="px-4 py-3">${totalWisata}</td>
+//                 <td></td>
+//             </tr>
+//         `;
+//     }
+// }
 
 let wisataData = [];
 
@@ -331,7 +424,7 @@ function renderTableWisata(data) {
     // update tfoot
     const tfootCell = document.querySelector("#dataTable tfoot td");
     if (tfootCell) {
-        tfootCell.textContent = `Total Wisata: ${total}`;
+        tfootCell.textContent = `Total Wisata: ${totalWisata}`;
     }
 }
 
