@@ -29,29 +29,29 @@ class LinkTerkaitResource extends Resource implements HasShieldPermissions
     
     public static function getNavigationLabel(): string
     {
-        return 'Link Terkait'; // Ubah nama menu di sini
+        return 'Sponsor Kami'; // Ubah nama menu di sini
     }
     public static function getLabel(): string
     {
-        return 'Link Terkait'; // Singular
+        return 'Sponsor Kami'; // Singular
     }
 
     public static function getPluralLabel(): string
     {
-        return 'Link Terkait'; // Tetap tunggal jika kamu ingin breadcrumb-nya "Berita > Membuat"
+        return 'Sponsor Kami'; // Tetap tunggal jika kamu ingin breadcrumb-nya "Berita > Membuat"
     }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Section::make('Link Terkait')
+                Section::make('Sponsor Kami')
                     ->schema([
                         Grid::make(2)
                             ->schema([
                                 TextInput::make('nama_instansi')
-                                    ->label('Nama Instansi')
-                                    ->placeholder('Masukkan Nama Layanan')
+                                    ->label('Nama Sponsor')
+                                    ->placeholder('Masukkan Nama Sponsor')
                                     ->required()
                                     ->maxLength(100)
                                     ->prefixIcon('heroicon-o-building-storefront'),
@@ -80,7 +80,7 @@ class LinkTerkaitResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 TextColumn::make('nama_instansi')
-                    ->label('Nama Instansi')
+                    ->label('Nama Sponsor')
                     ->wrap()
                     ->limit(15)
                     ->searchable(),

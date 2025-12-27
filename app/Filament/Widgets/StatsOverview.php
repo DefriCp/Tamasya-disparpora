@@ -2,7 +2,7 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Agenda;
+
 use App\Models\Berita;
 use App\Models\DestinasiWisata;
 use App\Models\Dokumen;
@@ -26,10 +26,7 @@ class StatsOverview extends BaseWidget
                     ->color('gray')
                     ->chart([7, 3, 4, 5, 6, 3, 5]),
 
-                Stat::make('Agenda', Agenda::count())
-                    ->description('Jumlah Agenda')
-                    ->color('success')
-                    ->chart([7, 3, 4, 5, 6, 3, 5]),
+
 
                 Stat::make('Dokumen', Dokumen::count())
                     ->description('Jumlah Dokumen')

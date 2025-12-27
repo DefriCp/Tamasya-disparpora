@@ -11,13 +11,17 @@ use Illuminate\Support\Str;
 class DestinasiWisata extends Model
 {
     use HasFactory;
+    
+    // Sesuaikan nama tabel
+    protected $table = 'destinasi_wisatas';
 
     protected $fillable = [
         'nama',
         'slug',
+        'cover_image',
         'jenis',
-        'kecamatan_id',
-        'desa_id',
+        'kecamatan_id', // Ini Foreign Key ke tabel Kecamatan
+        'desa_id',      // Ini Foreign Key ke tabel Desa
         'latitude',
         'longitude',
         'potensi_unggulan',
@@ -33,25 +37,31 @@ class DestinasiWisata extends Model
         'nomor_hp'
     ];
 
+    protected $casts = [
+        'jenis' => 'array',
+    ];
+
     public function setNamaAttribute($value)
     {
         $this->attributes['nama'] = $value;
         $this->attributes['slug'] = Str::slug($value);
     }
 
-    protected $casts = [
-        'jenis' => 'array',
-    ];
+    // --- PERBAIKAN: GUNAKAN KUNCI EKSPLISIT ---
+    public function kecamatan(): BelongsTo
+    {
+        // Parameter 2: 'kecamatan_id' (Foreign Key di tabel destinasi_wisatas ini)
+        // Parameter 3: 'id' (Primary Key di tabel kecamatans)
+        return $this->belongsTo(Kecamatan::class, 'kecamatan_id', 'id');
+    }
 
     public function desa(): BelongsTo
     {
-        return $this->belongsTo(Desa::class);
+        // Parameter 2: 'desa_id' (Foreign Key di tabel destinasi_wisatas ini)
+        // Parameter 3: 'id' (Primary Key di tabel desas)
+        return $this->belongsTo(Desa::class, 'desa_id', 'id');
     }
-
-    public function kecamatan(): BelongsTo
-    {
-        return $this->belongsTo(Kecamatan::class);
-    }
+    // -------------------------------------------
 
     public function utilitas(): HasMany
     {

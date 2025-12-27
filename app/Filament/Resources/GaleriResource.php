@@ -30,16 +30,16 @@ class GaleriResource extends Resource implements HasShieldPermissions
     
     public static function getNavigationLabel(): string
     {
-        return 'Galeri SKPD'; // Ubah nama menu di sini
+        return 'Galeri Wisata'; // Ubah nama menu di sini
     }
     public static function getLabel(): string
     {
-        return 'Galeri SKPD'; // Singular
+        return 'Galeri Wisata'; // Singular
     }
 
     public static function getPluralLabel(): string
     {
-        return 'Galeri SKPD'; // Tetap tunggal jika kamu ingin breadcrumb-nya "Berita > Membuat"
+        return 'Galeri Wisata'; // Tetap tunggal jika kamu ingin breadcrumb-nya "Berita > Membuat"
     }
 
     public static function form(Form $form): Form

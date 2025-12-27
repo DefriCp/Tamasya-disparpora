@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\AgendaController;
+
 use App\Http\Controllers\Api\BeritaController;
 use App\Http\Controllers\Api\DesaController;
 use App\Http\Controllers\Api\DokumenController;
@@ -25,7 +25,7 @@ Route::get('/berita/terpopuler', [BeritaController::class, 'populer']);
 
 //  Api Pengumuman By Id
 
-Route::apiResource('/agenda', AgendaController::class);
+
 Route::apiResource('/dokumen', DokumenController::class);
 Route::apiResource('/layanan', LayananController::class);
 Route::apiResource('/wisata', WisataController::class);

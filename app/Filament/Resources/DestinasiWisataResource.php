@@ -69,6 +69,18 @@ class DestinasiWisataResource extends Resource implements HasShieldPermissions
 
                                 
                             ]),
+                        
+                        Forms\Components\FileUpload::make('cover_image')
+                            ->label('Photo Header')
+                            ->image()
+                            // ->required() // Maybe optional if existing data doesn't have it? Migration said nullable. 
+                            // But user wants it. Let's make it nullable or required based on user intent. 
+                            // Migration was nullable. Let's keep it optional but recommended.
+                            ->maxSize(3000)
+                            ->directory('tamasya')
+                            ->disk('public')
+                            ->helperText('Rekomendasi Ukuran Image 1920 x 1080')
+                            ->columnSpanFull(),
 
                     ]),
 

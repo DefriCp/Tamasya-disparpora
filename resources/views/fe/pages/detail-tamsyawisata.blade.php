@@ -320,7 +320,7 @@
                     @foreach ($destinasiwisatalain as $item)
                         <a href="{{ route('fe.wisata.detail', $item->slug) }}"
                             class="flex items-center p-3 transition-colors rounded-lg hover:bg-gray-50 group">
-                            <img src="{{ asset('storage/' . $item->photos->first()->photo) }}"
+                            <img src="{{ asset('storage/' . $item->photos) }}"
                                 alt="Foto {{ $item->nama }}"
                                 class="flex-shrink-0 object-cover mr-3 w-14 h-14 rounded-xl" loading="lazy">
                             <div class="flex-1 min-w-0">
@@ -329,8 +329,7 @@
                                     {{ $item->nama }}
                                 </h4>
                                 <p class="text-sm text-gray-600 line-clamp-1">
-                                    {{ $item->desa->nama ?? '' }}
-                                    {{ $item->kecamatan->nama ? ', ' . $item->kecamatan->nama : '' }}
+                                    {{ $item->kecamatan ? ', ' . $item->kecamatan : '' }}
                                 </p>
                             </div>
                             <i

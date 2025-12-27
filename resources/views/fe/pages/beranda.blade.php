@@ -1,719 +1,360 @@
 @extends('fe.layouts.main')
 
-@push('meta-seo')
-    <title>{{ $header->skpd ?? 'Template SKPD' }} - Kabupaten Tasikmalaya</title>
-    <meta name="description"
-        content="Selamat datang di {{ $header->skpd ?? 'Template SKPD' }}, portal resmi pemerintah daerah Kabupaten Tasikmalaya. Layanan publik terpadu, cepat, dan akurat untuk masyarakat.">
-    <meta name="keywords"
-        content="{{ $header->skpd ?? 'Template SKPD' }}, Pemerintah Kabupaten Tasikmalaya, Layanan Publik Tasikmalaya, E-Government Tasikmalaya, Informasi Daerah Tasikmalaya, Portal Resmi Pemkab Tasikmalaya">
-    <meta name="author" content="Sony Maulana M, S.Kom., Dinda Fazryan, S.Kom.">
-@endpush
-
-@push('custom-css')
-@endpush
+@section('title', 'Beranda')
 
 @section('content')
-    <!-- Hero Section with Swiper -->
-    <section>
-        <div class="relative swiper heroSwiper h-96 md:h-dvh">
 
-            <!-- Swiper Slide Hanya Gambar -->
-            @php
-                // Jika $header ada dan punya foto, gunakan foto tersebut
-                $photos = $header?->photos ?? collect();
-            @endphp
-            <div class="swiper-wrapper">
-                @if ($photos->isNotEmpty())
-                    @foreach ($photos as $slider)
-                        <div class="swiper-slide">
-                            <img src="{{ asset('storage/' . $slider->photo) }}" alt="Slide"
-                                class="object-cover w-full h-full" />
-                        </div>
-                    @endforeach
-                @else
-                    <!-- Default Slider jika tidak ada data header/photo -->
+{{-- Hero Section --}}
+<section class="relative overflow-hidden"> 
+    
+    {{-- Swiper Container --}}
+    <div class="relative swiper heroSwiper w-full h-[650px] md:h-[750px] lg:h-[90vh]">
+        @php
+            $photos = $header?->photos ?? collect();
+        @endphp
+
+        <div class="swiper-wrapper">
+            @if ($photos->isNotEmpty())
+                @foreach ($photos as $slider)
                     <div class="swiper-slide">
-                        <img src="https://placehold.co/600x400" alt="Default Slide" class="object-cover w-full h-full" />
+                        <img src="{{ asset('storage/' . $slider->photo) }}"
+                            alt="Header Slide"
+                            class="w-full h-full object-cover">
                     </div>
-                @endif
-            </div>
-
-            <!-- Text Tetap -->
-            <div class="absolute inset-0 z-10 bg-gradient-to-r from-black/60 to-black/30"></div>
-            <div class="absolute inset-0 z-20 flex flex-col items-center justify-center px-4 text-center text-white">
-                <h1 class="mb-4 text-3xl font-bold md:text-5xl">{{ $header->skpd ?? 'Template SKPD' }}</h1>
-                <p class="mb-6 text-xl md:text-2xl">TAMASYA</p>
-            </div>
-
-            <!-- Pagination -->
-            <div class="z-30 swiper-pagination custom-pagination"></div>
+                @endforeach
+            @else
+                <div class="swiper-slide">
+                    <div class="w-full h-full bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800"></div>
+                </div>
+            @endif
         </div>
-    </section>
+    </div>
 
-    <!-- Berita Kab Tasik -->
-    <section class="mt-8 md:mt-12">
-        <div class="container px-4 mx-auto">
-            <h3 class="my-5 text-xl font-medium text-center lg:text-left lg:text-2xl">Berita Kabupaten Tasikmalaya</h3>
-            <div class="swiper beritaTasikKabSwiper">
-                <div class="py-5 swiper-wrapper" id="news-container">
-                    <!-- Loading animation -->
-                    <div id="loading" class="w-full text-center">
-                        <svg class="w-8 h-8 mx-auto text-gray-500 animate-spin" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8h8a8 8 0 01-16 0z"></path>
-                        </svg>
-                        <p class="mt-2 text-gray-500">Memuat berita...</p>
-                    </div>
-                </div>
-                {{-- <div class="swiper-pagination"></div> --}}
+    {{-- Overlay Gradient --}}
+    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/70 z-10 pointer-events-none"></div>
+    
+    {{-- Pattern Overlay --}}
+    <div class="absolute inset-0 opacity-10 z-10 pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.4\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+
+    {{-- Hero Content --}}
+    <div class="absolute inset-0 flex items-center justify-center z-20">
+        <div class="text-center text-white px-4 max-w-5xl mx-auto">
+            
+            {{-- Badge --}}
+            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-6 py-3 rounded-full mb-6 animate-fade-in">
+                <svg class="w-5 h-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+                <span class="text-sm font-semibold">Destinasi Wisata Kabupaten Tasikmalaya</span>
             </div>
-        </div>
-    </section>
 
-    <!-- Berita SKPD -->
-    <section class="mt-4 md:mt-12">
-        <div class="container px-4 mx-auto">
-            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
-                <!-- Left Content -->
-                <div class="space-y-8 lg:col-span-2">
-                    <section id="berita" class="scroll-mt-24">
-                        <div class="beritaSKPDSwiper swiper">
-                            <div class="swiper-wrapper">
-                                @foreach ($beritaSkpd as $item)
-                                    <div class="swiper-slide">
-                                        <div class="relative overflow-hidden bg-white shadow-md rounded-3xl">
-                                            <!-- Gambar -->
-                                            <img src="{{ asset('storage/' . $item->photo) }}" alt="Tasikmalaya Maju"
-                                                class="object-cover w-full aspect-[4/3]">
+            {{-- Title --}}
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight animate-slide-up">
+                Jelajahi Wisata<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 via-blue-100 to-white">
+                    Penuh Keindahan
+                </span>
+            </h1>
 
-                                            <!-- Overlay Transparan -->
-                                            <div style="background-image: linear-gradient(to top, {{ $header->warna_pertama }}, transparent); height: 50%; opacity: 10;"
-                                                class="absolute inset-x-0 bottom-0">
-                                            </div>
+            {{-- Description --}}
+            <p class="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto mb-10 leading-relaxed animate-slide-up-delay">
+                Temukan destinasi wisata unggulan dan keindahan alam daerah Kabupaten Tasikmalaya. 
+                Nikmati pengalaman berwisata yang tak terlupakan bersama keluarga.
+            </p>
 
-                                            <!-- Overlay Teks -->
-                                            <div
-                                                class="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/70 to-transparent">
-                                                <h2 class="text-3xl font-bold text-white">{{ $item->judul }}</h2>
-                                                <p class="my-4 text-gray-300">
-                                                    {{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }} |
-                                                    Penulis: {{ $item->header->singkatan_skpd }}
-                                                </p>
-                                                <a href="{{ route('fe.berita.detail', $item->slug) }}"
-                                                    class="bg-yellow-300 text-green-800 text-sm font-medium px-5 py-2.5 rounded-full focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-colors hover:bg-yellow-400">
-                                                    Baca Selengkapnya
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <!-- Pagination -->
-                            <div class="swiper-pagination mt"></div>
-                        </div>
-                    </section>
-
-                    <section>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <button id="btn-terbaru"
-                                class="px-4 py-2 text-sm transition-colors border rounded-full btn-tab btn-color-primary hover:border-transparent focus:ring-2 focus:ring-slate-300">
-                                TERBARU
-                            </button>
-                            <button id="btn-terpopuler"
-                                class="px-4 py-2 text-sm transition-colors border rounded-full btn-tab btn-color-custom hover:border-transparent focus:ring-2 focus:ring-slate-300">
-                                TERPOPULER
-                            </button>
-                            <button id="btn-pengumuman"
-                                class="px-4 py-2 text-sm transition-colors border rounded-full btn-tab btn-color-custom hover:border-transparent focus:ring-2 focus:ring-slate-300">
-                                PENGUMUMAN
-                            </button>
-                        </div>
-                    </section>
-
-                    <section>
-                        {{-- TERBARU --}}
-                        <div id="konten-terbaru" class="space-y-4">
-                            @foreach ($beritaTerbaru as $berita)
-                                <div class="p-6 duration-150 bg-white border rounded-3xl hover:shadow"
-                                    style="border-color: var(--hover-border, rgb(229 231 235))"
-                                    onmouseover="this.style.setProperty('--hover-border', '{{ $header->warna_text_utama }}')"
-                                    onmouseout="this.style.setProperty('--hover-border', 'rgb(229 231 235)')">
-                                    <div class="flex items-start space-x-4">
-                                        <div class="flex-shrink-0 w-2 h-16 rounded-full"
-                                            style="background-color: {{ $header->warna_text_utama }}">
-                                        </div>
-                                        <div class="flex-1">
-                                            <div class="flex items-center justify-between mb-1">
-                                                <span class="text-sm font-medium"
-                                                    style="color: {{ $header->warna_text_utama }}">
-                                                    Kegiatan {{ $header->skpd }}
-                                                </span>
-                                                <span class="px-2 py-0.5 text-xs font-light text-white rounded-full"
-                                                    style="background: {{ $header->warna_text_utama }}">
-                                                    Berita
-                                                </span>
-                                            </div>
-                                            <a href="{{ route('fe.berita.detail', $berita->slug) }}"
-                                                class="mt-1 mb-2 text-lg font-semibold text-gray-800 line-clamp-2">
-                                                {{ $berita->judul }}
-                                            </a>
-                                            <p class="text-sm text-gray-600">
-                                                <i class="mr-1 fa-regular fa-clock"></i>
-                                                {{ \Carbon\Carbon::parse($berita->waktu_publish)->translatedFormat('l, d F Y') }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-
-                        {{-- TERPOPULER --}}
-                        <div id="konten-terpopuler" class="hidden space-y-4">
-                            @foreach ($beritaTerpopuler as $berita)
-                                <div class="p-6 duration-150 bg-white border rounded-3xl hover:shadow"
-                                    style="border-color: var(--hover-border, rgb(229 231 235))"
-                                    onmouseover="this.style.setProperty('--hover-border', '{{ $header->warna_text_utama }}')"
-                                    onmouseout="this.style.setProperty('--hover-border', 'rgb(229 231 235)')">
-                                    <div class="flex items-start space-x-4">
-                                        <div class="flex-shrink-0 w-2 h-16 rounded-full"
-                                            style="background-color: {{ $header->warna_text_utama }}">
-                                        </div>
-                                        <div class="flex-1">
-                                            <div class="flex items-center justify-between mb-1">
-                                                <span class="text-sm font-medium"
-                                                    style="color: {{ $header->warna_text_utama }}">
-                                                    Kegiatan {{ $header->skpd }}
-                                                </span>
-                                                <span class="px-2 py-0.5 text-xs font-light text-white rounded-full"
-                                                    style="background: {{ $header->warna_text_utama }}">
-                                                    Berita
-                                                </span>
-                                            </div>
-                                            <a href="{{ route('fe.berita.detail', $berita->slug) }}"
-                                                class="mt-1 mb-2 text-lg font-semibold text-gray-800 line-clamp-2">
-                                                {{ $berita->judul }}
-                                            </a>
-                                            <p class="text-sm text-gray-600">
-                                                <i class="mr-1 fa-regular fa-clock"></i>
-                                                {{ \Carbon\Carbon::parse($berita->waktu_publish)->translatedFormat('l, d F Y') }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-
-                        <div id="btn-lihatSemuaBerita" class="mt-6 text-center md:text-start">
-                            <a href="{{ route('fe.berita') }}"
-                                class="px-4 py-3 text-sm font-medium duration-150 border rounded-xl hover:text-white focus:ring-2 group btn-color-custom">
-                                Lihat Semua Berita
-                                <i class="fas fa-arrow-right ms-1 group-hover:text-white"></i>
-                            </a>
-                        </div>
-
-                        {{-- PENGUMUMAN --}}
-                        <div id="konten-pengumuman" class="hidden space-y-4">
-                            @forelse ($pengumumanSkpd as $item)
-                                <div class="p-6 duration-150 bg-white border cursor-pointer rounded-3xl hover:shadow"
-                                    style="border-color: var(--hover-border, rgb(229 231 235))"
-                                    onmouseover="this.style.setProperty('--hover-border', '{{ $header->warna_text_utama }}')"
-                                    onmouseout="this.style.setProperty('--hover-border', 'rgb(229 231 235)')"
-                                    onclick="showModalPengumuman({{ $item->id }})">
-                                    <div class="flex items-start space-x-4">
-                                        <div class="flex-shrink-0 w-2 h-16 rounded-full"
-                                            style="background-color: {{ $header->warna_text_utama }}">
-                                        </div>
-                                        <div class="flex-1">
-                                            <div class="flex items-center justify-between mb-1">
-                                                <span class="text-sm font-medium"
-                                                    style="color: {{ $header->warna_text_utama }}">
-                                                    Pengumuman {{ $header->skpd }}
-                                                </span>
-                                                <span class="px-2 py-0.5 text-xs font-light text-white rounded-full"
-                                                    style="background: {{ $header->warna_text_utama }}">
-                                                    Pengumuman
-                                                </span>
-                                            </div>
-                                            <h3 class="mt-1 mb-2 text-lg font-semibold text-gray-800 line-clamp-2">
-                                                {{ $item->judul }}
-                                            </h3>
-                                            <p class="text-sm text-gray-600">
-                                                <i class="mr-1 fa-regular fa-clock"></i>
-                                                {{ \Carbon\Carbon::parse($item->tanggal_publish)->translatedFormat('l, d F Y') }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            @empty
-                                <div class="p-6 bg-white border rounded-3xl">
-                                    <p class="text-center text-gray-500">Tidak ada pengumuman SKPD untuk saat ini.</p>
-                                </div>
-                            @endforelse
-                        </div>
-
-                    </section>
-                </div>
-
-                <!-- Right Sidebar -->
-                <div class="space-y-8">
-                    <!-- Agenda -->
-                    <section id="agenda"
-                        class="p-6 text-white bg-green-700 rounded-3xl"style="background-image: linear-gradient(to bottom right, {{ $header->warna_pertama ?? 'bg-blue-400' }}, {{ $header->warna_kedua ?? 'bg-blue-400' }})">
-                        <h2 class="mb-4 text-lg font-bold text-center text-white lg:text-3xl">Agenda</h2>
-                        <p class="mb-4 text-base text-center text-white">Jadwal kegiatan dan acara
-                            penting {{ $header->skpd ?? 'Template SKPD' }}
-                            Kabupaten
-                            Tasikmalaya</p>
-
-                        <div class="mb-6">
-                            <h3 class="mb-3 font-semibold text-center">{{ $currentMonthYear }}</h3>
-                            <div class="grid grid-cols-7 gap-1 text-sm text-center">
-                                <div class="text-white-200">Min</div>
-                                <div class="text-white-200">Sen</div>
-                                <div class="text-white-200">Sel</div>
-                                <div class="text-white-200">Rab</div>
-                                <div class="text-white-200">Kam</div>
-                                <div class="text-white-200">Jum</div>
-                                <div class="text-white-200">Sab</div>
-                            </div>
-                            <div class="grid grid-cols-7 gap-1 text-center text-white">
-                                @foreach ($calendar as $week)
-                                    @foreach ($week as $day)
-                                        @php
-                                            $isActive = $day === $currentDay;
-                                            $hasAgenda = $day && in_array($day, $agendaDates);
-                                        @endphp
-                                        <div class="relative">
-                                            <div class="day-cell h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-white hover:text-blue-700 transition {{ $isActive ? 'bg-white text-blue-700 font-bold' : '' }}"
-                                                data-day="{{ $day }}"
-                                                onclick="loadAgenda({{ $day }}, {{ $month }}, {{ $year }}, this)">
-                                                {{ $day ?? '' }}
-                                            </div>
-
-                                            @if ($hasAgenda)
-                                                <span
-                                                    class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1 w-1.5 h-1.5 rounded-full bg-red-800"></span>
-                                            @endif
-                                        </div>
-                                    @endforeach
-                                @endforeach
-                            </div>
-                        </div>
-
-                        <!-- Loading Spinner -->
-                        <div id="agendaLoading" class="hidden my-4 text-center">
-                            <div class="w-8 h-8 mx-auto border-4 border-white rounded-full animate-spin border-t-blue-500">
-                            </div>
-                            <div class="mt-2 text-sm text-white">Memuat agenda...</div>
-                        </div>
-
-                        <div id="agendaResult" class="space-y-3">
-                            @forelse ($todayAgenda as $agenda)
-                                <div class="p-4 bg-slate-200/30 rounded-2xl">
-                                    <div class="flex items-center justify-between">
-                                        <span
-                                            class="font-medium">{{ \Carbon\Carbon::parse($agenda->tanggal)->translatedFormat('d F Y') }}</span>
-                                        <span class="text-sm font-medium">{{ $agenda->status }}</span>
-                                    </div>
-                                    <p class="mt-1 text-sm text-white line-clamp-2">{{ $agenda->judul }}</p>
-                                </div>
-                            @empty
-                                <div class="p-4 bg-slate-200/30 rounded-2xl">
-                                    <p class="text-center text-white">Tidak ada agenda untuk hari ini.</p>
-                                </div>
-                            @endforelse
-                        </div>
-                    </section>
-
-                    <!-- GPR bg-[#262879]-->
-                    <section class="p-6 bg-white border shadow-sm rounded-3xl"
-                        style="border-color: {{ $header->warna_text_utama ?? 'bg-blue-400' }};">
-                        <h2 class="mb-2 text-lg font-bold text-center lg:text-3xl"
-                            style="background: linear-gradient(90deg, #f58529 0%, #dd2a7b 50%, #515bd4 100%);
-                                   -webkit-background-clip: text;
-                                   -webkit-text-fill-color: transparent;
-                                   background-clip: text;
-                                   color: transparent;">
-                            Instagram
-                        </h2>
-                        {{-- <p class="mb-4 text-base text-center text-white">Postingan {{ $header->skpd }}
-                            Kabupaten
-                            Tasikmalaya</p> --}}
-
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-center p-4 space-y-1 rounded-2xl">
-                                <blockquote class="instagram-media"
-                                    data-instgrm-permalink="https://www.instagram.com/reel/CxrWxu6pVHV/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-                                    data-instgrm-version="14" style="background:#FFF; border:0; border-radius:1rem;">
-                                    <a href="https://www.instagram.com/reel/CxrWxu6pVHV/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-                                        target="_blank">...</a>
-                                </blockquote>
-                                <script async src="//www.instagram.com/embed.js"></script>
-                            </div>
-                        </div>
-                    </section>
-                </div>
+            {{-- CTA Buttons --}}
+            <div class="flex flex-wrap justify-center gap-4 animate-fade-in-delay">
+                <a href="{{ route('fe.wisata') }}" 
+                    class="group bg-white text-blue-700 font-bold px-8 py-4 rounded-full hover:bg-blue-50 transform hover:scale-105 transition duration-300 shadow-xl inline-flex items-center gap-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    Jelajahi Destinasi
+                    <svg class="w-4 h-4 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <a href="{{ route('fe.berita') }}" 
+                    class="bg-transparent border-2 border-white text-white font-bold px-8 py-4 rounded-full hover:bg-white hover:text-blue-700 transform hover:scale-105 transition duration-300 backdrop-blur-sm inline-flex items-center gap-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                    </svg>
+                    Baca Berita
+                </a>
             </div>
-        </div>
-    </section>
 
-    <!-- Photo Kegiatan -->
-    <section>
-        <div class="container px-4 mx-auto">
-            <div id="galeri" class="mt-12 md:mt-28 scroll-mt-24">
-                <div class="max-w-2xl mx-auto text-center">
-                    <h2 class="text-3xl font-medium md:text-4xl text-slate-800">Photo Kegiatan</h2>
-                    <p class="mt-3 text-gray-600">Dokumentasi foto kegiatan
-                        yang
-                        dilaksanakan {{ $header->skpd ?? 'Template SKPD' }} dalam mendukung pembangunan, pelayanan publik,
-                        dan ketertiban di
-                        wilayah Kabupaten
-                        Tasikmalaya.</p>
-                </div>
-                <!-- Slider Photo Grid -->
-                <div class="my-10 swiper photoSwiper">
-                    <div class="mb-16 swiper-wrapper">
-                        @forelse ($fotoKegiatan as $item)
-                            <div class="swiper-slide">
-                                <div
-                                    class="flex flex-col h-full overflow-hidden transition-shadow bg-white shadow-md rounded-3xl hover:shadow-lg">
-                                    <div class="relative group">
-                                        <img src="{{ asset('storage/' . $item->photo) }}" alt="Foto Kegiatan"
-                                            class="object-cover w-full h-64 transition-transform duration-300 transform-gpu group-hover:scale-110">
-                                    </div>
-                                </div>
-                            </div>
-                        @empty
-                            @for ($i = 0; $i < 6; $i++)
-                                <div class="swiper-slide">
-                                    <div
-                                        class="flex flex-col h-full overflow-hidden transition-shadow bg-white shadow-md rounded-3xl hover:shadow-lg">
-                                        <div class="relative group">
-                                            <img src="{{ asset('images/placeholder-hero.jpg') }}" alt="Foto Kegiatan"
-                                                class="object-cover w-full h-64 transition-transform duration-300 transform-gpu group-hover:scale-110">
-                                        </div>
-                                    </div>
-                                </div>
-                            @endfor
-                        @endforelse
-                    </div>
-
-                    <!-- Pagination -->
-                    <div class="swiper-pagination custom-pagination"></div>
-
-                    <div class="swiper-button-next">
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                    <div class="swiper-button-prev">
-                        <i class="fa-solid fa-arrow-left"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Layanan -->
-    <section class="py-6 md:py-12 bg-gray-50">
-        <div class="container px-4 mx-auto">
-            <div id="layanan" class="mt-12 scroll-mt-24">
-                <div class="max-w-2xl mx-auto text-center">
-                    <h2 class="text-3xl font-medium md:text-4xl text-slate-800">Layanan</h2>
-                    <p class="mt-3 text-gray-600">
-                        Layanan publik yang kami sediakan untuk memudahkan masyarakat dalam
-                        mengakses informasi, pengajuan dokumen, dan program bantuan dari instansi kami.
-                    </p>
-                </div>
-                <div class="my-10">
-                    <div class="flex flex-wrap justify-center gap-3 my-2 md:gap-4">
-                        @forelse ($layanan as $item)
-                            <div class="flex items-center justify-center w-full px-3 py-8 transition-all duration-300 transform bg-white border md:w-1/3 lg:w-1/4 xl:w-1/5 rounded-3xl group hover:-translate-y-2"
-                                style="border-color: rgb(229 231 235);"
-                                onmouseover="this.style.borderColor='{{ $header->warna_text_utama }}'; this.querySelector('h3').style.color='{{ $header->warna_text_utama }}'"
-                                onmouseout="this.style.borderColor='rgb(229 231 235)'; this.querySelector('h3').style.color='#030817'">
-
-                                <div class="text-center">
-                                    <h3 class="mb-2 text-base font-semibold text-gray-800 duration-150 lg:text-lg line-clamp-2"
-                                        style="color: #374151;">
-                                        {{ $item->nama }}
-                                    </h3>
-
-                                    <p class="mb-5 text-sm text-gray-600 line-clamp-2">{{ $item->deskripsi }}</p>
-
-                                    <a href="{{ $item->url }}" target="_blank"
-                                        class="px-6 py-2.5 text-sm transition-colors duration-200 btn-color-primary focus:ring-2 focus:ring-slate-300 rounded-xl">
-                                        Akses Layanan
-                                    </a>
-                                </div>
-                            </div>
-                        @empty
-                            <div class="w-full px-3 py-8 text-center bg-white border rounded-3xl md:w-1/3 lg:w-1/4 xl:w-1/5"
-                                style="border-color: rgb(229 231 235);">
-                                <p class="text-gray-500">Tidak ada layanan yang tersedia saat ini.</p>
-                            </div>
-                        @endforelse
-                    </div>
-
-                    <div class="mt-8 text-center">
-                        <a href="{{ route('fe.layanan') }}"
-                            class="px-6 py-3 text-sm transition-colors duration-200 btn-color-primary focus:ring-2 focus:ring-slate-300 rounded-xl">
-                            Lihat Semua Layanan
-                            <i class="fas fa-arrow-right ms-1"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Link Terkait -->
-    <section>
-        <div class="container px-4 mx-auto">
-            <div class="mt-12 md:mt-28">
-                <div class="max-w-2xl mx-auto text-center">
-                    <h2 class="text-3xl font-medium md:text-4xl text-slate-800">Link Terkait</h2>
-                    <p class="mt-3">Simak cerita menarik dari mereka yang telah membuktikan bahwa teknologi dapat
-                        mengubah
-                        cara
-                        kerja,
-                        meningkatkan efisiensi, dan mendapatkan hasil yang lebih baik.</p>
-                </div>
-                <!-- Video/Link YouTube Section with Swiper -->
-                <div class="my-10">
-                    <div class="my-10 swiper linkSwiper">
-                        <div class="justify-center mb-16 swiper-wrapper">
-                            @forelse ($linkYoutube as $link)
-                                <div class="swiper-slide">
-                                    <div
-                                        class="overflow-hidden transition-shadow bg-white shadow-md cursor-pointer rounded-3xl hover:shadow-lg group">
-                                        <a href="{{ $link->link }}" target="_blank" class="relative block">
-                                            <img src="{{ getYouTubeThumbnail($link->link) }}" alt="YouTube Thumbnail"
-                                                class="object-cover w-full transition-transform duration-300 aspect-video transform-gpu group-hover:scale-110">
-                                            <div
-                                                class="absolute inset-0 flex items-center justify-center transition-all bg-black bg-opacity-40 hover:bg-opacity-50">
-                                                <div class="text-center text-white">
-                                                    <i class="mb-2 text-3xl text-red-500 fab fa-youtube"></i>
-                                                    <p class="text-sm font-medium line-clamp-1">{{ $link->nama }}</p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            @empty
-                                <div class="w-full px-3 py-8 text-center bg-white border rounded-3xl md:w-1/3 lg:w-1/4 xl:w-1/5"
-                                    style="border-color: rgb(229 231 235);">
-                                    <p class="text-gray-500">Tidak ada link youtube yang tersedia saat ini.</p>
-                                </div>
-                            @endforelse
-                        </div>
-
-                        <!-- pagination -->
-                        <div class="mt-6 swiper-pagination"></div>
-
-
-                        <div class="swiper-button-next">
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </div>
-                        <div class="swiper-button-prev">
-                            <i class="fa-solid fa-arrow-left"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Modal Pengumuman Ketika diKlik-->
-    <div id="pengumumModal" class="fixed inset-0 z-50 items-center justify-center hidden bg-black bg-opacity-50">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="w-full max-w-xl bg-white shadow-xl rounded-3xl slide-down">
-                <!-- Header -->
-                <div class="px-6 py-4 text-white bg-blue-600 rounded-t-3xl">
-                    <div class="flex items-center justify-between">
-                        <h3 class="flex items-center text-lg font-medium">
-                            <i class="mr-2 fas fa-bullhorn"></i>
-                            Pengumuman
-                        </h3>
-                        <button onclick="closeModal('pengumumModal')" class="text-white hover:text-gray-200">
-                            <i class="text-xl fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Content -->
-                <div class="p-6">
-                    <div class="mb-4 text-center">
-                        <div class="flex items-center justify-center w-20 h-20 mx-auto mb-4 bg-blue-100 rounded-full">
-                            <i class="text-3xl text-blue-600 fas fa-info-circle"></i>
-                        </div>
-                        <h4 id="judulPengumum" class="mb-2 text-xl font-bold text-gray-800"></h4>
-                        <p id="tglPengumum" class="mb-4 text-sm text-gray-600">
-                    </div>
-
-                    <div id="isiPengumum" class="mb-6 text-sm leading-relaxed text-gray-700">
-
-                    </div>
-
-                    <div class="flex justify-end space-x-3">
-                        <button onclick="closeModal('pengumumModal')"
-                            class="px-4 py-2 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700">
-                            Tutup
-                        </button>
-                    </div>
-                </div>
+            {{-- Scroll Indicator --}}
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <svg class="w-6 h-6 text-white opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
             </div>
         </div>
     </div>
 
-    <!-- Modal Pengumuman-->
-    @if ($pengumuman)
-        <div id="pengumumanModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 modal-backdrop">
-            <div class="flex items-center justify-center min-h-screen p-4">
-                <div class="w-full max-w-xl bg-white shadow-xl rounded-3xl slide-down">
-                    <!-- Header -->
-                    <div class="px-6 py-4 text-white bg-blue-600 rounded-t-3xl">
-                        <div class="flex items-center justify-between">
-                            <h3 class="flex items-center text-lg font-medium">
-                                <i class="mr-2 fas fa-bullhorn"></i>
-                                Pengumuman
-                            </h3>
-                            <button onclick="closeModal('pengumumanModal')" class="text-white hover:text-gray-200">
-                                <i class="text-xl fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
+    {{-- Wave SVG Bottom --}}
+    <div class="absolute bottom-0 left-0 right-0 z-20">
+        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
+            <path d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z" fill="#F9FAFB"/> 
+        </svg>
+    </div>
+</section>
 
-                    <!-- Content -->
-                    <div class="p-6">
-                        <div class="mb-4 text-center">
-                            <div class="flex items-center justify-center w-20 h-20 mx-auto mb-4 bg-blue-100 rounded-full">
-                                <i class="text-3xl text-blue-600 fas fa-info-circle"></i>
-                            </div>
-                            <h4 class="mb-2 text-xl font-bold text-gray-800">{{ $pengumuman->judul }}</h4>
-                            <p class="mb-4 text-sm text-gray-600">
-                                {{ \Carbon\Carbon::parse($pengumuman->tanggal_publish)->translatedFormat('d F Y') }}</p>
-                        </div>
+{{-- Swiper Initialization --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        if (document.querySelector('.heroSwiper')) {
+            new Swiper('.heroSwiper', {
+                loop: true,
+                effect: 'fade',
+                speed: 1000,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+            });
+        }
+    });
+</script>
 
-                        <div class="mb-6 text-sm leading-relaxed text-gray-700">
-                            {!! $pengumuman->isi !!}
-                        </div>
+{{-- Destinasi Wisata Section --}}
+<section class="py-12 md:py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4">
 
-                        <div class="flex justify-end space-x-3">
-                            <button onclick="closeModal('pengumumanModal')"
-                                class="px-4 py-2 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700">
-                                Tutup
-                            </button>
-                        </div>
-                    </div>
-                </div>
+        {{-- Section Header --}}
+        <div class="text-center mb-12">
+            <div class="inline-block bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                🏖️ Eksplorasi
             </div>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
+                Destinasi Wisata Unggulan
+            </h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Temukan berbagai destinasi wisata menarik yang siap memanjakan liburan Anda
+            </p>
         </div>
-    @endif
+
+        {{-- Destinasi Grid --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
+            @forelse($destinasiWisata as $wisata)
+                <a href="{{ route('fe.wisata.detail', $wisata->slug) }}"
+                   class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition duration-300">
+
+                    {{-- Image --}}
+                    <div class="relative overflow-hidden">
+                        @if($wisata->photos->count())
+                            <img src="{{ asset('storage/' . $wisata->photos->first()->photo) }}"
+                                 alt="{{ $wisata->nama }}"
+                                 class="w-full h-56 object-cover group-hover:scale-110 transition duration-500">
+                        @else
+                            <div class="w-full h-56 bg-gradient-to-br from-blue-200 to-blue-400 flex items-center justify-center">
+                                <svg class="w-20 h-20 text-white opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                        @endif
+
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
+
+                        <div class="absolute top-4 right-4">
+                            <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                                ⭐ Populer
+                            </span>
+                        </div>
+                    </div>
+
+                    {{-- Content --}}
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition duration-300">
+                            {{ $wisata->nama }}
+                        </h3>
+                        <p class="text-sm text-gray-600 line-clamp-3 mb-4 leading-relaxed">
+                            {{ Str::limit(strip_tags($wisata->deskripsi), 120) }}
+                        </p>
+
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                            <div class="flex items-center gap-2 text-gray-500 text-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                </svg>
+                                <span class="text-xs">Lokasi</span>
+                            </div>
+                            <span class="text-blue-600 font-semibold text-sm group-hover:translate-x-1 transition inline-flex items-center gap-1">
+                                Lihat Detail
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            @empty
+                <div class="col-span-3 text-center py-16">
+                    <svg class="w-24 h-24 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    </svg>
+                    <p class="text-gray-500 text-lg">Data wisata belum tersedia</p>
+                </div>
+            @endforelse
+        </div>
+
+        {{-- View All Button --}}
+        @if(count($destinasiWisata) > 0)
+        <div class="text-center">
+            <a href="{{ route('fe.wisata') }}"
+               class="inline-flex items-center gap-3 bg-blue-600 text-white font-bold px-8 py-4 rounded-full hover:bg-blue-700 transform hover:scale-105 transition duration-300 shadow-lg">
+                Lihat Semua Destinasi
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                </svg>
+            </a>
+        </div>
+        @endif
+    </div>
+</section>
+
+{{-- Berita Wisata Section --}}
+<section class="py-12 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+
+        {{-- Section Header --}}
+        <div class="text-center mb-12">
+            <div class="inline-block bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                📰 Update Terbaru
+            </div>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
+                Berita & Informasi Wisata
+            </h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Dapatkan informasi terkini seputar destinasi wisata dan event menarik
+            </p>
+        </div>
+
+        {{-- Berita Grid --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
+            @forelse($beritaWisata as $berita)
+                <article class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300 border border-gray-100">
+
+                    {{-- Image --}}
+                    <div class="relative overflow-hidden">
+                        @if($berita->photo)
+                            <img src="{{ asset('storage/' . $berita->photo) }}"
+                                 alt="{{ $berita->judul }}"
+                                 class="w-full h-52 object-cover group-hover:scale-110 transition duration-500">
+                        @else
+                            <div class="w-full h-52 bg-gradient-to-br from-green-200 to-green-400 flex items-center justify-center">
+                                <svg class="w-20 h-20 text-white opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                                </svg>
+                            </div>
+                        @endif
+
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                                Berita
+                            </span>
+                        </div>
+                    </div>
+
+                    {{-- Content --}}
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 text-gray-500 text-xs mb-3">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <time>{{ $berita->created_at->translatedFormat('d F Y') }}</time>
+                        </div>
+
+                        <h3 class="font-bold text-lg text-gray-900 mb-3 line-clamp-2 group-hover:text-green-600 transition duration-300 leading-snug">
+                            {{ $berita->judul }}
+                        </h3>
+
+                        <p class="text-sm text-gray-600 line-clamp-3 mb-4 leading-relaxed">
+                            {{ Str::limit(strip_tags($berita->konten), 120) }}
+                        </p>
+
+                        <a href="{{ route('fe.berita.detail', $berita->slug) }}"
+                           class="inline-flex items-center gap-2 text-green-600 font-semibold text-sm hover:gap-3 transition-all duration-300">
+                            Baca Selengkapnya
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </article>
+            @empty
+                <div class="col-span-3 text-center py-16">
+                    <svg class="w-24 h-24 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                    </svg>
+                    <p class="text-gray-500 text-lg">Berita belum tersedia</p>
+                </div>
+            @endforelse
+        </div>
+
+        {{-- View All Button --}}
+        @if(count($beritaWisata) > 0)
+        <div class="text-center">
+            <a href="{{ route('fe.berita') }}"
+               class="inline-flex items-center gap-3 bg-green-600 text-white font-bold px-8 py-4 rounded-full hover:bg-green-700 transform hover:scale-105 transition duration-300 shadow-lg">
+                Lihat Semua Berita
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                </svg>
+            </a>
+        </div>
+        @endif
+    </div>
+</section>
+
+{{-- Custom Animations --}}
+<style>
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+        from { 
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-out;
+    }
+    
+    .animate-fade-in-delay {
+        animation: fadeIn 1s ease-out 0.3s both;
+    }
+    
+    .animate-slide-up {
+        animation: slideUp 0.8s ease-out;
+    }
+    
+    .animate-slide-up-delay {
+        animation: slideUp 0.8s ease-out 0.2s both;
+    }
+    
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>
+
 @endsection
-
-@push('js')
-    <script src="{{ asset('js/frontend/jquery-3.6.0.min.js') }}"></script>
-    <script src="{{ asset('js/frontend/ajaxget.js') }}"></script>
-
-    {{-- untuk block instagram --}}
-    <script async src="//www.instagram.com/embed.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            if ($('#pengumumanModal').length) {
-                $('#pengumumanModal').removeClass('hidden');
-            }
-        });
-
-        function closeModal(modalId) {
-            $('#' + modalId).addClass('hidden');
-        }
-    </script>
-
-    <script>
-        function loadAgenda(day, month, year, element) {
-            const loading = $('#agendaLoading');
-            const result = $('#agendaResult');
-
-            // 🔄 Hapus class aktif dari semua tanggal
-            $('.day-cell').removeClass('bg-white text-blue-700 font-bold');
-
-            // ✅ Tambahkan class aktif ke elemen yang diklik
-            $(element).addClass('bg-white text-blue-700 font-bold');
-
-            // Tampilkan loading
-            loading.removeClass('hidden');
-            result.empty();
-
-            $.ajax({
-                url: '{{ route('fe.getAgenda') }}',
-                method: 'POST',
-                data: {
-                    day: day,
-                    month: month,
-                    year: year,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(data) {
-                    loading.addClass('hidden'); // Sembunyikan loading
-
-                    if (data.length === 0) {
-                        result.html(
-                            `
-                            <div class="p-4 bg-slate-200/30 rounded-2xl">
-                                <p class="text-center text-white">Tidak ada agenda untuk tanggal ${day}</p>
-                            </div>
-                            `
-                        );
-                    } else {
-                        let html = '';
-                        data.forEach(item => {
-                            html += `
-                            <div class="p-4 bg-slate-200/30 rounded-2xl">
-                                <div class="flex items-center justify-between">
-                                    <span class="font-medium">${item.tanggal}</span>
-                                    <span class="text-sm font-medium">${item.status}</span>
-                                </div>
-                                <p class="mt-1 text-sm text-white line-clamp-2">${item.judul}</p>
-                            </div>
-                        `;
-                        });
-                        result.html(html);
-                    }
-                },
-                error: function() {
-                    loading.addClass('hidden');
-                    result.html(`<div class="text-center text-red-600">Gagal memuat data.</div>`);
-                }
-            });
-        }
-
-        function showModalPengumuman(id) {
-            // Langsung tampilkan modal (dengan loading state)
-            $('#pengumumModal').removeClass('hidden');
-
-            // Kosongkan dulu atau tampilkan loading text
-            $('#pengumumModal #judulPengumum').text('Memuat...');
-            $('#pengumumModal #tglPengumum').text('');
-            $('#pengumumModal #isiPengumum').html('<i>Harap tunggu sebentar...</i>');
-
-            // Baru lakukan AJAX request
-            $.ajax({
-                url: '/api/pengumuman/' + id,
-                method: 'GET',
-                success: function(response) {
-                    // Isi modal dengan data dari response
-                    $('#pengumumModal #judulPengumum').text(response.judul);
-                    $('#pengumumModal #tglPengumum').text(response.tanggal_publish);
-                    $('#pengumumModal #isiPengumum').html(response.isi);
-                },
-                error: function() {
-                    $('#pengumumModal #judulPengumum').text('Error!');
-                    $('#pengumumModal #isiPengumum').html(
-                        '<span class="text-red-500">Gagal memuat data pengumuman.</span>');
-                }
-            });
-        }
-    </script>
-@endpush

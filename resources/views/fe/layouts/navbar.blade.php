@@ -1,104 +1,76 @@
-<header class="fixed top-0 left-0 z-50 w-full duration-150 navbar"
-    style="color:{{ $header->warna_text_header ?? '#fff' }} !important;">
-    <div class="container px-4 mx-auto">
-        <div class="flex items-center justify-between py-3 md:py-4">
-            <!-- Logo -->
-            <div class="flex items-center">
-                @php
-                    // Ambil logos jika $header dan $header->logos tersedia, selain itu gunakan koleksi kosong
-                    $logos = $header?->logos ?? collect();
-                @endphp
+@php
+    $isTransparentPage = Route::is(['fe.beranda', 'fe.wisata.detail']);
+    $defaultClass = $isTransparentPage ? 'bg-gradient-to-b from-black/60 to-transparent text-white' : 'bg-white/90 backdrop-blur-md text-gray-900 shadow-sm';
+@endphp
 
+<header id="main-navbar" class="fixed top-0 left-0 z-50 w-full transition-all duration-300 {{ $defaultClass }}">
+    
+    <div class="container px-4 mx-auto">
+        <div class="flex items-center justify-between h-20"> 
+            
+            {{-- LOGO --}}
+            <div class="flex items-center gap-3">
+                @php $logos = $header?->logos ?? collect(); @endphp
                 @if ($logos->isNotEmpty())
                     @foreach ($logos as $data)
-                        <div class="flex items-center justify-center">
-                            <img src="{{ asset('storage/' . $data->logo) }}" alt="logo" class="w-full h-12 mr-2">
-                        </div>
+                        <img src="{{ asset('storage/' . $data->logo) }}" alt="logo" class="h-10 md:h-12 w-auto object-contain">
                     @endforeach
                 @else
-                    <!-- Placeholder default jika tidak ada logo atau header tidak tersedia -->
-                    <div class="flex items-center justify-center">
-                        <img src="{{ asset('images/logo-default.png') }}" alt="Default Logo" class="w-full h-12 mr-2">
-                    </div>
+                    <img src="{{ asset('images/logo-default.png') }}" alt="Default Logo" class="h-10 md:h-12 w-auto">
                 @endif
             </div>
 
-            <!-- Navigation -->
-            <nav class="hidden space-x-6 lg:flex">
-                <a href="{{ route('fe.beranda') }}" class="transition-colors">Beranda</a>
-                <!-- Dropdown Profil -->
-                <div class="relative group">
-                    <button class="flex items-center transition-colors focus:outline-none">
-                        Profil
-                        <svg class="w-6 h-6 ml-1 fill-current" viewBox="0 0 20 20">
-                            <path
-                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                clip-rule="evenodd" fill-rule="evenodd"></path>
-                        </svg>
-                    </button>
-
-                    <!-- Dropdown Menu -->
-                    <div
-                        class="absolute left-0 z-10 invisible w-48 mt-2 text-gray-800 transition-all duration-200 bg-white border border-gray-200 shadow opacity-0 rounded-2xl group-hover:opacity-100 group-hover:visible">
-                        <a href="{{ route('fe.tentang') }}"
-                            class="block px-4 py-2 duration-150 border-b border-gray-200">Tentang
-                            Kami</a>
-                        <a href="{{ route('fe.profile.pimpinan') }}"
-                            class="block px-4 py-2 duration-150 border-b border-gray-200">Profile
-                            Pimpinan</a>
-                        <a href="{{ route('fe.struktur-organisasi') }}" class="block px-4 py-2 duration-150">Struktur
-                            Organisasi</a>
-                    </div>
-                </div>
-
-                <a href="{{ route('fe.berita') }}" class="transition-colors">Berita</a>
-                <a href="{{ route('fe.galeri') }}" class="transition-colors">Galeri</a>
-                <a href="{{ route('fe.wisata') }}" class="transition-colors">Tamasya</a>
-                <a href="{{ route('fe.layanan') }}" class="transition-colors">Layanan</a>
-                <a href="{{ route('fe.dokumen') }}" class="transition-colors">Dokumen</a>
+            {{-- MENU DESKTOP --}}
+            <nav class="hidden lg:flex items-center space-x-8 font-medium">
+                <a href="{{ route('fe.beranda') }}" class="nav-link hover:text-yellow-400 transition-colors {{ Route::is('fe.beranda') ? 'font-bold' : '' }}">Beranda</a>
+                <a href="{{ route('fe.wisata') }}" class="nav-link hover:text-yellow-400 transition-colors {{ Route::is('fe.wisata*') ? 'font-bold' : '' }}">Destinasi</a>
+                <a href="{{ route('fe.peta') }}" class="nav-link hover:text-yellow-400 transition-colors {{ Route::is('fe.peta') ? 'font-bold' : '' }}">Peta Interaktif</a>
+                <a href="{{ route('fe.galeri') }}" class="nav-link hover:text-yellow-400 transition-colors {{ Route::is('fe.galeri') ? 'font-bold' : '' }}">Galeri</a>
             </nav>
 
-            <!-- Mobile Menu Button -->
-            <button class="text-white lg:hidden" onclick="toggleMobileMenu()">
-                <i class="text-xl fas fa-bars"></i>
+            {{-- TOMBOL MOBILE --}}
+            <button class="lg:hidden focus:outline-none transition-colors" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars text-2xl"></i>
             </button>
         </div>
 
-        <!-- Mobile Navigation -->
-        <div id="mobileMenu" class="hidden pb-4 lg:hidden">
-            <nav class="flex flex-col space-y-2">
-                <a href="{{ route('fe.beranda') }}" class="py-2 transition-colors">Beranda</a>
-                <div class="relative">
-                    <button onclick="toggleMobileDropdown()"
-                        class="flex items-center justify-between w-full py-2 text-left transition-colors">
-                        Profil
-                        <svg id="dropdownArrow" class="w-6 h-6 transition-transform" fill="currentColor"
-                            viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-
-                    </button>
-
-                    <!-- Mobile Dropdown Content -->
-                    <div id="mobileDropdown"
-                        class="flex flex-col pl-4 mt-1 space-y-2 overflow-hidden transition-all duration-300 ease-in-out opacity-0 max-h-0">
-                        <a href="{{ route('fe.tentang') }}" class="py-1 transition-colors">Tentang
-                            Kami</a>
-                        <a href="{{ route('fe.profile.pimpinan') }}" class="py-1 transition-colors">Profile
-                            Pimpinan</a>
-                        <a href="{{ route('fe.struktur-organisasi') }}" class="py-1 transition-colors">Struktur
-                            Organisasi</a>
-                    </div>
-                </div>
-
-                <a href="{{ route('fe.berita') }}" class="py-2 transition-colors">Berita</a>
-                <a href="{{ route('fe.galeri') }}" class="py-2 transition-colors">Galeri</a>
-                <a href="{{ route('fe.wisata') }}" class="py-2 transition-colors">Tamasya</a>
-                <a href="{{ route('fe.layanan') }}" class="py-2 transition-colors">Layanan</a>
-                <a href="{{ route('fe.dokumen') }}" class="py-2 transition-colors">Dokumen</a>
+        {{-- MENU MOBILE --}}
+        <div id="mobileMenu" class="hidden lg:hidden bg-white/95 backdrop-blur-xl text-gray-800 rounded-b-xl shadow-xl absolute top-full left-0 w-full overflow-hidden border-t border-gray-100">
+            <nav class="flex flex-col p-4 space-y-2">
+                <a href="{{ route('fe.beranda') }}" class="block px-4 py-2 rounded hover:bg-green-50 hover:text-green-600 font-semibold">Beranda</a>
+                <a href="{{ route('fe.wisata') }}" class="block px-4 py-2 rounded hover:bg-green-50 hover:text-green-600 font-semibold">Destinasi</a>
+                <a href="{{ route('fe.peta') }}" class="block px-4 py-2 rounded hover:bg-green-50 hover:text-green-600 font-semibold">Peta Interaktif</a>
+                <a href="{{ route('fe.galeri') }}" class="block px-4 py-2 rounded hover:bg-green-50 hover:text-green-600 font-semibold">Galeri</a>
             </nav>
         </div>
     </div>
 </header>
+
+<script>
+    function toggleMobileMenu() {
+        document.getElementById('mobileMenu').classList.toggle('hidden');
+    }
+
+    // Navbar Scroll Effect
+    const navbar = document.getElementById('main-navbar');
+    const isTransparentPage = @json($isTransparentPage);
+    
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 10) {
+            // State: Scrolled (White Glass)
+            navbar.classList.remove('bg-gradient-to-b', 'from-black/60', 'to-transparent', 'text-white');
+            navbar.classList.add('bg-white/90', 'backdrop-blur-md', 'text-gray-900', 'shadow-sm');
+        } else {
+            // State: Top
+            if (isTransparentPage) {
+                // Return to Gradient Transparent on specific pages
+                navbar.classList.add('bg-gradient-to-b', 'from-black/60', 'to-transparent', 'text-white');
+                navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'text-gray-900', 'shadow-sm');
+            } else {
+                // Stay White on other pages
+               navbar.classList.remove('bg-gradient-to-b', 'from-black/60', 'to-transparent', 'text-white');
+               navbar.classList.add('bg-white/90', 'backdrop-blur-md', 'text-gray-900', 'shadow-sm');
+            }
+        }
+    });
+</script>

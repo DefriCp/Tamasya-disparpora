@@ -97,31 +97,7 @@ class HeaderResource extends Resource implements HasShieldPermissions
                     ->collapsible()
                     ->collapsed(false),
 
-                Section::make('🎨 Warna Tema Website')
-                    ->description('Rekomendasi Warna Sesuai dengan Logo Kabupaten Tasikmalaya, #FFC107 (kuning), #009B4C (hijau), #166FBE (biru)')
-                    ->schema([
-                        Grid::make(2)
-                            ->schema([
-                                ColorPicker::make('warna_pertama')
-                                    ->label('Warna Utama')
-                                    ->required(),
-                                ColorPicker::make('warna_kedua')
-                                    ->label('Warna Kedua')
-                                    ->required(),
-                                ColorPicker::make('warna_text_header')
-                                    ->label('Warna Text Header Footer')
-                                    ->required(),
 
-                                ColorPicker::make('warna_text_utama')
-                                    ->label('Warna Utama')
-                                    ->required(),
-                            ]),
-                        Placeholder::make('warna_Default')
-                            ->content('💡 Warna ini akan digunakan untuk tema antarmuka website SKPD.')
-                    ])
-                    ->columns(1)
-                    ->collapsible()
-                    ->collapsed(false),
                 Section::make('Photo Header')
                     ->schema([
                         Repeater::make('photos')
@@ -164,11 +140,7 @@ class HeaderResource extends Resource implements HasShieldPermissions
                     ->badge()
                     ->color('primary'),
 
-                ColorColumn::make('warna_pertama')
-                    ->label('Warna Utama'),
 
-                ColorColumn::make('warna_kedua')
-                    ->label('Warna Kedua'),
             ])
             ->filters([
                 //

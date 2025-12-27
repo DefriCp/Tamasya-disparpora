@@ -1,40 +1,35 @@
 <?php
 
-use App\Http\Controllers\BerandaController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BerandaController;
 
+/*
+|--------------------------------------------------------------------------
+| FRONTEND ROUTES
+|--------------------------------------------------------------------------
+*/
 
+Route::get('/', [BerandaController::class, 'beranda'])
+    ->name('fe.beranda');
 
-//--------------------------------------------------------------------------
-//  Route Fronetend
-//--------------------------------------------------------------------------
-Route::group(['as' => 'fe.', 'prefix' => '/'], function () {
-    Route::get('/', [BerandaController::class, 'beranda'])->name('beranda');
+/* ================= WISATA ================= */
+Route::get('/tamasya-wisata', [BerandaController::class, 'wisata'])
+    ->name('fe.wisata');
 
-    Route::get('/tentang-kami', [BerandaController::class, 'tentang'])->name('tentang');
-    Route::get('/profile-pimpinan', [BerandaController::class, 'profilePimpinan'])->name('profile.pimpinan');
-    Route::get('/struktur-organisasi', [BerandaController::class, 'strukturOrganisasi'])->name('struktur-organisasi');
+Route::get('/tamasya-wisata/{slug}', [BerandaController::class, 'detailWisata'])
+    ->name('fe.wisata.detail');
 
-    Route::get('/berita', [BerandaController::class, 'berita'])->name('berita');
-    Route::get('/berita/{slug?}', [BerandaController::class, 'detailBerita'])->name('berita.detail');
+/* ================= PETA (Tambahkan Ini) ================= */
+Route::get('/peta-wisata', [BerandaController::class, 'petaWisata'])
+    ->name('fe.peta');
 
-    Route::get('/tamasya-wisata', [BerandaController::class, 'wisata'])->name('wisata');
-    // Route::get('/wisata/{slug?}', [BerandaController::class, 'detailWisata'])->name('wisata.detail');
+/* ================= BERITA ================= */
+Route::get('/berita', [BerandaController::class, 'beritaWisata'])
+    ->name('fe.berita');
 
-    Route::get('/tamasya-wisata/{slug?}', [BerandaController::class, 'detailTamsyaWisata'])->name('wisata.detail');
+Route::get('/berita/{slug}', [BerandaController::class, 'detailBeritaWisata'])
+    ->name('fe.berita.detail');
 
-    Route::get('/galeri', [BerandaController::class, 'galeri'])->name('galeri');
-
-    Route::get('/layanan', [BerandaController::class, 'layanan'])->name('layanan');
-
-    Route::get('/dokumen', [BerandaController::class, 'dokumen'])->name('dokumen');
-
-    // Route Ajax Get Berita Kab Tasik
-    Route::get('/get-berita-kabtsm/', [BerandaController::class, 'getBeritaKabTsm'])->name('getBeritaKabTsm');
-
-    // Route Ajax Get Agenda
-    Route::post('/get-agenda/', [BerandaController::class, 'getAgenda'])->name('getAgenda');
-
-    // Route Ajax Get Pengumuman By Id
-    Route::get('/get-pengumuman-by/{id?}', [BerandaController::class, 'getPengumumanById'])->name('getPengumumanById');
-});
+/* ================= GALERI ================= */
+Route::get('/galeri', [BerandaController::class, 'galeri'])
+    ->name('fe.galeri');
